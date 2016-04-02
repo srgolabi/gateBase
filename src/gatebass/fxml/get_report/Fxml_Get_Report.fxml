@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox nodeOrientation="RIGHT_TO_LEFT" spacing="20.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-background-color: #BBDEFB; -fx-font-size: 14;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.get_report.Fxml_Get_Report">
+    <children>
+        <VBox nodeOrientation="RIGHT_TO_LEFT" spacing="20.0">
+            <children>
+                <HBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" style="-fx-border-color: #2e7a8c; -fx-border-width: 0 0 1 0;">
+                    <children>
+                        <RadioButton fx:id="report_type_individual" mnemonicParsing="false" selected="true" text="گزارش فردی" textFill="#2e7a8c">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="report_type_group" />
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="report_type_individual_list" mnemonicParsing="false" text="لیست کامل افراد" textFill="#2e7a8c" toggleGroup="$report_type_group" />
+                        <RadioButton fx:id="report_type_car" mnemonicParsing="false" text="گزارش خودرویی" textFill="#2e7a8c" toggleGroup="$report_type_group" />
+                        <RadioButton fx:id="report_type_car_list" mnemonicParsing="false" text="لیست کامل خودروها" textFill="#2e7a8c" toggleGroup="$report_type_group" />
+                    </children>
+                    <padding>
+                        <Insets bottom="4.0" left="10.0" right="10.0" />
+                    </padding>
+                </HBox>
+                <StackPane fx:id="main_page" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox spacing="20.0">
+                            <children>
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <VBox>
+                                            <children>
+                                                <Label text="فیلد" textFill="#2e7a8c" />
+                                                <StackPane>
+                                                    <children>
+                                                        <StackPane fx:id="fields_page_individual">
+                                                            <children>
+                                                                <TextField fx:id="fields_text_individual" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="170.0" style="-fx-text-fill: #2e7a8c;">
+                                                                    <padding>
+                                                                        <Insets left="22.0" right="25.0" />
+                                                                    </padding>
+                                                                </TextField>
+                                                                <gatebass.myControl.MyButtonFont fx:id="fields_show_list_individual" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_RIGHT" />
+                                                                <gatebass.myControl.MyButtonFont fx:id="fields_text_clear_individual" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_LEFT" />
+                                                            </children>
+                                                        </StackPane>
+                                                        <StackPane fx:id="fields_page_car">
+                                                            <children>
+                                                                <TextField fx:id="fields_text_car" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="170.0" style="-fx-text-fill: #2e7a8c;">
+                                                                    <padding>
+                                                                        <Insets left="22.0" right="25.0" />
+                                                                    </padding>
+                                                                </TextField>
+                                                                <gatebass.myControl.MyButtonFont fx:id="fields_show_list_car" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_RIGHT" />
+                                                                <gatebass.myControl.MyButtonFont fx:id="fields_text_clear_car" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_LEFT" />
+                                                            </children>
+                                                        </StackPane>
+                                                    </children>
+                                                </StackPane>
+                                            </children>
+                                        </VBox>
+                                        <StackPane prefWidth="400.0">
+                                            <children>
+                                                <HBox fx:id="company_page" alignment="BOTTOM_RIGHT" spacing="20.0" StackPane.alignment="BOTTOM_RIGHT">
+                                                    <StackPane.margin>
+                                                        <Insets />
+                                                    </StackPane.margin>
+                                                    <children>
+                                                        <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                                            <children>
+                                                                <Label text="شرکت" textFill="#2e7a8c" />
+                                                                <StackPane>
+                                                                    <children>
+                                                                        <TextField fx:id="company_text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="400.0" style="-fx-text-fill: #2e7a8c;">
+                                                                            <padding>
+                                                                                <Insets left="22.0" right="25.0" />
+                                                                            </padding>
+                                                                        </TextField>
+                                                                        <gatebass.myControl.MyButtonFont fx:id="company_show_list" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_RIGHT" />
+                                                                        <gatebass.myControl.MyButtonFont fx:id="company_text_clear" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_LEFT" />
+                                                                    </children>
+                                                                </StackPane>
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </HBox>
+                                                <HBox fx:id="number_page_root" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="10.0" visible="false" StackPane.alignment="BOTTOM_LEFT">
+                                                    <children>
+                                                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" style="-fx-font-family: &quot;Arial&quot;;">
+                                                            <children>
+                                                                <RadioButton fx:id="math_number_greater_than_equals" mnemonicParsing="false" text="&gt;=" textFill="#2e7a8c">
+                                                                    <toggleGroup>
+                                                                        <ToggleGroup fx:id="math_operator_group" />
+                                                                    </toggleGroup>
+                                                                </RadioButton>
+                                                                <RadioButton fx:id="math_number_greater_than" mnemonicParsing="false" text="&gt;" textFill="#2e7a8c" toggleGroup="$math_operator_group" />
+                                                                <RadioButton fx:id="math_number_equals" mnemonicParsing="false" selected="true" text="=" textFill="#2e7a8c" toggleGroup="$math_operator_group" />
+                                                                <RadioButton fx:id="math_number_less_than" mnemonicParsing="false" text="&lt;" textFill="#2e7a8c" toggleGroup="$math_operator_group" />
+                                                                <RadioButton fx:id="math_number_less_than_equals" mnemonicParsing="false" text="=&lt;" textFill="#2e7a8c" toggleGroup="$math_operator_group" />
+                                                            </children>
+                                                        </HBox>
+                                                        <VBox fx:id="number_page" visible="false" HBox.hgrow="ALWAYS">
+                                                            <children>
+                                                                <Label text="تعداد" textFill="#2e7a8c" />
+                                                                <TextField fx:id="number_text" maxWidth="1.7976931348623157E308" />
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </HBox>
+                                                <HBox fx:id="date_page" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" spacing="2.0" visible="false" StackPane.alignment="BOTTOM_RIGHT">
+                                                    <children>
+                                                        <VBox alignment="BOTTOM_CENTER">
+                                                            <children>
+                                                                <Label text="سال" textFill="#2e7a8c" />
+                                                                <StackPane>
+                                                                    <children>
+                                                                        <TextField fx:id="date_year" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefWidth="48.0" style="-fx-text-fill: #2e7a8c;" />
+                                                                        <Label alignment="CENTER_RIGHT" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="21.0" text="13" textFill="#2e7a8c" StackPane.alignment="CENTER_LEFT">
+                                                                            <cursor>
+                                                                                <Cursor fx:constant="TEXT" />
+                                                                            </cursor>
+                                                                        </Label>
+                                                                    </children>
+                                                                </StackPane>
+                                                            </children>
+                                                        </VBox>
+                                                        <Label alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" text="/" textFill="#2e7a8c">
+                                                            <HBox.margin>
+                                                                <Insets />
+                                                            </HBox.margin>
+                                                        </Label>
+                                                        <VBox alignment="BOTTOM_CENTER">
+                                                            <children>
+                                                                <Label text="ماه" textFill="#2e7a8c" />
+                                                                <TextField fx:id="date_month" alignment="CENTER" maxWidth="41.0" prefWidth="41.0" style="-fx-text-fill: #2e7a8c;" />
+                                                            </children>
+                                                        </VBox>
+                                                        <Label alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" text="/" textFill="#2e7a8c">
+                                                            <HBox.margin>
+                                                                <Insets />
+                                                            </HBox.margin>
+                                                        </Label>
+                                                        <VBox alignment="BOTTOM_CENTER" prefWidth="41.0">
+                                                            <children>
+                                                                <Label text="روز" textFill="#2e7a8c" />
+                                                                <TextField fx:id="date_day" alignment="CENTER" maxWidth="41.0" prefWidth="40.0" style="-fx-text-fill: #2e7a8c;" />
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                    <StackPane.margin>
+                                                        <Insets />
+                                                    </StackPane.margin>
+                                                </HBox>
+                                                <HBox fx:id="string_page_root" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="10.0" visible="false" StackPane.alignment="BOTTOM_LEFT">
+                                                    <children>
+                                                        <HBox fx:id="other_operator_page" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+                                                            <children>
+                                                                <RadioButton fx:id="other_operator_first" mnemonicParsing="false" selected="true" text="شامل" textFill="#2e7a8c" textOverrun="CLIP">
+                                                                    <toggleGroup>
+                                                                        <ToggleGroup fx:id="string_operator_group" />
+                                                                    </toggleGroup>
+                                                                </RadioButton>
+                                                                <RadioButton fx:id="other_operator_second" mnemonicParsing="false" text="برابر" textFill="#2e7a8c" toggleGroup="$string_operator_group" />
+                                                            </children>
+                                                        </HBox>
+                                                        <VBox fx:id="string_page" HBox.hgrow="ALWAYS">
+                                                            <children>
+                                                                <Label text="مقدار" textFill="#2e7a8c" />
+                                                                <TextField fx:id="string_text" maxWidth="1.7976931348623157E308" />
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </HBox>
+                                                <HBox fx:id="veteran_status_page" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" visible="false">
+                                                    <children>
+                                                        <RadioButton fx:id="veteran_payan_khedmat" mnemonicParsing="false" selected="true" text="پایان خدمت" textFill="#2e7a8c" textOverrun="CLIP">
+                                                            <toggleGroup>
+                                                                <ToggleGroup fx:id="veteran_status_group" />
+                                                            </toggleGroup>
+                                                        </RadioButton>
+                                                        <RadioButton fx:id="veteran_namalom" mnemonicParsing="false" text="نامعلوم" textFill="#2e7a8c" toggleGroup="$veteran_status_group" />
+                                                        <RadioButton fx:id="veteran_moaf" mnemonicParsing="false" text="معاف" textFill="#2e7a8c" toggleGroup="$veteran_status_group" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </StackPane>
+                                    </children>
+                                </HBox>
+                                <HBox fillHeight="false" prefHeight="90.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <VBox prefWidth="580.0" style="-fx-background-color: #39AFD0;" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" style="-fx-border-width: 2; -fx-border-color: #78DDFF;" text="پرس و جو ها" textFill="WHITE">
+                                                    <padding>
+                                                        <Insets left="2.0" />
+                                                    </padding>
+                                                </Label>
+                                                <TableView fx:id="query_table" focusTraversable="false" maxHeight="1.7976931348623157E308" styleClass="hide-column-header" VBox.vgrow="ALWAYS">
+                                                    <placeholder>
+                                                        <Label id="selectTable" text="----" textFill="#39afd0" />
+                                                    </placeholder>
+                                                    <columns>
+                                                        <TableColumn id="buttonColumn" fx:id="query_table_column" maxWidth="3000.0" minWidth="50.0" prefWidth="50.0" text="C1">
+                                                            <cellValueFactory>
+                                                                <PropertyValueFactory property="thisFile" />
+                                                            </cellValueFactory>
+                                                        </TableColumn>
+                                                    </columns>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                    </columnResizePolicy>
+                                                </TableView>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                            </padding>
+                                        </VBox>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </HBox>
+                            </children>
+                            <StackPane.margin>
+                                <Insets bottom="20.0" />
+                            </StackPane.margin>
+                        </VBox>
+                        <TableView fx:id="field_table_individual" fixedCellSize="25.0" maxHeight="135.0" maxWidth="169.0" prefHeight="128.0" styleClass="hide-column-header" visible="false" StackPane.alignment="TOP_LEFT">
+                            <placeholder>
+                                <Label text="موردی یافت نشد" textFill="#308096">
+                                    <padding>
+                                        <Insets bottom="3.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                </Label>
+                            </placeholder>
+                            <columns>
+                                <TableColumn prefWidth="75.0">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="field_name" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" color="#888888" height="15.0" offsetY="5.0" radius="8.5" />
+                            </effect>
+                            <StackPane.margin>
+                                <Insets top="48.0" />
+                            </StackPane.margin>
+                        </TableView>
+                        <TableView fx:id="field_table_car" fixedCellSize="25.0" maxHeight="135.0" maxWidth="169.0" prefHeight="128.0" styleClass="hide-column-header" visible="false" StackPane.alignment="TOP_LEFT">
+                            <placeholder>
+                                <Label text="موردی یافت نشد" textFill="#308096">
+                                    <padding>
+                                        <Insets bottom="3.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                </Label>
+                            </placeholder>
+                            <columns>
+                                <TableColumn prefWidth="75.0">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="field_name" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" color="#888888" height="15.0" offsetY="5.0" radius="8.5" />
+                            </effect>
+                            <StackPane.margin>
+                                <Insets top="48.0" />
+                            </StackPane.margin>
+                        </TableView>
+                        <TableView fx:id="company_table" fixedCellSize="25.0" maxHeight="135.0" maxWidth="400.0" prefHeight="128.0" styleClass="hide-column-header" visible="false" StackPane.alignment="TOP_LEFT">
+                            <placeholder>
+                                <Label text="موردی یافت نشد" textFill="#308096">
+                                    <padding>
+                                        <Insets bottom="3.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                </Label>
+                            </placeholder>
+                            <columns>
+                                <TableColumn prefWidth="75.0">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="CulomnValue" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" color="#888888" height="15.0" offsetY="5.0" radius="8.5" />
+                            </effect>
+                            <StackPane.margin>
+                                <Insets left="180.0" top="48.0" />
+                            </StackPane.margin>
+                        </TableView>
+                    </children>
+                </StackPane>
+            </children>
+        </VBox>
+        <VBox spacing="18.0">
+            <children>
+                <gatebass.myControl.MyButtonFont fx:id="close_edit" mnemonicParsing="false" prefWidth="42" textFill="#2e7a8c" />
+                <gatebass.myControl.MyButtonFont fx:id="add_query_to_table" mnemonicParsing="false" prefWidth="42" textFill="#2e7a8c" />
+                <gatebass.myControl.MyButtonFont fx:id="delete_all_query" alignment="CENTER" disable="true" mnemonicParsing="false" prefWidth="42" textFill="#2e7a8c" />
+                <VBox VBox.vgrow="ALWAYS" />
+                <gatebass.myControl.MyButtonFont fx:id="done" alignment="CENTER" contentDisplay="BOTTOM" disable="true" graphicTextGap="2.0" mnemonicParsing="false" prefWidth="42" textFill="#2e7a8c" />
+            </children>
+            <HBox.margin>
+                <Insets bottom="20.0" top="14.0" />
+            </HBox.margin>
+        </VBox>
+    </children>
+    <padding>
+        <Insets left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <stylesheets>
+        <URL value="@../../resourse/css/FileIcon.css" />
+        <URL value="@../../resourse/css/Button.css" />
+    </stylesheets>
+</HBox>

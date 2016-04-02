@@ -1,0 +1,93 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package gatebass.dataBase.tables;
+
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+/**
+ *
+ * @author reza
+ */
+@DatabaseTable(tableName = "individualReplica")
+public class IndividualReplica extends Base {
+
+    @DatabaseField(generatedId = true)
+    private Integer id;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "history_id")
+    private History history_id;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "Individual_id")
+    private Individuals Individual_id;
+    
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "car_id")
+    private Cars car_id;
+
+    @DatabaseField(defaultValue = "0")
+    private String mablagh;
+
+    @DatabaseField(defaultValue = "")
+    private String description;
+
+    public IndividualReplica() {
+    }
+
+    public IndividualReplica(History history_id, String mablagh, String description) {
+        this.history_id = history_id;
+        this.mablagh = mablagh;
+        this.description = description;
+    }
+    public String getTarikh() {
+        return this.getHistory_id().getDate();
+    }
+    
+    /*
+     ***************************************************************************
+     ***************************************************************************
+     ***************************************************************************
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    public Individuals getIndividual_id() {
+        return Individual_id;
+    }
+
+    public String getMablagh() {
+        return mablagh;
+    }
+
+    public void setHistory_id(History history_id) {
+        this.history_id = history_id;
+    }
+
+    public History getHistory_id() {
+        return history_id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setIndividual_id(Individuals Individual_id) {
+        this.Individual_id = Individual_id;
+    }
+
+    public void setMablagh(String mablagh) {
+        this.mablagh = mablagh;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+}
