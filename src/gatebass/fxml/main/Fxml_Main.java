@@ -78,7 +78,7 @@ public class Fxml_Main extends ParentControl {
     UtilsStage2<Fxml_Get_Report_Individual_List> fxml_Get_Report_Individual_List;
     UtilsStage2<Fxml_Get_Report_Car_List> fxml_Get_Report_Car_List;
     UtilsStage2<Fxml_Car_Insert> fxml_Car_Insert;
-    Fxml_Alarm_List fxml_Alarm_List;
+    UtilsStage2<Fxml_Alarm_List> fxml_Alarm_List;
     private static Fxml_Print_PreView fxml_Print_PreView;
 
     @Override
@@ -110,10 +110,8 @@ public class Fxml_Main extends ParentControl {
 
         fxml_Car_Insert = new UtilsStage2(Fxml_Car_Insert.class, "سیستم اطلاعات خودرویی", Modality.NONE, thisStage);
 
-        UtilsStage utilsStage_T6 = new UtilsStage(Fxml_Alarm_List.class, "لیست هشدارها", Modality.APPLICATION_MODAL, thisStage.getOwner());
-        fxml_Alarm_List = utilsStage_T6.getLoader().getController();
-//        fxml_Alarm_List.setStage(utilsStage_T6.getStage());
-        fxml_Alarm_List.set_On_Get_Car(new Fxml_Alarm_List.Get_Object() {
+        fxml_Alarm_List = new UtilsStage2(Fxml_Alarm_List.class, "لیست هشدارها", Modality.APPLICATION_MODAL, thisStage);
+        fxml_Alarm_List.t.set_On_Get_Car(new Fxml_Alarm_List.Get_Object() {
 
             @Override
             public void car(Cars car, boolean is_edit_mode) {
@@ -161,7 +159,7 @@ public class Fxml_Main extends ParentControl {
         });
 
         alarm_list.setOnAction((ActionEvent event) -> {
-            fxml_Alarm_List.show_Front_Or_Wait();
+            fxml_Alarm_List.t.show_Front_Or_Wait();
         });
 
         changeUserPass.setOnAction((ActionEvent event) -> {

@@ -7,6 +7,8 @@ package gatebass.fxml.alarm_list;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 /**
  *
@@ -15,6 +17,8 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "gate_alarm")
 public class Gate_Alarm {
 
+    public boolean is_cheked;
+    
     @DatabaseField(generatedId = true)
     private Integer id;
 
@@ -33,6 +37,11 @@ public class Gate_Alarm {
     @DatabaseField
     private String alrm_info;
 
+    public Gate_Alarm getThis() {
+        is_cheked = new SimpleBooleanProperty(false);
+        return this;
+    }
+
     public int getIds() {
         return ids;
     }
@@ -44,6 +53,7 @@ public class Gate_Alarm {
     public String getAlarm_type() {
         return alarm_type;
     }
+
     public String getAlarm_type_text() {
         return alarm_type.equals("car") ? "خودرو" : "فرد";
     }

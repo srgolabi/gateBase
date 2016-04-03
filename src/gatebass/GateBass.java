@@ -5,10 +5,8 @@ import gatebass.dataBase.tables.Manage;
 import gatebass.dataBase.tables.Permission;
 import gatebass.dataBase.tables.Users;
 import gatebass.dataBase.tables.WorkHistory;
-import gatebass.fxml.get_report.Fxml_Get_Report;
 import gatebass.fxml.login.Fxml_Login;
 import gatebass.fxml.main.Fxml_Main;
-import gatebass.fxml.print_preview.Fxml_Print_PreView;
 import gatebass.register.InitActUser;
 import gatebass.register.Register;
 import gatebass.utils.UtilsStage;
@@ -51,6 +49,10 @@ public class GateBass extends Application {
 //        poiExample.historyFromExcel2(xlsPath);
 //        poiExample.displayFromExcel2(xlsPath);
 //        poiExample.worksFromExcel2(xlsPath);
+//        xlsPath = "d://test//temporary.xls";
+//        poiExample.historyFromExcel3(xlsPath);
+//        poiExample.displayFromExcel3(xlsPath);
+//        poiExample.displayFromExcel35(xlsPath);
 
     }
 

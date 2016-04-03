@@ -15,7 +15,7 @@
 <?import org.google.jhsheets.filtered.*?>
 <?import org.google.jhsheets.filtered.tablecolumn.*?>
 
-<VBox maxHeight="550.0" maxWidth="750.0" minHeight="550.0" minWidth="750.0" style="-fx-background-color: #BBDEFB;" stylesheets="@../../resourse/css/Button.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.alarm_list.Fxml_Alarm_List">
+<VBox maxHeight="550.0" maxWidth="850.0" minHeight="550.0" minWidth="850.0" style="-fx-background-color: #BBDEFB;" stylesheets="@../../resourse/css/Button.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.alarm_list.Fxml_Alarm_List">
     <children>
         <VBox nodeOrientation="RIGHT_TO_LEFT" prefWidth="900.0" VBox.vgrow="ALWAYS">
             <children>
@@ -62,20 +62,37 @@
                             <cellValueFactory>
                                 <PropertyValueFactory property="card_id" />
                             </cellValueFactory>
+                            <cellFactory>
+                                <gatebass.fxml.get_report.FormattedTableCellFactory />
+                            </cellFactory>
                         </TableColumn>
                         <TableColumn editable="false" maxWidth="2000.0" text="نوع">
                             <cellValueFactory>
                                 <PropertyValueFactory property="alarm_type_text" />
-                            </cellValueFactory>
+                            </cellValueFactory>                            
+                            <cellFactory>
+                                <gatebass.fxml.get_report.FormattedTableCellFactory />
+                            </cellFactory>
                         </TableColumn>
                         <TableColumn editable="false" prefWidth="300.0" text="مشخصات">
                             <cellValueFactory>
                                 <PropertyValueFactory property="datail" />
                             </cellValueFactory>
+                            <cellFactory>
+                                <gatebass.fxml.get_report.FormattedTableCellFactory />
+                            </cellFactory>
                         </TableColumn>
                         <TableColumn editable="false" maxWidth="2500.0" text="شرح هشدار">
                             <cellValueFactory>
                                 <PropertyValueFactory property="alrm_info" />
+                            </cellValueFactory>
+                            <cellFactory>
+                                <gatebass.fxml.get_report.FormattedTableCellFactory />
+                            </cellFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="button_column" editable="false" maxWidth="2500.0" sortable="false">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="this" />
                             </cellValueFactory>
                         </TableColumn>
                     </columns>

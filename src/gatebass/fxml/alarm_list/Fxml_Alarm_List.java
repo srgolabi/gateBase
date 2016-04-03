@@ -13,9 +13,15 @@ import gatebass.utils.ParentControl;
 import gatebass.utils.PersianCalendar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -48,10 +54,59 @@ public class Fxml_Alarm_List extends ParentControl {
 
     @FXML
     private TableView<Gate_Alarm> tableView;
+    @FXML
+    private TableColumn<Gate_Alarm, Gate_Alarm> button_column;
 
     @Override
     public void setStage(Stage s) {
         super.setStage(s);
+
+        button_column.setCellFactory(new Callback<TableColumn<Gate_Alarm, Gate_Alarm>, TableCell<Gate_Alarm, Gate_Alarm>>() {
+
+            @Override
+            public TableCell<Gate_Alarm, Gate_Alarm> call(TableColumn<Gate_Alarm, Gate_Alarm> param) {
+                TableCell<Gate_Alarm, Gate_Alarm> cell = new TableCell<Gate_Alarm, Gate_Alarm>() {
+                    @Override
+                    protected void updateItem(Gate_Alarm item, boolean empty) {
+                        if (item == getItem()) {
+                            return;
+                        }
+                        super.updateItem(item, empty);
+                        if (item == null) {
+                            setStyle(null);
+                            setText(null);
+                            setGraphic(null);
+                            return;
+                        }
+
+                        final HBox hbox = new HBox(0);
+                        hbox.setAlignment(Pos.CENTER);
+
+                        CheckBox checkBox = new CheckBox();
+                        
+                        item.is_cheked.bind(checkBox.selectedProperty());
+
+                        MyButtonFont fileDownlaod = new MyButtonFont("download", 14, "table-button");
+
+                        fileDownlaod.setOnAction((javafx.event.ActionEvent event) -> {
+
+                        });
+
+                        MyButtonFont fileDelete = new MyButtonFont("trash", 14, "table-button");
+
+                        fileDelete.setOnAction((javafx.event.ActionEvent event) -> {
+
+                        });
+
+                        hbox.getChildren().addAll(checkBox, fileDelete, fileDownlaod);
+
+                        setGraphic(hbox);
+
+                    }
+                };
+                return cell;
+            }
+        });
 
         edit.init("pencil", 15);
         review.init("eye", 15);

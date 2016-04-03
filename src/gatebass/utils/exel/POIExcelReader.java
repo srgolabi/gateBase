@@ -41,7 +41,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  */
 public class POIExcelReader {
 
-    private final int end_row = 2242;
+    private final int end_row = 2167;
     private final int start_row = 1;
 
     /**
@@ -1238,6 +1238,310 @@ public class POIExcelReader {
             Logger.getLogger(POIExcelReader.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
 
+    }
+
+    @SuppressWarnings("unchecked")
+    public void historyFromExcel3(String xlsPath) {
+        InputStream inputStream = null;
+
+        try {
+            inputStream = new FileInputStream(xlsPath);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found in the specified path.");
+            e.printStackTrace();
+        }
+
+        POIFSFileSystem fileSystem = null;
+
+        try {
+            fileSystem = new POIFSFileSystem(inputStream);
+
+            HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
+            HSSFSheet sheet = workBook.getSheetAt(0);
+            Iterator rows = sheet.rowIterator();
+            boolean check = false;
+            List<History> historys = new ArrayList<>();
+            while (rows.hasNext()) {
+                check = false;
+                HSSFRow row = (HSSFRow) rows.next();
+
+                History historyH = null;
+
+                System.out.println("Row No.: " + row.getRowNum());
+                try {
+
+                    String history = row.getCell(7).getRichStringCellValue().getString();
+                    if (!history.isEmpty()) {
+                        history = history.substring(2);
+                        History HistoryTEMP = databaseHelper.historyDao.getFirst("date", history);
+                        if (HistoryTEMP == null) {
+                            check = true;
+                            historyH = new History(
+                                    history.substring(0, history.indexOf("/")),
+                                    history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
+                                    history.substring(history.lastIndexOf("/") + 1));
+                        }
+                    } else {
+                        continue;
+                    }
+                    if (check) {
+                        historys.add(historyH);
+//                        databaseHelper.historyDao.createOrUpdate(historyH);
+                    }
+
+                    check = false;
+                    historyH = null;
+
+                    history = row.getCell(10).getRichStringCellValue().getString();
+                    if (!history.isEmpty()) {
+                        history = history.substring(2);
+                        History HistoryTEMP = databaseHelper.historyDao.getFirst("date", history);
+                        if (HistoryTEMP == null) {
+                            check = true;
+                            historyH = new History(
+                                    history.substring(0, history.indexOf("/")),
+                                    history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
+                                    history.substring(history.lastIndexOf("/") + 1));
+                        }
+                    } else {
+                        continue;
+                    }
+                    if (check) {
+                        historys.add(historyH);
+//                        databaseHelper.historyDao.createOrUpdate(historyH);
+                    }
+
+                    check = false;
+                    historyH = null;
+
+                    history = row.getCell(11).getRichStringCellValue().getString();
+                    if (!history.isEmpty()) {
+                        history = history.substring(2);
+                        History HistoryTEMP = databaseHelper.historyDao.getFirst("date", history);
+                        if (HistoryTEMP == null) {
+                            check = true;
+                            historyH = new History(
+                                    history.substring(0, history.indexOf("/")),
+                                    history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
+                                    history.substring(history.lastIndexOf("/") + 1));
+                        }
+                    } else {
+                        continue;
+                    }
+                    if (check) {
+                        historys.add(historyH);
+//                        databaseHelper.historyDao.createOrUpdate(historyH);
+                    }
+
+                } catch (Exception e) {
+                }
+            }
+            databaseHelper.historyDao.insertList(historys);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public void displayFromExcel3(String xlsPath) {
+        InputStream inputStream = null;
+
+        try {
+            inputStream = new FileInputStream(xlsPath);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found in the specified path.");
+            e.printStackTrace();
+        }
+
+        POIFSFileSystem fileSystem = null;
+        int dd = 0;
+
+        try {
+            fileSystem = new POIFSFileSystem(inputStream);
+
+            HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
+            HSSFSheet sheet = workBook.getSheetAt(0);
+            Iterator rows = sheet.rowIterator();
+            List<Individuals> individualses = new ArrayList<>();
+            List<WorkHistory> whs = new ArrayList<>();
+            while (rows.hasNext()) {
+                HSSFRow row = (HSSFRow) rows.next();
+                if (row.getRowNum() >= end_row) {
+                    break;
+                }
+
+                if (row.getRowNum() <= start_row) {
+                    continue;
+                }
+
+                dd = row.getRowNum();
+//                if (row.getRowNum() == 0
+//                        || row.getRowNum() < 195 || row.getRowNum() > 250
+//                        ) {
+//                    continue;
+//                }
+                Individuals individuals = null;
+
+// display row number in the console.
+                System.out.println("Row No.: " + row.getRowNum());
+// once get a row its time to iterate through cells.
+                String meli = "";
+
+                {
+                    try {
+                        meli = (((long) row.getCell(6).getNumericCellValue()) + "");
+                    } catch (Exception e) {
+                    }
+                    try {
+                        meli = (row.getCell(6).getRichStringCellValue().getString());
+                    } catch (Exception e) {
+                    }
+                    System.out.println("meli = " + meli);
+                    individuals = databaseHelper.individualsDao.getFirst("national_id", meli);
+                    if (individuals == null) {
+
+                        individuals = new Individuals();
+                        individuals.setNational_id(meli);
+
+                        try {
+                            individuals.setCard_id(((long) row.getCell(0).getNumericCellValue()) + "");
+                        } catch (Exception e) {
+                        }
+                        try {
+                            individuals.setCard_id(row.getCell(0).getRichStringCellValue().getString());
+                        } catch (Exception e) {
+                        }
+                        if (!row.getCell(1).getRichStringCellValue().getString().isEmpty()) {
+                            individuals.setFirst_name(row.getCell(1).getRichStringCellValue().getString());
+                        }
+                        if (!row.getCell(2).getRichStringCellValue().getString().isEmpty()) {
+                            individuals.setFather_first_name(row.getCell(2).getRichStringCellValue().getString());
+                        }
+                        try {
+                            individuals.setId_number(((long) row.getCell(3).getNumericCellValue()) + "");
+                        } catch (Exception e) {
+                        }
+                        try {
+                            individuals.setId_number(row.getCell(3).getRichStringCellValue().getString());
+                        } catch (Exception e) {
+                        }
+                        try {
+                            if (!row.getCell(4).getRichStringCellValue().getString().isEmpty()) {
+                                individuals.setBirth_day(databaseHelper.historyDao.getFirst("date", row.getCell(4).getRichStringCellValue().getString().substring(2)));
+                            }
+                        } catch (Exception e) {
+                        }
+                        try {
+                            if (!row.getCell(5).getRichStringCellValue().getString().isEmpty()) {
+                                individuals.setBirth_state(row.getCell(5).getRichStringCellValue().getString());
+                            }
+                        } catch (Exception e) {
+                        }
+
+                        String split = FileSystems.getDefault().getSeparator();
+                        individuals.setFilesPatch("data" + split + "1394" + split + dd / 50 + split + individuals.getNational_id() + split);
+                        individualses.add(individuals);
+                    }
+
+                }
+//                databaseHelper.individualsDao.createOrUpdate(individuals, dd);
+            }
+            databaseHelper.individualsDao.insertList(individualses);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+        @SuppressWarnings("unchecked")
+    public void displayFromExcel35(String xlsPath) {
+        InputStream inputStream = null;
+
+        try {
+            inputStream = new FileInputStream(xlsPath);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found in the specified path.");
+            e.printStackTrace();
+        }
+
+        POIFSFileSystem fileSystem = null;
+        int dd = 0;
+
+        try {
+            fileSystem = new POIFSFileSystem(inputStream);
+
+            HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
+            HSSFSheet sheet = workBook.getSheetAt(0);
+            Iterator rows = sheet.rowIterator();
+            List<WorkHistory> whs = new ArrayList<>();
+            while (rows.hasNext()) {
+                HSSFRow row = (HSSFRow) rows.next();
+                if (row.getRowNum() >= end_row) {
+                    break;
+                }
+
+                if (row.getRowNum() <= start_row) {
+                    continue;
+                }
+
+                dd = row.getRowNum();
+//                if (row.getRowNum() == 0
+//                        || row.getRowNum() < 195 || row.getRowNum() > 250
+//                        ) {
+//                    continue;
+//                }
+                Individuals individuals = null;
+
+// display row number in the console.
+                System.out.println("Row No.: " + row.getRowNum());
+// once get a row its time to iterate through cells.
+                String meli = "";
+
+                {
+                    try {
+                        meli = (((long) row.getCell(6).getNumericCellValue()) + "");
+                    } catch (Exception e) {
+                    }
+                    try {
+                        meli = (row.getCell(6).getRichStringCellValue().getString());
+                    } catch (Exception e) {
+                    }
+                    System.out.println("meli = " + meli);
+                    individuals = databaseHelper.individualsDao.getFirst("national_id", meli);
+                }
+                whs.add(works_add(row, individuals));
+            }
+            databaseHelper.workHistoryDao.insertList(whs);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private WorkHistory works_add(HSSFRow row, Individuals individuals) {
+        WorkHistory wh = new WorkHistory();
+        wh.setIndividualsId(individuals);
+        if (!row.getCell(7).getRichStringCellValue().getString().isEmpty()) {
+            wh.setEmploymentDateId(databaseHelper.historyDao.getFirst("date", row.getCell(7).getRichStringCellValue().getString().substring(2)));
+        }
+        if (!row.getCell(8).getRichStringCellValue().getString().isEmpty()) {
+            wh.setJobTitle(row.getCell(8).getRichStringCellValue().getString());
+        }
+
+        String row_value = row.getCell(9).getRichStringCellValue().getString();
+        if (!row_value.isEmpty()) {
+            Companies companiesTEMP = databaseHelper.companiesDao.getFirst("company_fa", row_value);
+            wh.setCompanies(companiesTEMP);
+        }
+        if (!row.getCell(10).getRichStringCellValue().getString().isEmpty()) {
+            wh.setCardIssuedDateId(databaseHelper.historyDao.getFirst("date", row.getCell(10).getRichStringCellValue().getString().substring(2)));
+        }
+        if (!row.getCell(11).getRichStringCellValue().getString().isEmpty()) {
+            wh.setCardExpirationDateId(databaseHelper.historyDao.getFirst("date", row.getCell(11).getRichStringCellValue().getString().substring(2)));
+        }
+        return wh;
     }
 
 }
