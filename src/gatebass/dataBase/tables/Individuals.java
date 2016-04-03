@@ -10,6 +10,10 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "individuals")
 public class Individuals {
 
+    public static short ALARM_STATE_NORMAL = 0;
+    public static short ALARM_STATE_KEEP = 1;
+    public static short ALARM_STATE_CHEKED = 2;
+    
     @DatabaseField(generatedId = true)
     private Integer id;
 
@@ -124,8 +128,8 @@ public class Individuals {
     @DatabaseField(defaultValue = "") //year + week of the year + national id
     private String filesPatch;
     
-    @DatabaseField(defaultValue = "false")
-    private Boolean alarm_state;
+    @DatabaseField(defaultValue = "0")
+    private Short alarm_state;
 
     @DatabaseField(defaultValue = "")
     private String logs;
@@ -184,11 +188,11 @@ public class Individuals {
         return card_id;
     }
 
-    public void setAlarm_state(Boolean alarm_state) {
+    public void setAlarm_state(Short alarm_state) {
         this.alarm_state = alarm_state;
     }
 
-    public Boolean getAlarm_state() {
+    public Short getAlarm_state() {
         return alarm_state;
     }
 

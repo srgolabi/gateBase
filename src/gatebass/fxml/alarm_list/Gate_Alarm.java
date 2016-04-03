@@ -17,8 +17,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 @DatabaseTable(tableName = "gate_alarm")
 public class Gate_Alarm {
 
-    public BooleanProperty is_cheked;
-    
+    public BooleanProperty is_cheked = new SimpleBooleanProperty(false);
+
     @DatabaseField(generatedId = true)
     private Integer id;
 
@@ -37,12 +37,14 @@ public class Gate_Alarm {
     @DatabaseField
     private String alrm_info;
 
+    @DatabaseField(defaultValue = "0")
+    private Short alarm_stat;
+
     public Gate_Alarm getThis() {
-        is_cheked = new SimpleBooleanProperty(false);
         return this;
     }
 
-    public int getIds() {
+    public Integer getIds() {
         return ids;
     }
 
@@ -60,6 +62,14 @@ public class Gate_Alarm {
 
     public String getDatail() {
         return datail;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Short getAlarm_state() {
+        return alarm_stat;
     }
 
     public String getAlrm_info() {

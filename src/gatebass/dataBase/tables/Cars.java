@@ -34,7 +34,7 @@ public class Cars {
     private String comments;
 
     @DatabaseField(defaultValue = "false")
-    private Boolean alarm_state;
+    private Short alarm_state;
     
     @DatabaseField(defaultValue = "")
     private String logs;
@@ -68,11 +68,11 @@ public class Cars {
         return shasi_number;
     }
 
-    public void setAlarm_state(Boolean alarm_state) {
+    public void setAlarm_state(Short alarm_state) {
         this.alarm_state = alarm_state;
     }
 
-    public Boolean getAlarm_state() {
+    public Short getAlarm_state() {
         return alarm_state;
     }
 

@@ -179,6 +179,18 @@
       "css": "ccw",
       "code": 59480,
       "src": "mfglabs"
+    },
+    {
+      "uid": "5774d0a0e50f6eefc8be01bd761e5dd3",
+      "css": "circle-thin",
+      "code": 59394,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "3c3fa4ca801f3bdc36c35e497e0fc4fc",
+      "css": "flag-circled",
+      "code": 59395,
+      "src": "elusive"
     }
   ]
 }

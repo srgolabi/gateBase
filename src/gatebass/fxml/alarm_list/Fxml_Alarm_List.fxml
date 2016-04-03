@@ -39,6 +39,13 @@
                                         <Insets left="5.0" right="5.0" />
                                     </padding>
                                 </Label>
+                                <HBox alignment="CENTER" spacing="5.0">
+                                    <children>
+                                        <gatebass.myControl.MyButtonFont fx:id="all_keep" mnemonicParsing="false" style="-fx-label-padding: -2;" />
+                                        <gatebass.myControl.MyButtonFont fx:id="all_delete" mnemonicParsing="false" style="-fx-label-padding: -2;" />
+                                        <CheckBox fx:id="all_check" mnemonicParsing="false" />
+                                    </children>
+                                </HBox>
                             </children>
                         </HBox>
                         <gatebass.myControl.MyButtonFont fx:id="review" mnemonicParsing="false" style="-fx-label-padding: -2;" />
@@ -90,7 +97,7 @@
                                 <gatebass.fxml.get_report.FormattedTableCellFactory />
                             </cellFactory>
                         </TableColumn>
-                        <TableColumn fx:id="button_column" editable="false" maxWidth="2500.0" sortable="false">
+                        <TableColumn fx:id="button_column" editable="false" maxWidth="1800.0" sortable="false">
                             <cellValueFactory>
                                 <PropertyValueFactory property="this" />
                             </cellValueFactory>

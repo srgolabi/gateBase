@@ -1271,7 +1271,6 @@ public class Fxml_Individual_Insert extends ParentControl {
         individual.setPostal_code(postal_code.getText());
         individual.setPhone_number(phone_number.getText());
         individual.setComments(individualComments.getText());
-        individual.setAlarm_state(false);
 
         if (!editMode) {
             Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count");

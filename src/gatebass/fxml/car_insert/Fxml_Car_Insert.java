@@ -535,7 +535,6 @@ public class Fxml_Car_Insert extends ParentControl {
         car.setCar_name(car_name.getText());
         car.setModel(model.getText());
         car.setComments(comments.getText());
-        car.setAlarm_state(false);
 
         if (!editMode) {
             Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count_car");
