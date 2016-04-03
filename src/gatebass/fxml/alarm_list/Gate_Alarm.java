@@ -17,7 +17,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 @DatabaseTable(tableName = "gate_alarm")
 public class Gate_Alarm {
 
-    public boolean is_cheked;
+    public BooleanProperty is_cheked;
     
     @DatabaseField(generatedId = true)
     private Integer id;
