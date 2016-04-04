@@ -1,21 +1,16 @@
-package gatebass.fxml.warning;
+package gatebass.fxml.warning_window;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import gatebass.utils.ParentControl;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author reza
  */
-public class FXMLWarningController implements Initializable {
-
-    private Stage thisStage;
+public class Fxml_Warning_Window extends ParentControl{
 
     @FXML
     private Label label;
@@ -26,11 +21,8 @@ public class FXMLWarningController implements Initializable {
 
     public boolean okClick = false;
 
-    /**
-     * Initializes the controller class.
-     */
-    public void init(Stage s, String txt) {
-        thisStage = s;
+    
+    public void set_msg_txt(String txt) {
         label.setText(txt);
     }
 
@@ -44,10 +36,4 @@ public class FXMLWarningController implements Initializable {
     private void cancelClick() {
         thisStage.close();
     }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
-
 }

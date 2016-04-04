@@ -42,14 +42,6 @@ public class UtilsStage2<T extends ParentControl> {
         }
     }
 
-    public UtilsStage2(String fxml, String title, Modality modality, Window owner) {
-        this(fxml, false, title, modality, owner);
-    }
-
-    public UtilsStage2(String fxml, String title, Window owner) {
-        this(fxml, false, title, Modality.APPLICATION_MODAL, owner);
-    }
-
     public UtilsStage2(Class clazz, String title, Modality modality, Stage owner) {
         this(clazz.getSimpleName().toLowerCase().replaceFirst("fxml_", "") + "/" + clazz.getSimpleName() + ".fxml", false, title, modality, owner.getOwner());
     }
@@ -58,10 +50,4 @@ public class UtilsStage2<T extends ParentControl> {
         this(clazz.getSimpleName().toLowerCase().replaceFirst("fxml_", "") + "/" + clazz.getSimpleName() + ".fxml", resizable, title, modality, owner);
     }
 
-//    public Stage getStage() {
-//        return stage;
-//    }
-//    public FXMLLoader getLoader() {
-//        return loader;
-//    }
 }

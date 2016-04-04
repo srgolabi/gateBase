@@ -7,11 +7,13 @@ package gatebass.fxml.print_preview;
 
 import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.gateBassTemporary.FXMLGateBassTemporary;
+import gatebass.fxml.gate_bass_car.Fxml_Gate_Bass_Car;
 import gatebass.fxml.queuePrint.FXMLQueuePrintController;
 import gatebass.myControl.MyButtonFont;
 import gatebass.utils.ParentControl;
 import gatebass.utils.TextFiledLimited;
 import gatebass.utils.UtilsStage;
+import gatebass.utils.exel.UtilsStage2;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
@@ -95,6 +97,7 @@ public class Fxml_Print_PreView extends ParentControl {
     private PageLayout layout_default;
     private PageLayout layout_gate;
     private PageLayout layout_temporary;
+    private PageLayout layout_car;
 
     @Override
     public void setStage(Stage s) {
@@ -167,6 +170,7 @@ public class Fxml_Print_PreView extends ParentControl {
         tableView_printers.setItems(FXCollections.observableArrayList(Printer.getAllPrinters()));
         layout_gate = active_printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.EQUAL);
         layout_temporary = active_printer.createPageLayout(Paper.A5, PageOrientation.PORTRAIT, Printer.MarginType.EQUAL);
+        layout_car = active_printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.EQUAL);
         layout_default = layout_gate;
 
         page_orientation_PORTRAIT.setOnAction((ActionEvent event) -> {
@@ -194,8 +198,10 @@ public class Fxml_Print_PreView extends ParentControl {
     private void on_change_paper_parametr(PageOrientation po) {
         if (layout_default == layout_gate) {
             layout_gate = active_printer.createPageLayout(layout_gate.getPaper(), po, Printer.MarginType.EQUAL);
-        } else {
+        } else if (layout_default == layout_temporary) {
             layout_temporary = active_printer.createPageLayout(layout_temporary.getPaper(), po, Printer.MarginType.EQUAL);
+        } else if (layout_default == layout_car) {
+            layout_car = active_printer.createPageLayout(layout_car.getPaper(), po, Printer.MarginType.EQUAL);
         }
     }
 
@@ -227,7 +233,7 @@ public class Fxml_Print_PreView extends ParentControl {
         List<WorkHistory> wh_temp1 = new ArrayList<>();
         List<WorkHistory> wh_temp2 = new ArrayList<>();
         for (WorkHistory wh : work_list) {
-            if (wh.is_TEMPORARY_TYPE()) {
+            if (wh.is_TEMPORARY_TYPE() || wh.is_CAR_TYPE()) {
                 temporary_count++;
                 wh_temp2.add(wh);
             } else {
@@ -272,6 +278,10 @@ public class Fxml_Print_PreView extends ParentControl {
     }
 
     private void set_temporary_value() {
+        if (work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1).is_CAR_TYPE()){
+            set_car_value();
+            return;
+        }
         layout_default = layout_temporary;
         set_layout_parametr();
         UtilsStage utilsStage = new UtilsStage("gateBassTemporary/FXMLGateBassTemporary.fxml", "", Modality.APPLICATION_MODAL, thisStage.getOwner());
@@ -287,6 +297,19 @@ public class Fxml_Print_PreView extends ParentControl {
         container.getChildren().add(utilsStage.page);
     }
 
+    private void set_car_value() {
+        layout_default = layout_car;
+        set_layout_parametr();
+        UtilsStage2<Fxml_Gate_Bass_Car> utilsStage = new UtilsStage2(Fxml_Gate_Bass_Car.class, "", Modality.APPLICATION_MODAL, thisStage);
+        utilsStage.t.set_value(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
+//        utilsStage.t.delete.setOnAction((ActionEvent event) -> {
+//            work_list.remove(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
+//            set_value(work_list);
+//        });
+        container.getChildren().clear();
+        container.getChildren().add(utilsStage.t.parent);
+    }
+
     private void set_layout_parametr() {
         paper_size.setText(layout_default.getPaper().getName());
         if (layout_default.getPageOrientation() == PageOrientation.LANDSCAPE) {
@@ -294,7 +317,6 @@ public class Fxml_Print_PreView extends ParentControl {
         } else {
             page_orientation_PORTRAIT.setSelected(true);
         }
-
     }
 
     private int getINT(TextField tf) {

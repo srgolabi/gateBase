@@ -354,7 +354,7 @@ public class Fxml_Individual_Insert extends ParentControl {
     private PersianCalendar persianCalendar;
     public boolean editMode = false;
 
-    public BooleanProperty editable = new SimpleBooleanProperty(true);
+    public BooleanProperty editable = new SimpleBooleanProperty(false);
 
     private Fxml_Individual_Search simpleSearchController;
 
@@ -757,12 +757,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         car_info_button.visibleProperty().bind(editable);
         work_view.disableProperty().bind(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_INSERT) || !editable.get());
-
-        if (!work_insert.isDisable()) {
-            work_edit.disableProperty().bind(work_view.disableProperty());
-        } else {
-            work_edit.setDisable(true);
-        }
+        work_edit.disableProperty().bind(work_view.disableProperty().or(editable.not()));
 
         temporary_print.disableProperty().bind(work_edit.disableProperty());
         staff_print.disableProperty().bind(work_edit.disableProperty());

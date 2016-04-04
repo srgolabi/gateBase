@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="820.0" spacing="20.0" style="-fx-font-family: &quot;B Yekan&quot;;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass_car.Fxml_Gate_Bass_Car">
+<VBox fx:id="parent" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="820.0" spacing="20.0" style="-fx-font-family: &quot;B Yekan&quot;;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass_car.Fxml_Gate_Bass_Car">
     <children>
         <AnchorPane id="AnchorPane" prefHeight="396.0" prefWidth="570.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
             <children>
@@ -45,7 +45,7 @@
                                 <HBox HBox.hgrow="ALWAYS" />
                                 <Label fx:id="car_name" alignment="CENTER" prefWidth="105.0" style="-fx-font-size: 17.5;" text="پزو206" />
                                 <HBox HBox.hgrow="ALWAYS" />
-                                <Label fx:id="name" alignment="CENTER_RIGHT" prefWidth="205.0" style="-fx-font-size: 17.5;" text="محمد حسن بلاغتی">
+                                <Label fx:id="driver_name" alignment="CENTER_RIGHT" prefWidth="205.0" style="-fx-font-size: 17.5;" text="محمد حسن بلاغتی">
                                     <HBox.margin>
                                         <Insets right="20.0" />
                                     </HBox.margin>

@@ -7,6 +7,7 @@ package gatebass.fxml.car_insert;
 
 import static gatebass.GateBass.databaseHelper;
 import static gatebass.GateBass.server;
+import static gatebass.GateBass.work_list;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.CarHistory;
 import gatebass.dataBase.tables.Companies;
@@ -18,6 +19,7 @@ import gatebass.dataBase.tables.Manage;
 import gatebass.dataBase.tables.Permission;
 import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.individual_insert.Fxml_Individual_Insert;
+import static gatebass.fxml.main.Fxml_Main.show_print_preView;
 import gatebass.myControl.MyButtonFont;
 import gatebass.myControl.tableView.FileColumnTable;
 import gatebass.utils.ErrorCheck;
@@ -74,6 +76,8 @@ import org.apache.commons.io.FileUtils;
 public class Fxml_Car_Insert extends ParentControl {
 
     @FXML
+    private MyButtonFont print_view;
+    @FXML
     private Label card_number;
     @FXML
     private TabPane tabPane;
@@ -117,7 +121,7 @@ public class Fxml_Car_Insert extends ParentControl {
     @FXML
     private MyButtonFont work_edit;
     @FXML
-    private MyButtonFont temporary_print;
+    private MyButtonFont add_to_print;
     @FXML
     private TableView<CarHistory> work_table;
     @FXML
@@ -243,7 +247,7 @@ public class Fxml_Car_Insert extends ParentControl {
     public boolean editMode = false;
     public BooleanProperty history_editMode = new SimpleBooleanProperty(false);
 
-    public BooleanProperty editable = new SimpleBooleanProperty(true);
+    public BooleanProperty editable = new SimpleBooleanProperty(false);
 
     private Simple_Search simple_Search;
 
@@ -340,6 +344,17 @@ public class Fxml_Car_Insert extends ParentControl {
             }
         });
 
+        print_view.init("print", 15);
+        print_view.visibleProperty().bind(searchPane.visibleProperty().not().and(work_page.visibleProperty().not()));
+
+        print_view.setOnAction((ActionEvent event) -> {
+            if (work_list.isEmpty()) {
+                UtilsStage.showMsg("موردی جهت چاپ وجود ندارد", "هشدار", false, thisStage);
+            } else {
+                show_print_preView(work_list);
+            }
+        });
+
         file_table_init();
 
         car = new Cars();
@@ -378,7 +393,14 @@ public class Fxml_Car_Insert extends ParentControl {
                 event.consume();
             }
         });
-
+        add_to_print.setOnAction((ActionEvent event) -> {
+            
+            WorkHistory wh = new WorkHistory();
+            wh.setCar_history_id(work_table.getSelectionModel().getSelectedItem());
+            wh.set_TYPE(WorkHistory.CAR);
+            work_list.add(wh);
+            System.out.println("gatebass.f == " + work_list.size());
+        });
         work_insert.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
             if (event.isShiftDown() && event.getCode() == TAB) {
                 tabPane.getSelectionModel().select(0);
@@ -426,7 +448,7 @@ public class Fxml_Car_Insert extends ParentControl {
         });
 
         editable.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_INSERT) || !newValue);
+            work_insert.setDisable(!Permission.isAcces(Permission.CAR_WORK_INSERT) || !newValue);
         });
 
         Platform.runLater(shasi_number::requestFocus);
@@ -616,23 +638,20 @@ public class Fxml_Car_Insert extends ParentControl {
         work_insert.init("plus", 15);
         work_edit.init("pencil", 15);
         work_view.init("eye", 15);
-        temporary_print.init("newspaper", "عبور موقت", 15);
+        add_to_print.init("newspaper", "عبور موقت", 15);
 
         TextFiledLimited.set_Number_Length_Limit(driver_info, 10);
 
-        temporary_print.disableProperty().bind(work_edit.disableProperty());
+        add_to_print.disableProperty().bind(work_edit.disableProperty());
         work_view.disableProperty().bind(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
-        work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_INSERT) || !editable.get());
+        work_insert.setDisable(!Permission.isAcces(Permission.CAR_WORK_INSERT) || !editable.get());
         work_submit.visibleProperty().bind(history_editMode);
         driver_info.setEditable(editable.get());
+        System.out.println("driver_info.setEditable = " + driver_info.isEditable());
         driver_info_button.visibleProperty().bind(editable);
         work_button_page.visibleProperty().bind(work_page.visibleProperty());
 
-        if (!work_insert.isDisable()) {
-            work_edit.disableProperty().bind(work_view.disableProperty());
-        } else {
-            work_edit.setDisable(true);
-        }
+        work_edit.disableProperty().bind(work_view.disableProperty().or(editable.not()));
 
         card_issued_date = new MyTime(issued_year, issued_month, issued_day);
         card_void_date = new MyTime(void_year, void_month, void_day);
@@ -775,7 +794,7 @@ public class Fxml_Car_Insert extends ParentControl {
             clear_work();
         });
 
-        temporary_print.setOnAction((ActionEvent event) -> {
+        add_to_print.setOnAction((ActionEvent event) -> {
 
         });
     }

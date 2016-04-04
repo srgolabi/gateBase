@@ -5,20 +5,22 @@
  */
 package gatebass.fxml.gate_bass_car;
 
-import gatebass.dataBase.tables.Cars;
-import java.net.URL;
-import java.util.ResourceBundle;
+import gatebass.dataBase.tables.WorkHistory;
+import gatebass.myControl.MyButtonFont;
+import gatebass.utils.ParentControl;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
  *
- * @author Hamid Reza daneshjoo
+ * @author SR.GOLABI
  */
-public class Fxml_Gate_Bass_Car implements Initializable {
+public class Fxml_Gate_Bass_Car extends ParentControl {
 
+    @FXML
+    public VBox parent;
     @FXML
     private Label id;
     @FXML
@@ -26,32 +28,23 @@ public class Fxml_Gate_Bass_Car implements Initializable {
     @FXML
     private Label car_name;
     @FXML
-    private Label name;
+    private Label driver_name;
     @FXML
     private Label pellak;
     @FXML
     private Label date;
+    @FXML
+    public MyButtonFont delete;
 
-    /**
-     * Initializes the controller class.
-     *
-     * @param ct
-     */
-    public void init(Cars ct) {
-//        contractor.setText(ct.getCompany());
-//        car_name.setText(ct.getCar_name());
-//        name.setText(ct.getFirst_name() + " " + ct.getLast_name());
-//        date.setText(getDate(ct.getIssunce_year(), ct.getIssunce_month(), ct.getIssunce_day()));
-//        pellak.setText(
-//                "ایران " + ct.getPellak_1() + " - " +
-//                ct.getPellak_4() + " " + ct.getPellak_3() + " " + ct.getPellak_2()
-//        );
-    }
+    public void set_value(WorkHistory wh) {
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+//        delete.init("trash", 12);
+        id.setText(wh.getCar_history_id().getCar_id().getCard_id());
+        contractor.setText(wh.getCar_history_id().getSherkat());
+        car_name.setText(wh.getCar_history_id().getCar_id().getCar_name());
+        driver_name.setText(wh.getCar_history_id().getDriver_name());
+        pellak.setText(wh.getCar_history_id().getPellak());
+        date.setText(wh.getCar_history_id().getEngheza());
     }
 
 }

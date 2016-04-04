@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane style="-fx-font-family: &quot;B Yekan&quot;;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.car_insert.Fxml_Car_Insert">
+<StackPane style="-fx-font-family: &quot;B Yekan&quot;;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.car_insert.Fxml_Car_Insert">
     <children>
         <VBox alignment="TOP_RIGHT" maxHeight="390.0" maxWidth="646.0" nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 13.5;">
             <children>
@@ -126,7 +122,7 @@
                                             <children>
                                                 <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-background-color: #BBDEFB;">
                                                     <children>
-                                                        <gatebass.myControl.MyButtonFont fx:id="temporary_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="add_to_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <VBox HBox.hgrow="ALWAYS" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_view" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
@@ -731,6 +727,7 @@
                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                             </padding>
                         </HBox>
+                      <gatebass.myControl.MyButtonFont fx:id="print_view" blendMode="MULTIPLY" mnemonicParsing="false" style="-fx-translate-x: -5; -fx-translate-y: 2.5;" textFill="#2e7a8c" StackPane.alignment="TOP_RIGHT" />
                     </children>
                     <VBox.margin>
                         <Insets />

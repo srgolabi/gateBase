@@ -15,13 +15,13 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "workhistory")
 public class WorkHistory {
 
-    public boolean isCreated = false;
-    public boolean isEdited = false;
+//    public boolean isEdited = false;
 
     private String GATEBASS_TYPE = "";
     public static String STAF = "STAF";
     public static String CONTRACTOR = "CONTRACTOR";
     public static String TEMPORARY = "TEMPORARY";
+    public static String CAR = "CAR";
 
     @DatabaseField(generatedId = true)
     private Integer id;
@@ -237,6 +237,9 @@ public class WorkHistory {
 
     public boolean is_TEMPORARY_TYPE() {
         return this.GATEBASS_TYPE.equals(TEMPORARY);
+    }
+    public boolean is_CAR_TYPE() {
+        return this.GATEBASS_TYPE.equals(CAR);
     }
 
     public boolean is_STAF_TYPE() {

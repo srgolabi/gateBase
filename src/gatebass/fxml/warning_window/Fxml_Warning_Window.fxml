@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane nodeOrientation="RIGHT_TO_LEFT" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.warning.FXMLWarningController">
+<BorderPane nodeOrientation="RIGHT_TO_LEFT" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.warning_window.Fxml_Warning_Window">
    <bottom>
       <HBox alignment="CENTER_RIGHT" spacing="45.0" style="-fx-background-color: #003366;">
          <children>

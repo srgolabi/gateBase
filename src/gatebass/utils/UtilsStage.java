@@ -1,7 +1,8 @@
 package gatebass.utils;
 
 import gatebass.GateBass;
-import gatebass.fxml.warning.FXMLWarningController;
+import gatebass.fxml.warning_window.Fxml_Warning_Window;
+import gatebass.utils.exel.UtilsStage2;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,18 +68,16 @@ public class UtilsStage {
     }
 
     public static boolean showMsg(String msg, String title, boolean okIsShow, Stage thisStage) {
-        UtilsStage utilsStage = new UtilsStage("warning/FXMLWarning.fxml", title, thisStage.getOwner());
-        FXMLWarningController controller = utilsStage.getLoader().getController();
-        controller.init(utilsStage.getStage(), msg);
-        controller.ok.setVisible(okIsShow);
+        UtilsStage2<Fxml_Warning_Window> utilsStage = new UtilsStage2(Fxml_Warning_Window.class, title,Modality.APPLICATION_MODAL, thisStage);
+        utilsStage.t.set_msg_txt(msg);
+                utilsStage.t.ok.setVisible(okIsShow);
         if (okIsShow) {
-            controller.ok.setDefaultButton(true);
-            controller.cancel.setCancelButton(true);
+            utilsStage.t.ok.setDefaultButton(true);
+            utilsStage.t.cancel.setCancelButton(true);
         } else {
-            controller.cancel.setDefaultButton(true);
+            utilsStage.t.cancel.setDefaultButton(true);
         }
-
-        utilsStage.getStage().showAndWait();
-        return controller.okClick;
+        utilsStage.t.show_And_Wait();
+        return utilsStage.t.okClick;
     }
 }

@@ -86,8 +86,8 @@
             </padding>
         </HBox>
     </children>
-   <stylesheets>
-      <URL value="@theme.css" />
-      <URL value="@../../resourse/css/Button.css" />
-   </stylesheets>
+    <stylesheets>
+        <URL value="@theme.css" />
+        <URL value="@../../resourse/css/Button.css" />
+    </stylesheets>
 </VBox>
