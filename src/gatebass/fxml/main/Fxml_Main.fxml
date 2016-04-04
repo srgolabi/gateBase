@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox style="-fx-font-family: &quot;B Yekan&quot;;" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.main.Fxml_Main">
+<VBox style="-fx-font-family: &quot;B Yekan&quot;;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.main.Fxml_Main">
     <children>
         <MenuBar nodeOrientation="RIGHT_TO_LEFT">
             <menus>
@@ -23,7 +24,7 @@
                     <items>
                         <MenuItem fx:id="changeUserPass" mnemonicParsing="false" text="تغییر رمز عبور حساب کاربری" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="changeUser"  mnemonicParsing="false" text="خروج از حساب کاربری" />
+                        <MenuItem fx:id="changeUser" mnemonicParsing="false" text="خروج از حساب کاربری" />
                         <MenuItem mnemonicParsing="false" text="خروج از حساب کاربری و برنامه" />
                         <MenuItem mnemonicParsing="false" onAction="#exit" text="خروج از برنامه" />
                     </items>
@@ -36,7 +37,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <HBox nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 15; -fx-background-color: #B2EBF2;" stylesheets="@theme.css">
+        <HBox nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 15; -fx-background-color: #BBDEFB;" stylesheets="@theme.css">
             <children>
                 <VBox spacing="15.0">
                     <HBox.margin>
@@ -61,20 +62,19 @@
                                 </VBox>
                                 <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="50.0" prefWidth="350.0" spacing="5.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-background-color: #0097A7;" VBox.vgrow="ALWAYS">
                                     <children>
-                                        <Button fx:id="alarm_list" mnemonicParsing="false" style="-fx-font-size: 16; -fx-background-color: transparent;" text="16 هشدار جدید" textFill="YELLOW" />
+                                        <Button fx:id="alarm_list" blendMode="HARD_LIGHT" mnemonicParsing="false" style="-fx-font-size: 16;" styleClass="alarm-button" text="16 هشدار جدید" textFill="#0097a7" />
                                     </children>
                                 </VBox>
                             </children>
                         </VBox>
-                        <Button fx:id="exit1" blendMode="MULTIPLY" maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onAction="#exit" style="-fx-border-width: 0 0 2 2; -fx-border-color: #78909C; -fx-background-radius: 0;" text="خروج" visible="false" />
                     </children>
                 </VBox>
-                <VBox prefWidth="235.0" spacing="28.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 14.5;">
+                <VBox prefWidth="235.0" spacing="25.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 14.5;">
                     <children>
-                        <Button fx:id="car_insert" blendMode="MULTIPLY" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" style="-fx-border-width: 0 0 2 2; -fx-border-color: #78909C; -fx-background-radius: 0;" text="سیستم اطلاعات خودرویی" />
-                        <Button fx:id="individual_insert" blendMode="MULTIPLY" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" style="-fx-border-width: 0 0 2 2; -fx-border-color: #78909C; -fx-background-radius: 0;" text="سیستم اطلاعات فردی" />
-                        <Button fx:id="report" blendMode="MULTIPLY" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" style="-fx-border-width: 0 0 2 2; -fx-border-color: #78909C; -fx-background-radius: 0;" text="گزارش گیری" />
-                        <Button fx:id="exit" blendMode="MULTIPLY" maxWidth="1.7976931348623157E308" minHeight="45.0" mnemonicParsing="false" onAction="#exit" style="-fx-border-width: 0 0 2 2; -fx-border-color: #78909C; -fx-background-radius: 0;" text="خروج" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="car_insert" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" style="-fx-border-width: 0 0 1.5 1.5; -fx-border-color: #0091EA; -fx-background-radius: 0;" text="سیستم اطلاعات خودرویی" textFill="#01579b" />
+                        <Button fx:id="individual_insert" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" style="-fx-border-width: 0 0 1.5 1.5; -fx-border-color: #0091EA; -fx-background-radius: 0;" text="سیستم اطلاعات فردی" textFill="#01579b" />
+                        <Button fx:id="report" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" style="-fx-border-width: 0 0 1.5 1.5; -fx-border-color: #0091EA; -fx-background-radius: 0;" text="گزارش گیری" textFill="#01579b" />
+                        <Button fx:id="exit" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#exit" style="-fx-border-width: 0 0 1.5 1.5; -fx-border-color: #0091EA; -fx-background-radius: 0;" text="خروج" textFill="#01579b" VBox.vgrow="ALWAYS" />
                     </children>
                     <HBox.margin>
                         <Insets />
@@ -86,4 +86,8 @@
             </padding>
         </HBox>
     </children>
+   <stylesheets>
+      <URL value="@theme.css" />
+      <URL value="@../../resourse/css/Button.css" />
+   </stylesheets>
 </VBox>

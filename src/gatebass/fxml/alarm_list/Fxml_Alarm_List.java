@@ -5,17 +5,22 @@
  */
 package gatebass.fxml.alarm_list;
 
+import gatebass.GateBass;
 import static gatebass.GateBass.databaseHelper;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.Individuals;
+import gatebass.dataBase.tables.Permission;
 import gatebass.myControl.MyButtonFont;
+import gatebass.utils.AGTPFont;
 import gatebass.utils.ParentControl;
 import gatebass.utils.PersianCalendar;
+import gatebass.utils.UtilsStage;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -25,6 +30,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -40,6 +47,8 @@ public class Fxml_Alarm_List extends ParentControl {
         void car(Cars car, boolean is_edit_mode);
 
         void individual(Individuals individuals, boolean is_edit_mode);
+
+        void get_size(String txt);
     }
 
     private Get_Object get_Object;
@@ -48,6 +57,8 @@ public class Fxml_Alarm_List extends ParentControl {
         this.get_Object = go;
     }
 
+    @FXML
+    private MyButtonFont refresh;
     @FXML
     private MyButtonFont edit;
     @FXML
@@ -68,17 +79,20 @@ public class Fxml_Alarm_List extends ParentControl {
     private TableView<Gate_Alarm> tableView;
     @FXML
     private TableColumn<Gate_Alarm, Gate_Alarm> button_column;
+    @FXML
+    private TableColumn<Gate_Alarm, String> type_column;
 
     @Override
     public void setStage(Stage s) {
         super.setStage(s);
 
+        refresh.init("ccw", 15);
         edit.init("pencil", 15);
         review.init("eye", 15);
         export_to_excel.init("export", 15);
 
         all_delete.init("trash", 15);
-        all_keep.init("flag_circled", 15);
+        all_keep.init("circle_thin", 15);
 
         button_column.setCellFactory(new Callback<TableColumn<Gate_Alarm, Gate_Alarm>, TableCell<Gate_Alarm, Gate_Alarm>>() {
 
@@ -98,18 +112,19 @@ public class Fxml_Alarm_List extends ParentControl {
                             setGraphic(null);
                             return;
                         }
-
                         final HBox hbox = new HBox(0);
                         hbox.setAlignment(Pos.CENTER);
                         CheckBox checkBox = new CheckBox();
 
                         checkBox.selectedProperty().bindBidirectional(item.is_cheked);
 
-                        MyButtonFont alarm_keep = new MyButtonFont("flag_circled", 14, "table-button");
+                        MyButtonFont alarm_keep = new MyButtonFont("circle_thin", 14, "table-button");
 
                         alarm_keep.setOnAction((javafx.event.ActionEvent event) -> {
-                            set_alaem_state(item, Individuals.ALARM_STATE_KEEP);
+                            set_alaem_state(item, item.getAlarm_state() == 0 ? Individuals.ALARM_STATE_KEEP : Individuals.ALARM_STATE_NORMAL);
+                            item.icon.set(item.icon.get().equals("\uE802") ? "\uE803" : "\uE802");
                         });
+                        alarm_keep.textProperty().bindBidirectional(item.icon);
 
                         MyButtonFont alarm_delete = new MyButtonFont("trash", 14, "table-button");
                         alarm_delete.setOnAction((javafx.event.ActionEvent event) -> {
@@ -127,22 +142,138 @@ public class Fxml_Alarm_List extends ParentControl {
             }
         });
 
+        type_column.setCellFactory(new Callback<TableColumn<Gate_Alarm, String>, TableCell<Gate_Alarm, String>>() {
+
+            @Override
+            public TableCell<Gate_Alarm, String> call(TableColumn<Gate_Alarm, String> param) {
+
+                TableCell<Gate_Alarm, String> cell = new TableCell<Gate_Alarm, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+//                        if (item.equals(getItem())) {
+//                            return;
+//                        }
+                        super.updateItem(item, empty);
+                        if (item == null) {
+                            setStyle(null);
+                            setText(null);
+                            setGraphic(null);
+                            return;
+                        }
+                        Font font = Font.loadFont(GateBass.class.getResource("resourse/agtp_font.ttf").toExternalForm(), 14);
+                        this.setFont(font);
+
+                        this.setText(AGTPFont.Icons.valueOf(item.equals("car") ? "truck" : "user").getIcon());
+//                        this.setText(item.equals("car") ? "\uE820" : "\uE81f");
+
+                        setTextAlignment(TextAlignment.CENTER);
+                        setAlignment(Pos.CENTER);
+                    }
+                };
+                return cell;
+            }
+        });
+
+        all_check.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            for (Gate_Alarm ga : tableView.getItems()) {
+                ga.is_cheked.set(newValue);
+            }
+        });
+
+        refresh.setOnAction((ActionEvent event) -> {
+            refresh_table();
+        });
         edit.setOnAction((ActionEvent event) -> {
-//                        get_Object.car(cars, true);
+            on_action(true);
         });
 
         review.setOnAction((ActionEvent event) -> {
-//                        get_Object.car(cars, false);
-
+            on_action(false);
         });
 
         all_delete.setOnAction((ActionEvent event) -> {
-            set_alaem_state_groups(Individuals.ALARM_STATE_CHEKED);
+            set_alarm_state_groups(Individuals.ALARM_STATE_CHEKED);
+            tableView.getItems().clear();
         });
         all_keep.setOnAction((ActionEvent event) -> {
-            set_alaem_state_groups(Individuals.ALARM_STATE_KEEP);
+            set_alarm_state_groups(all_keep.getText().equals("\uE802") ? Individuals.ALARM_STATE_NORMAL : Individuals.ALARM_STATE_KEEP);
+            all_keep.setText(all_keep.getText().equals("\uE802") ? "\uE803" : "\uE802");
         });
 
+        refresh_table();
+    }
+
+    @Override
+    public void show_And_Wait() {
+        refresh_table();
+        super.show_And_Wait();
+    }
+
+    private void set_alaem_state(Gate_Alarm item, Short alarm_state) {
+        item.setAlarm_stat(alarm_state);
+        if (item.getAlarm_type().equals("car")) {
+            Cars cars = databaseHelper.carDao.queryForId(item.getIds());
+            cars.setAlarm_state(alarm_state);
+            databaseHelper.carDao.createOrUpdate(cars);
+        } else {
+            Individuals individuals = databaseHelper.individualsDao.queryForId(item.getIds());
+            individuals.setAlarm_state(alarm_state);
+            databaseHelper.individualsDao.createOrUpdate(individuals);
+        }
+    }
+
+    private void set_alarm_state_groups(Short alarm_state) {
+        List<Individuals> individuals_del = new ArrayList<>();
+        List<Cars> cars_del = new ArrayList<>();
+        for (Gate_Alarm ga : tableView.getItems()) {
+            if (ga.is_cheked.get()) {
+                ga.icon.set(alarm_state == Individuals.ALARM_STATE_KEEP ? "\uE803" : "\uE802");
+                if (ga.getAlarm_type().equals("car")) {
+                    Cars cars = databaseHelper.carDao.queryForId(ga.getIds());
+                    cars.setAlarm_state(alarm_state);
+                    cars_del.add(cars);
+                } else {
+                    Individuals individuals = databaseHelper.individualsDao.queryForId(ga.getIds());
+                    individuals.setAlarm_state(alarm_state);
+                    individuals_del.add(individuals);
+                }
+            }
+        }
+        try {
+            databaseHelper.carDao.insertList(cars_del);
+            databaseHelper.individualsDao.insertList(individuals_del);
+        } catch (SQLException ex) {
+            Logger.getLogger(Fxml_Alarm_List.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void on_action(boolean editable) {
+        if (tableView.getSelectionModel().getFocusedIndex() == -1) {
+            return;
+        }
+        Gate_Alarm ga = tableView.getSelectionModel().getSelectedItem();
+        if (ga.getAlarm_type().equals("car")) {
+            if (!editable || (editable && Permission.isAcces(Permission.CAR_INSERT))) {
+                get_Object.car(databaseHelper.carDao.queryForId(ga.getIds()), editable);
+                return;
+            }
+        } else {
+            if (!editable || (editable && Permission.isAcces(Permission.INDIVIDUAL_INSERT))) {
+                get_Object.individual(databaseHelper.individualsDao.queryForId(ga.getIds()), editable);
+                return;
+            }
+        }
+        UtilsStage.showMsg("دسترسی شما محدود می باشد.", "هشدار", false, thisStage);
+    }
+
+    private void add_car_alarm(String query, String sub_query, String alarm_info) {
+        tableView.getItems().addAll(
+                databaseHelper.gate_AlarmDao.rawResults(query.replace("ALARM_INFO", alarm_info).replace("WHERE_SEARCH_QUERY", sub_query))
+        );
+    }
+
+    private void refresh_table() {
+        tableView.getItems().clear();
         String query_individual
                 = "SELECT individuals.id ids, individuals.card_id , '>' || individuals.first_name || ' ' || individuals.last_name || '>' || ' ' || '< شماره ملی : ' || individuals.national_id || '<' datail , 'individual' alarm_type , 'ALARM_INFO' alrm_info , individuals.alarm_state alarm_stat\n"
                 + "FROM individuals \n"
@@ -165,7 +296,7 @@ public class Fxml_Alarm_List extends ParentControl {
                 + " LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id\n"
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
                 + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n"
-                + "WHERE ( individuals.alarm_state = 0 AND WHERE_SEARCH_QUERY )OR individuals.alarm_state = 1\n"
+                + "WHERE ( individuals.alarm_state = 0 AND WHERE_SEARCH_QUERY ) OR individuals.alarm_state = 1\n"
                 + "GROUP BY individuals.id";
         PersianCalendar pc = new PersianCalendar();
 //        String sub_query = pc.year().substring(2) + "/" + pc.month() + "/" + pc.day();
@@ -214,49 +345,8 @@ public class Fxml_Alarm_List extends ParentControl {
                 "bimeh");
 
         sum.setText(tableView.getItems().size() + "");
-    }
-
-    private void set_alaem_state(Gate_Alarm item, Short alarm_state) {
-
-        if (item.getAlarm_type().equals("car")) {
-            Cars cars = databaseHelper.carDao.queryForId(item.getIds());
-            cars.setAlarm_state(alarm_state);
-            databaseHelper.carDao.createOrUpdate(cars);
-        } else {
-            Individuals individuals = databaseHelper.individualsDao.queryForId(item.getIds());
-            individuals.setAlarm_state(alarm_state);
-            databaseHelper.individualsDao.createOrUpdate(individuals);
+        if (get_Object != null) {
+            get_Object.get_size(tableView.getItems().size() == 0 ? "" : tableView.getItems().size() + " هشدار جدید");
         }
     }
-
-    private void set_alaem_state_groups(Short alarm_state) {
-        List<Individuals> individuals_del = new ArrayList<>();
-        List<Cars> cars_del = new ArrayList<>();
-        for (Gate_Alarm ga : tableView.getItems()) {
-            if (ga.is_cheked.get()) {
-                if (ga.getAlarm_type().equals("car")) {
-                    Cars cars = databaseHelper.carDao.queryForId(ga.getIds());
-                    cars.setAlarm_state(alarm_state);
-                    cars_del.add(cars);
-                } else {
-                    Individuals individuals = databaseHelper.individualsDao.queryForId(ga.getIds());
-                    individuals.setAlarm_state(alarm_state);
-                    individuals_del.add(individuals);
-                }
-            }
-        }
-        try {
-            databaseHelper.carDao.insertList(cars_del);
-            databaseHelper.individualsDao.insertList(individuals_del);
-        } catch (SQLException ex) {
-            Logger.getLogger(Fxml_Alarm_List.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void add_car_alarm(String query, String sub_query, String alarm_info) {
-        tableView.getItems().addAll(
-                databaseHelper.gate_AlarmDao.rawResults(query.replace("ALARM_INFO", alarm_info).replace("WHERE_SEARCH_QUERY", sub_query))
-        );
-    }
-
 }

@@ -191,6 +191,18 @@
       "css": "flag-circled",
       "code": 59395,
       "src": "elusive"
+    },
+    {
+      "uid": "86ee1fc7ff57e9c9c60d8a5e57183776",
+      "css": "user",
+      "code": 59392,
+      "src": "iconic"
+    },
+    {
+      "uid": "7f3d8ff1d5f6ee019f0c00ed7a86caec",
+      "css": "truck",
+      "code": 59396,
+      "src": "fontawesome"
     }
   ]
 }

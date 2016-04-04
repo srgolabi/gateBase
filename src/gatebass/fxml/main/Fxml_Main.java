@@ -4,6 +4,7 @@ import static gatebass.GateBass.onCloseApp;
 import static gatebass.GateBass.users;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.Individuals;
+import gatebass.dataBase.tables.Permission;
 import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.alarm_list.Fxml_Alarm_List;
 import gatebass.fxml.car_insert.Fxml_Car_Insert;
@@ -128,6 +129,11 @@ public class Fxml_Main extends ParentControl {
                 fxml_Individual_Insert.t.loadIndividual();
                 fxml_Individual_Insert.t.show_Front_Or_Wait();
             }
+
+            @Override
+            public void get_size(String txt) {
+                alarm_list.setText(txt);
+            }
         });
 
         manageCompanies.setOnAction((ActionEvent event) -> {
@@ -136,11 +142,18 @@ public class Fxml_Main extends ParentControl {
         });
 
         individual_insert.setOnAction((ActionEvent event) -> {
-            fxml_Individual_Insert.t.editable.set(true);
-            fxml_Individual_Insert.t.show_Front_Or_Wait();
+            if (Permission.isAcces_WithMSG(Permission.INDIVIDUAL_INSERT)) {
+                fxml_Individual_Insert.t.editable.set(true);
+                fxml_Individual_Insert.t.show_Front_Or_Wait();
+            }
         });
 
         report.setOnAction((ActionEvent event) -> {
+            if (!Permission.isAcces(Permission.CAR_GETREPORT)) {
+                if (!Permission.isAcces_WithMSG(Permission.INDIVIDUAL_GETREPORT)) {
+                    return;
+                }
+            }
             fxml_Get_Report.t.query_for_search = null;
             fxml_Get_Report.t.show_Front_Or_Wait();
             if (fxml_Get_Report.t.query_for_search != null) {
@@ -155,8 +168,13 @@ public class Fxml_Main extends ParentControl {
         });
 
         car_insert.setOnAction((ActionEvent event) -> {
-            fxml_Car_Insert.t.show_Front_Or_Wait();
+            if (Permission.isAcces_WithMSG(Permission.CAR_INSERT)) {
+                fxml_Car_Insert.t.editable.set(true);
+                fxml_Car_Insert.t.show_Front_Or_Wait();
+            }
         });
+
+        alarm_list.visibleProperty().bind(alarm_list.textProperty().isEmpty());
 
         alarm_list.setOnAction((ActionEvent event) -> {
             fxml_Alarm_List.t.show_Front_Or_Wait();

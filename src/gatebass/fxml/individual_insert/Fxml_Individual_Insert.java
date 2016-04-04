@@ -724,7 +724,8 @@ public class Fxml_Individual_Insert extends ParentControl {
         });
 
         editable.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_INSERT) || !newValue);
+            System.out.println("ss = " + Permission.isAcces(Permission.INDIVIDUAL_WORK_INSERT));
+            work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_WORK_INSERT) || !newValue);
         });
     }
 

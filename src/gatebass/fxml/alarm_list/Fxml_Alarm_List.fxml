@@ -39,7 +39,7 @@
                                         <Insets left="5.0" right="5.0" />
                                     </padding>
                                 </Label>
-                                <HBox alignment="CENTER" spacing="5.0">
+                                <HBox alignment="CENTER" spacing="12.0">
                                     <children>
                                         <gatebass.myControl.MyButtonFont fx:id="all_keep" mnemonicParsing="false" style="-fx-label-padding: -2;" />
                                         <gatebass.myControl.MyButtonFont fx:id="all_delete" mnemonicParsing="false" style="-fx-label-padding: -2;" />
@@ -48,6 +48,7 @@
                                 </HBox>
                             </children>
                         </HBox>
+                        <gatebass.myControl.MyButtonFont fx:id="refresh" mnemonicParsing="false" style="-fx-label-padding: -2;" />
                         <gatebass.myControl.MyButtonFont fx:id="review" mnemonicParsing="false" style="-fx-label-padding: -2;" />
                         <gatebass.myControl.MyButtonFont fx:id="edit" mnemonicParsing="false" style="-fx-label-padding: -2;" />
                         <gatebass.myControl.MyButtonFont fx:id="export_to_excel" mnemonicParsing="false" style="-fx-label-padding: -2;" />
@@ -57,10 +58,6 @@
                     </padding>
                 </HBox>
                 <TableView fx:id="tableView" style="-fx-font-family: &quot;B Yekan&quot;; -fx-focus-color: transparent;" VBox.vgrow="ALWAYS">
-                    <styleClass>
-                        <String fx:value="table-view_1" />
-                        <String fx:value="table-row-cell_1" />
-                    </styleClass>
                     <placeholder>
                         <Label text="موردی یافت نگردید" />
                     </placeholder>
@@ -73,15 +70,12 @@
                                 <gatebass.fxml.get_report.FormattedTableCellFactory />
                             </cellFactory>
                         </TableColumn>
-                        <TableColumn editable="false" maxWidth="2000.0" text="نوع">
+                        <TableColumn fx:id="type_column" editable="false" maxWidth="600.0" prefWidth="46.0" text="نوع">
                             <cellValueFactory>
-                                <PropertyValueFactory property="alarm_type_text" />
+                                <PropertyValueFactory property="alarm_type" />
                             </cellValueFactory>                            
-                            <cellFactory>
-                                <gatebass.fxml.get_report.FormattedTableCellFactory />
-                            </cellFactory>
                         </TableColumn>
-                        <TableColumn editable="false" prefWidth="300.0" text="مشخصات">
+                        <TableColumn editable="false" maxWidth="6000.0" text="مشخصات">
                             <cellValueFactory>
                                 <PropertyValueFactory property="datail" />
                             </cellValueFactory>
@@ -89,7 +83,7 @@
                                 <gatebass.fxml.get_report.FormattedTableCellFactory />
                             </cellFactory>
                         </TableColumn>
-                        <TableColumn editable="false" maxWidth="2500.0" text="شرح هشدار">
+                        <TableColumn editable="false" maxWidth="1800.0" text="شرح هشدار">
                             <cellValueFactory>
                                 <PropertyValueFactory property="alrm_info" />
                             </cellValueFactory>
@@ -97,7 +91,7 @@
                                 <gatebass.fxml.get_report.FormattedTableCellFactory />
                             </cellFactory>
                         </TableColumn>
-                        <TableColumn fx:id="button_column" editable="false" maxWidth="1800.0" sortable="false">
+                        <TableColumn fx:id="button_column" editable="false" maxWidth="1500.0" minWidth="0.0" prefWidth="0.0" sortable="false">
                             <cellValueFactory>
                                 <PropertyValueFactory property="this" />
                             </cellValueFactory>
@@ -109,6 +103,10 @@
                     <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" />
                     </VBox.margin>
+               <styleClass>
+                  <String fx:value="table-view_1" />
+                  <String fx:value="table-row-cell_1" />
+               </styleClass>
                 </TableView>
             </children>
         </VBox>

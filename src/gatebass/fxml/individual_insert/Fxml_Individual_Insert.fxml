@@ -28,7 +28,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.individual_insert.Fxml_Individual_Insert">
    <children>
       <VBox nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 13.5; -fx-background-color: #BBDEFB;">
@@ -843,7 +842,7 @@
                               </Tab>
                           </tabs>
                       </TabPane>
-                      <HBox fx:id="work_page" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-font-size: 14.5; -fx-background-color: #00E5FF;">
+                      <HBox fx:id="work_page" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-font-size: 14.5; -fx-background-color: #00E5FF;" visible="false">
                           <children>
                               <AnchorPane prefWidth="180.0">
                                   <children>

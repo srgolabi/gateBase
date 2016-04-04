@@ -1,9 +1,13 @@
 package gatebass.dataBase.tables;
 
+import com.almasb.java.ui.fx.FXDialog;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import static gatebass.GateBass.databaseHelper;
 import static gatebass.GateBass.users;
+import gatebass.utils.UtilsStage;
+import javafx.stage.Stage;
+import javax.rmi.CORBA.Util;
 
 /**
  *
@@ -12,30 +16,25 @@ import static gatebass.GateBass.users;
 @DatabaseTable(tableName = "permission")
 public class Permission {
 
-//    public static int LETTER = 1;
-    public static int INDIVIDUAL = 1;
-//    public static int LETTER_INSERT = 2;
-    public static int INDIVIDUAL_INSERT = 2;
-//    public static int LETTER_EDIT = 3;
-    public static int INDIVIDUAL_EDIT = 3;
-//    public static int LETTER_VIEW_ALL = 4;
-//    public static int LETTER_VIEW_GROUP = 5;
-//    public static int LETTER_VIEW_PERSON = 6;
-    public static int INDIVIDUAL_GETREPORT = 7;
-//    public static int LETTER_SEND = 17;
-    public static int SETTING = 8;
-    public static int USER_INSERT = 9;
-    public static int USER_VIEW = 10;
-    public static int CHANGE_PASS = 11;
-    public static int GROUPS = 12;
-    public static int GROUP_VIEW = 13;
-    public static int GROUP_INSERT = 14;
-    public static int GROUP_REMOVE = 15;
-    public static int GROUP_USER = 16;
-    
-    //  17
+    public static int INDIVIDUAL = 10;
+    public static int INDIVIDUAL_INSERT = 11;
+    public static int INDIVIDUAL_WORK_INSERT = 12;
+    public static int INDIVIDUAL_GETREPORT = 13;
 
-    @DatabaseField(generatedId = true)
+    public static int CAR = 100;
+    public static int CAR_INSERT = 101;
+    public static int CAR_WORK_INSERT = 102;
+    public static int CAR_GETREPORT = 103;
+
+    public static int SETTING = 1;
+    public static int USER_INSERT = 2;
+    public static int USER_VIEW = 3;
+    public static int CHANGE_PASS = 4;
+    public static int COMPANY_INSERT = 5;
+    public static int COMPANY_VIEW = 6;
+
+    //  17
+    @DatabaseField(generatedId = true, allowGeneratedIdInsert = true)
     private Integer id;
 
     @DatabaseField(defaultValue = "", unique = true)
@@ -94,6 +93,17 @@ public class Permission {
         return !databaseHelper.userPermissionDao.rawResults(
                 "SELECT * FROM userPermission WHERE user_id = " + users.getId() + " AND state = 1 AND permission_id = " + permissionId
         ).isEmpty() || users.getAdmin();
+    }
+
+    public static boolean isAcces_WithMSG(int permissionId) {
+        boolean b = !databaseHelper.userPermissionDao.rawResults(
+                "SELECT * FROM userPermission WHERE user_id = " + users.getId() + " AND state = 1 AND permission_id = " + permissionId
+        ).isEmpty() || users.getAdmin();
+        if (!b) {
+            UtilsStage.showMsg("دسترسی شما محدود می باشد.", "هشدار", false, new Stage());
+        }
+        System.out.println("ss = " + b);
+        return b;
     }
     /*
      ***************************************************************************

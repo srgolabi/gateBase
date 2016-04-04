@@ -1,7 +1,6 @@
 package gatebass.utils;
 
 import gatebass.GateBass;
-import gatebass.fxml.user_change_pass.Fxml_User_Change_Pass;
 import gatebass.fxml.warning.FXMLWarningController;
 import java.io.IOException;
 import java.util.logging.Level;

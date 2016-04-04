@@ -65,8 +65,9 @@ public class AGTPFont {
         doc_new("\uE855"),
         ccw("\uE858"),
         circle_thin("\uE802"),
-        flag_circled("\uE803");
-        /* '' */
+        flag_circled("\uE803"),
+        user("\uE800"),
+        truck("\uE804");
 
         String icon;
 

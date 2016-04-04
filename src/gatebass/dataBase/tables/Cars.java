@@ -33,7 +33,7 @@ public class Cars {
     @DatabaseField(defaultValue = "")
     private String comments;
 
-    @DatabaseField(defaultValue = "false")
+    @DatabaseField(defaultValue = "0")
     private Short alarm_state;
     
     @DatabaseField(defaultValue = "")

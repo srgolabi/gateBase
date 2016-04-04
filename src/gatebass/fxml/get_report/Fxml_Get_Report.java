@@ -8,6 +8,7 @@ package gatebass.fxml.get_report;
 import static gatebass.GateBass.databaseHelper;
 import gatebass.dataBase.tables.Base;
 import gatebass.dataBase.tables.Companies;
+import gatebass.dataBase.tables.Permission;
 import gatebass.myControl.MyButtonFont;
 import gatebass.utils.MenuTableInit;
 import gatebass.myControl.tableView.MyColumnTable;
@@ -259,6 +260,11 @@ public class Fxml_Get_Report extends ParentControl {
         query_table_init();
 
         selected_field = new Query_Base();
+
+        report_type_individual.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_GETREPORT));
+        report_type_car.setDisable(!Permission.isAcces(Permission.CAR_GETREPORT));
+        report_type_individual_list.setDisable(report_type_individual.isDisable());
+        report_type_car_list.setDisable(report_type_car.isDisable());
 
         fields_page_individual.visibleProperty().bind(report_type_individual.selectedProperty());
         fields_page_car.visibleProperty().bind(report_type_car.selectedProperty());

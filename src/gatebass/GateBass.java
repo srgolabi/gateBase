@@ -72,32 +72,30 @@ public class GateBass extends Application {
                 databaseHelper.permissionDao.createOrUpdate(pLetter);
                 permissions.add(pLetter);
             }
-            permissions.add(new Permission(Permission.INDIVIDUAL_INSERT, "INDIVIDUAL_INSERT", "ثبت مشخصات فردی", 100, pLetter));
-//            permissions.add(new Permission(Permission.LETTER_SEND, "LETTER_SEND", "ارجاع مکاتبات", 150, pLetter));
-            permissions.add(new Permission(Permission.INDIVIDUAL_EDIT, "INDIVIDUAL_EDIT", "اصلاح مشخصات فردی", 200, pLetter));
-//            permissions.add(new Permission(Permission.LETTER_VIEW_ALL, "LETTER_VIEW_ALL", "مشاهده کلیه مکاتبات", 300, pLetter));
-//            permissions.add(new Permission(Permission.LETTER_VIEW_GROUP, "LETTER_VIEW_GROUP", "مشاهده مکاتبات گروه", true, 350, pLetter));
-//            permissions.add(new Permission(Permission.LETTER_VIEW_PERSON, "LETTER_VIEW_PERSON", "مشاهده مکاتبات شخصی", true, 400, pLetter));
-            permissions.add(new Permission(Permission.INDIVIDUAL_GETREPORT, "INDIVIDUAL_GETREPORT", "گزارش گیری فردی", 500, pLetter));
+            permissions.add(new Permission(Permission.INDIVIDUAL_INSERT, "INDIVIDUAL_INSERT", "ثبت مشخصات", 10, pLetter));
+            permissions.add(new Permission(Permission.INDIVIDUAL_WORK_INSERT, "INDIVIDUAL_WORK_INSERT", "ثبت سوابق", 20, pLetter));
+            permissions.add(new Permission(Permission.INDIVIDUAL_GETREPORT, "INDIVIDUAL_GETREPORT", "گزارش گیری", 30, pLetter));
 
-            Permission pSetting = new Permission(Permission.SETTING, "SETTING", "تنظیمات کاربری", 350, null);
+            Permission pCar = new Permission(Permission.CAR, "CAR", "سیستم اطلاعات خودرویی", 50, null);
+            {
+                databaseHelper.permissionDao.createOrUpdate(pCar);
+                permissions.add(pCar);
+            }
+            permissions.add(new Permission(Permission.CAR_INSERT, "CAR_INSERT", "ثبت مشخصات", 10, pCar));
+            permissions.add(new Permission(Permission.CAR_WORK_INSERT, "CAR_WORK_INSERT", "ثبت سوابق", 20, pCar));
+            permissions.add(new Permission(Permission.CAR_GETREPORT, "CAR_GETREPORT", "گزارش گیری", 30, pCar));
+
+            Permission pSetting = new Permission(Permission.SETTING, "SETTING", "تنظیمات کاربری", 100, null);
             {
                 databaseHelper.permissionDao.createOrUpdate(pSetting);
                 permissions.add(pSetting);
             }
-            permissions.add(new Permission(Permission.USER_VIEW, "USER_VIEW", "مشاهده کاربران", 300, pSetting));
-            permissions.add(new Permission(Permission.USER_INSERT, "USER_INSERT", "ثبت کاربر", 400, pSetting));
-            permissions.add(new Permission(Permission.CHANGE_PASS, "CHANGE_PASS", "تغییر رمز عبور", 500, pSetting));
+            permissions.add(new Permission(Permission.USER_VIEW, "USER_VIEW", "مشاهده حسابها", 10, pSetting));
+            permissions.add(new Permission(Permission.USER_INSERT, "USER_INSERT", "ثبت حساب", 20, pSetting));
+            permissions.add(new Permission(Permission.CHANGE_PASS, "CHANGE_PASS", "تغییر رمز عبور", 30, pSetting));
+            permissions.add(new Permission(Permission.COMPANY_VIEW, "COMPANY_VIEW", "مشاهده لیست شرکتها", 40, pSetting));
+            permissions.add(new Permission(Permission.COMPANY_INSERT, "COMPANY_INSERT", "ثبت شرکت", 50, pSetting));
 
-//            Permission pGROUPS = new Permission(Permission.GROUPS, "GROUPS", "گروه ها", 550, null);
-//            {
-//                databaseHelper.permissionDao.createOrUpdate(pGROUPS);
-//                permissions.add(pGROUPS);
-//            }
-//            permissions.add(new Permission(Permission.GROUP_VIEW, "GROUP_VIEW", "مشاهده گروه ها", 600, pGROUPS));
-//            permissions.add(new Permission(Permission.GROUP_INSERT, "GROUP_INSERT", "ثبت گروه", 700, pGROUPS));
-//            permissions.add(new Permission(Permission.GROUP_REMOVE, "GROUP_REMOVE", "حذف گروه", 800, pGROUPS));
-//            permissions.add(new Permission(Permission.GROUP_USER, "GROUP_USER", "تعریف کاربران گروه", 1000, pGROUPS));
             try {
                 databaseHelper.permissionDao.insertList(permissions);
             } catch (SQLException ex) {

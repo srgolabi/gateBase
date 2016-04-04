@@ -55,8 +55,6 @@ public class Fxml_User_Manage extends ParentControl {
     @FXML
     private VBox step_2;
     @FXML
-    private VBox step_3;
-    @FXML
     private VBox step_4;
     @FXML
     private VBox step_5;
@@ -91,32 +89,11 @@ public class Fxml_User_Manage extends ParentControl {
     @FXML
     private CheckBox is_deactive;
     @FXML
-    private CheckBox is_action;
-    @FXML
     private TreeView<Permission> permission_table;
-    @FXML
-    private Button show_user_group;
     @FXML
     private Button back_2;
     @FXML
     private Button submit_2;
-
-    @FXML
-    private TableView<Users> allGroup_table;
-    @FXML
-    private TableView<UserGroup> groupUsers_table;
-    @FXML
-    private Button addGroup;
-    @FXML
-    private Button removeGroup;
-    @FXML
-    private TextField filter_allGroup_table;
-    @FXML
-    private TextField filter_groupUsers_table;
-    @FXML
-    private Button back_3;
-    @FXML
-    private Button submit_3;
 
     @FXML
     private PasswordField pass_4;
@@ -140,10 +117,6 @@ public class Fxml_User_Manage extends ParentControl {
     @FXML
     private Label is_deactive_Label;
     @FXML
-    private Label is_action_Label;
-    @FXML
-    private TableView<UserGroup> groups_table_review;
-    @FXML
     private TreeView<Permission> permission_table_review;
     @FXML
     private Button back_5;
@@ -155,10 +128,8 @@ public class Fxml_User_Manage extends ParentControl {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-
         step_1_init();
         step_2_init();
-        step_3_init();
         step_4_init();
         step_5_init();
     }
@@ -206,15 +177,7 @@ public class Fxml_User_Manage extends ParentControl {
             pass.setText(new_user.getPassword());
             again_pass.setText(new_user.getPassword());
             is_deactive.setSelected(!new_user.getActive());
-            is_action.setSelected(new_user.getType().equals(Users.USERACTION));
-            groupUsers_table_init(null, null, databaseHelper.userGroupDao.rawResults("SELECT * FROM userGroup WHERE user_id != group_id AND user_id = " + new_user.getId()));
             String query = "";
-
-            for (UserGroup ug : groupUsers_table.getItems()) {
-                query = query + " AND id != " + ug.getGroup_id().getId();
-            }
-            query = "SELECT * FROM users WHERE type LIKE '%GROUP%' AND is_deleted = 0" + query;
-            allGroup_table_init(null, null, databaseHelper.usersDao.rawResults(query));
 
             query = "SELECT permission.id , permission.name , permission.title , permission.icon , permission.iconColor , userPermission.state defaultValue , permission.parent , permission.sort_index\n"
                     + "FROM  permission\n"
@@ -234,13 +197,7 @@ public class Fxml_User_Manage extends ParentControl {
                 user_name_Label.setText(u2.getUsername());
                 position_Label.setText(u2.getSemat());
                 email_Label.setText(u2.getEmail());
-                is_action_Label.setText(u2.getType().equals(Users.USERACTION) ? "اقدامگر" : "عادی");
                 is_deactive_Label.setText(u2.getActive() ? "فعال" : "غیر فعال");
-
-                groups_table_review.getItems().setAll(
-                        databaseHelper.userGroupDao.rawResults(
-                                "SELECT * FROM userGroup WHERE user_id != group_id AND user_id = " + u2.getId()
-                        ));
 
                 String query = "SELECT permission.id , permission.name , permission.title , permission.icon , permission.iconColor , userPermission.state defaultValue , permission.parent , permission.sort_index\n"
                         + "FROM  permission\n"
@@ -262,11 +219,6 @@ public class Fxml_User_Manage extends ParentControl {
             return cc;
         });
 
-        show_user_group.setOnAction((ActionEvent event) -> {
-            step_2.setVisible(false);
-            step_3.setVisible(true);
-        });
-
         permission_table_init(permission_table, "SELECT * FROM permission ");
 
         back_2.setOnAction((ActionEvent event) -> {
@@ -281,15 +233,7 @@ public class Fxml_User_Manage extends ParentControl {
             email.setText("");
             pass.setText("");
             again_pass.setText("");
-            filter_allGroup_table.setText("");
-            filter_groupUsers_table.setText("");
             is_deactive.setSelected(false);
-            is_action.setSelected(false);
-
-            allGroup_table_init(null, null, databaseHelper.usersDao.rawResults(
-                    "SELECT * FROM users WHERE type LIKE '%GROUP%' AND is_deleted = 0"
-            ));
-            groupUsers_table_init(null, null, new ArrayList<>());
             permission_table_init(permission_table, "SELECT * FROM permission ");
         });
 
@@ -315,7 +259,7 @@ public class Fxml_User_Manage extends ParentControl {
             new_user.setEmail(email.getText());
             new_user.setPassword(pass.getText());
             new_user.setActive(!is_deactive.isSelected());
-            new_user.setType(is_action.isSelected() ? Users.USERACTION : Users.ACTION);
+            new_user.setType(Users.USERACTION);
             boolean b = new_user.getId() == null;
             databaseHelper.usersDao.createOrUpdate(new_user);
             List<UserPermission> permissions = new ArrayList<>();
@@ -371,106 +315,6 @@ public class Fxml_User_Manage extends ParentControl {
         });
     }
 
-    private void step_3_init() {
-
-        addGroup.disableProperty().bind(allGroup_table.getSelectionModel().selectedItemProperty().isNull());
-        removeGroup.disableProperty().bind(groupUsers_table.getSelectionModel().selectedItemProperty().isNull());
-
-        allGroup_table_init(null, null, databaseHelper.usersDao.rawResults(
-                "SELECT * FROM users WHERE type LIKE '%GROUP%' AND is_deleted = 0"
-        ));
-
-        allGroup_table.setRowFactory((TableView<Users> param) -> {
-            TableRow<Users> row = new TableRow<>();
-            row.setOnMouseClicked((MouseEvent event) -> {
-                if (event.getClickCount() != 2) {
-                    return;
-                }
-                if (allGroup_table.getSelectionModel().getSelectedIndex() != -1) {
-                    addGroup.getOnAction().handle(null);
-                }
-            });
-            return row;
-        });
-
-        groupUsers_table.setRowFactory((TableView<UserGroup> param) -> {
-            TableRow<UserGroup> row = new TableRow<>();
-            row.setOnMouseClicked((MouseEvent event) -> {
-                if (event.getClickCount() != 2) {
-                    return;
-                }
-                if (groupUsers_table.getSelectionModel().getSelectedIndex() != -1) {
-                    removeGroup.getOnAction().handle(null);
-                }
-            });
-            return row;
-        });
-
-        addGroup.setOnAction((ActionEvent event) -> {
-            Users u2 = allGroup_table.getSelectionModel().getSelectedItem();
-
-            String strT1 = filter_allGroup_table.getText();
-            filter_allGroup_table.setText("");
-            allGroup_table_init(u2, null, allGroup_table.getItems());
-            filter_allGroup_table.setText(strT1);
-
-            String strT2 = filter_groupUsers_table.getText();
-            filter_groupUsers_table.setText("");
-            groupUsers_table_init(null, new UserGroup(null, u2), groupUsers_table.getItems());
-            filter_groupUsers_table.setText(strT2);
-        });
-
-        removeGroup.setOnAction((ActionEvent event) -> {
-            UserGroup temp = groupUsers_table.getSelectionModel().getSelectedItem();
-            if (temp.getId() != null) {
-                deleteGroup.add(temp);
-            }
-
-            String strT1 = filter_allGroup_table.getText();
-            filter_allGroup_table.setText("");
-            System.out.println("aa = " + temp.getGroup_id().getName_fa());
-            allGroup_table_init(null, temp.getGroup_id(), allGroup_table.getItems());
-            filter_allGroup_table.setText(strT1);
-
-            String strT2 = filter_groupUsers_table.getText();
-            filter_groupUsers_table.setText("");
-            groupUsers_table_init(temp, null, groupUsers_table.getItems());
-            filter_groupUsers_table.setText(strT2);
-        });
-
-        back_3.setOnAction((ActionEvent event) -> {
-            step_2.setVisible(true);
-            step_3.setVisible(false);
-            groupUsers_table_init(null, null, userGroup);
-
-            List<Users> listTemp = databaseHelper.usersDao.rawResults(
-                    "SELECT * FROM users WHERE type LIKE '%GROUP%' AND is_deleted = 0"
-            );
-
-            boolean b = false;
-            for (UserGroup ug : userGroup) {
-                b = false;
-                for (Users u2 : listTemp) {
-                    if (ug.getGroup_id().getId() == u2.getId()) {
-                        b = true;
-                        break;
-                    }
-                    if (b) {
-                        listTemp.remove(u2);
-                    }
-                }
-            }
-            allGroup_table_init(null, null, listTemp);
-        });
-
-        submit_3.setOnAction((ActionEvent event) -> {
-            step_2.setVisible(true);
-            step_3.setVisible(false);
-            userGroup = new ArrayList<>(groupUsers_table.getItems());
-        });
-
-    }
-
     private void step_4_init() {
         submit_4.setOnAction((ActionEvent event) -> {
             ErrorCheck errorCheck = new ErrorCheck("رمز عبور", "تکرار رمز عبور");
@@ -497,11 +341,6 @@ public class Fxml_User_Manage extends ParentControl {
     }
 
     private void step_5_init() {
-        groups_table_review.setRowFactory((TableView<UserGroup> param) -> {
-            TableRow<UserGroup> row = new TableRow<>();
-            row.setDisable(true);
-            return row;
-        });
         permission_table_review.setCellFactory((TreeView<Permission> param) -> {
             CheckBoxTreeCellMy cc = new CheckBoxTreeCellMy(true);
             return cc;
@@ -544,38 +383,10 @@ public class Fxml_User_Manage extends ParentControl {
     private void user_table_init() {
         filter_user_table.setText("");
         FilteredList<Users> filteredListt = new PrepareTable<Users>().init(user_table, databaseHelper.usersDao.rawResults(
-                "SELECT * FROM users WHERE type LIKE '%USER%' AND is_deleted = 0"
+                "SELECT * FROM users WHERE is_deleted = 0"
         ));
         filter_user_table.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             filteredListt.setPredicate(s -> (newValue == null || newValue.length() == 0) ? true : (s.getName_fa() + s.getName_en() + s.getUsername()).toLowerCase().contains(newValue.toLowerCase()));
-        });
-    }
-
-    private void allGroup_table_init(Users remove, Users add, List<Users> ll) {
-        List<Users> ttemp = new ArrayList<>(ll);
-        if (remove != null) {
-            ttemp.remove(remove);
-        }
-        if (add != null) {
-            ttemp.add(add);
-        }
-        FilteredList<Users> filteredListt = new PrepareTable<Users>().init(allGroup_table, ttemp);
-        filter_allGroup_table.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            filteredListt.setPredicate(s -> (newValue == null || newValue.length() == 0) ? true : s.getName_fa().contains(newValue));
-        });
-    }
-
-    private void groupUsers_table_init(UserGroup remove, UserGroup add, List<UserGroup> ll) {
-        List<UserGroup> ttemp = new ArrayList<>(ll);
-        if (remove != null) {
-            ttemp.remove(remove);
-        }
-        if (add != null) {
-            ttemp.add(add);
-        }
-        FilteredList<UserGroup> filteredListt = new PrepareTable<UserGroup>().init(groupUsers_table, ttemp);
-        filter_groupUsers_table.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            filteredListt.setPredicate(s -> (newValue == null || newValue.length() == 0) ? true : s.getUser_id().getName_fa().contains(newValue));
         });
     }
 

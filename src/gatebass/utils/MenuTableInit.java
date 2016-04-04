@@ -11,7 +11,6 @@ import gatebass.dataBase.tables.Companies;
 import gatebass.dataBase.tables.Users;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
@@ -24,7 +23,7 @@ import javafx.scene.control.TextField;
 public class MenuTableInit {
 
     public static void actionsInit(String query, TextField textField, TableView<Users> tableView) {
-        MyColumnTable<Users> removeButtonCellFactory = new MyColumnTable<Users>(null, Cursor.DEFAULT);
+        MyColumnTable<Users> removeButtonCellFactory = new MyColumnTable<>(null, Cursor.DEFAULT);
         removeButtonCellFactory.setOnAddToMenu((Users s) -> {
             textField.setText(s.getName_fa());
         });

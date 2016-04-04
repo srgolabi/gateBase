@@ -9,6 +9,8 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -18,6 +20,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 public class Gate_Alarm {
 
     public BooleanProperty is_cheked = new SimpleBooleanProperty(false);
+    public StringProperty icon = new SimpleStringProperty("\uE802");
 
     @DatabaseField(generatedId = true)
     private Integer id;
@@ -41,6 +44,7 @@ public class Gate_Alarm {
     private Short alarm_stat;
 
     public Gate_Alarm getThis() {
+        icon.set(alarm_stat == 0 ? "\uE802" : "\uE803");
         return this;
     }
 
@@ -54,10 +58,6 @@ public class Gate_Alarm {
 
     public String getAlarm_type() {
         return alarm_type;
-    }
-
-    public String getAlarm_type_text() {
-        return alarm_type.equals("car") ? "خودرو" : "فرد";
     }
 
     public String getDatail() {
@@ -81,6 +81,10 @@ public class Gate_Alarm {
             return "تاریخ بیمه";
         }
         return "";
+    }
+
+    public void setAlarm_stat(Short alarm_stat) {
+        this.alarm_stat = alarm_stat;
     }
 
 }
