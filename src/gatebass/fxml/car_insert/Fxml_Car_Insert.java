@@ -75,6 +75,17 @@ import org.apache.commons.io.FileUtils;
  */
 public class Fxml_Car_Insert extends ParentControl {
 
+    public interface ON_INDIVIDUAL {
+
+        void individual(Individuals individuals);
+    }
+
+    private ON_INDIVIDUAL on_individual;
+
+    public void set_ON_INDIVIDUAL(ON_INDIVIDUAL on_individual) {
+        this.on_individual = on_individual;
+    }
+
     @FXML
     private MyButtonFont print_view;
     @FXML
@@ -130,6 +141,8 @@ public class Fxml_Car_Insert extends ParentControl {
     private TextField color;
     @FXML
     private TextField driver_info;
+    @FXML
+    private MyButtonFont driver_info_text_clear;
     @FXML
     private MyButtonFont driver_info_button;
     @FXML
@@ -394,7 +407,7 @@ public class Fxml_Car_Insert extends ParentControl {
             }
         });
         add_to_print.setOnAction((ActionEvent event) -> {
-            
+
             WorkHistory wh = new WorkHistory();
             wh.setCar_history_id(work_table.getSelectionModel().getSelectedItem());
             wh.set_TYPE(WorkHistory.CAR);
@@ -634,6 +647,7 @@ public class Fxml_Car_Insert extends ParentControl {
     }
 
     private void setUp_Work_Page() {
+        driver_info_text_clear.init("cancel", 15);
         driver_info_button.init("search", 15);
         work_insert.init("plus", 15);
         work_edit.init("pencil", 15);
@@ -641,13 +655,12 @@ public class Fxml_Car_Insert extends ParentControl {
         add_to_print.init("newspaper", "عبور موقت", 15);
 
         TextFiledLimited.set_Number_Length_Limit(driver_info, 10);
+        driver_info.editableProperty().bind(editable.and(driver_info_text_clear.visibleProperty().not()));
 
         add_to_print.disableProperty().bind(work_edit.disableProperty());
         work_view.disableProperty().bind(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         work_insert.setDisable(!Permission.isAcces(Permission.CAR_WORK_INSERT) || !editable.get());
         work_submit.visibleProperty().bind(history_editMode);
-        driver_info.setEditable(editable.get());
-        System.out.println("driver_info.setEditable = " + driver_info.isEditable());
         driver_info_button.visibleProperty().bind(editable);
         work_button_page.visibleProperty().bind(work_page.visibleProperty());
 
@@ -685,6 +698,13 @@ public class Fxml_Car_Insert extends ParentControl {
         String query = "SELECT * FROM companies WHERE active = 1 AND is_deleted = 0 ORDER BY company_fa ASC";
         MenuTableInit.companiesInit(query, comppany, companiesMenu);
 
+        driver_info_text_clear.setOnAction((ActionEvent event) -> {
+            driver_info.setText("");
+            driver_info_button.changeText("search");
+            carsHistory_iw.setWorkHistory_id(null);
+            driver_info_text_clear.setVisible(false);
+        });
+
         driver_info_button.setOnAction((ActionEvent event) -> {
             if (driver_info.isEditable()) {
                 if (driver_info.getText().isEmpty()) {
@@ -698,10 +718,7 @@ public class Fxml_Car_Insert extends ParentControl {
                 driver_history_table.getItems().setAll(databaseHelper.workHistoryDao.getAll("individuals_id", idl));
                 driver_page.setVisible(true);
             } else {
-                driver_info.setEditable(true);
-                driver_info.setText("");
-                carsHistory_iw.setWorkHistory_id(null);
-                driver_info_button.changeText("search");
+                on_individual.individual(carsHistory_iw.getWorkHistory_id().getIndividual());
             }
         });
 
@@ -927,10 +944,10 @@ public class Fxml_Car_Insert extends ParentControl {
         driver_submit.setOnAction((ActionEvent event) -> {
             carsHistory_iw.setWorkHistory_id(driver_history_table.getSelectionModel().getSelectedItem());
             driver_page.setVisible(false);
-            driver_info.setEditable(false);
             String str = carsHistory_iw.getWorkHistory_id().getIndividual().getFirst_name() + " " + carsHistory_iw.getWorkHistory_id().getIndividual().getLast_name();
             driver_info.setText(str);
-            driver_info_button.changeText("cancel");
+            driver_info_text_clear.setVisible(true);
+            driver_info_button.changeText("truck");
         });
     }
 }

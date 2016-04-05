@@ -15,9 +15,8 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "carHistory")
 public class CarHistory {
 
-    public boolean isCreated = false;
-    public boolean isEdited = false;
-
+//    public boolean isCreated = false;
+//    public boolean isEdited = false;
     @DatabaseField(generatedId = true)
     private Integer id;
 
@@ -50,6 +49,9 @@ public class CarHistory {
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "card_void_date_id")
     private History cardVoidDateId;
+
+    @DatabaseField(defaultValue = "0")
+    private Boolean deActive;
 
     @DatabaseField(defaultValue = "")
     private String logs;
@@ -102,6 +104,14 @@ public class CarHistory {
 
     public WorkHistory getWorkHistory_id() {
         return workHistory_id;
+    }
+
+    public void setDeActive(Boolean deActive) {
+        this.deActive = deActive;
+    }
+
+    public Boolean getDeActive() {
+        return deActive;
     }
 
     public void setWorkHistory_id(WorkHistory workHistory_id) {

@@ -92,6 +92,12 @@ public class Fxml_Main extends ParentControl {
         fxml_Get_Report = new UtilsStage2(Fxml_Get_Report.class, "گزارش گیری", Modality.APPLICATION_MODAL, thisStage);
 
         fxml_Individual_Insert = new UtilsStage2(Fxml_Individual_Insert.class, "ثبت افراد جدید", Modality.NONE, thisStage);
+        fxml_Individual_Insert.t.set_on_car((Cars cars) -> {
+            fxml_Car_Insert.t.editable.set(false);
+            fxml_Car_Insert.t.car = cars;
+            fxml_Car_Insert.t.loadCars();
+            fxml_Car_Insert.t.show_Front_Or_Wait();
+        });
 
         fxml_Get_Report_Individual_List = new UtilsStage2(Fxml_Get_Report_Individual_List.class, true, "لیست افراد", Modality.NONE, thisStage);
         fxml_Get_Report_Individual_List.t.set_On_Get_Individual((Individuals individuals, boolean is_edit_mode) -> {
@@ -110,6 +116,12 @@ public class Fxml_Main extends ParentControl {
         });
 
         fxml_Car_Insert = new UtilsStage2(Fxml_Car_Insert.class, "سیستم اطلاعات خودرویی", Modality.NONE, thisStage);
+        fxml_Car_Insert.t.set_ON_INDIVIDUAL((Individuals individuals) -> {
+            fxml_Individual_Insert.t.editable.set(false);
+            fxml_Individual_Insert.t.individual = individuals;
+            fxml_Individual_Insert.t.loadIndividual();
+            fxml_Individual_Insert.t.show_Front_Or_Wait();
+        });
 
         fxml_Alarm_List = new UtilsStage2(Fxml_Alarm_List.class, "لیست هشدارها", Modality.APPLICATION_MODAL, thisStage);
         fxml_Alarm_List.t.set_On_Get_Car(new Fxml_Alarm_List.Get_Object() {

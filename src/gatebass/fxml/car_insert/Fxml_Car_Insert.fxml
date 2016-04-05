@@ -595,6 +595,7 @@
                                                         <Insets left="5.0" right="25.0" />
                                                     </padding>
                                                 </TextField>
+                                                <gatebass.myControl.MyButtonFont fx:id="driver_info_text_clear" visible="false"  focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_LEFT" />
                                                 <gatebass.myControl.MyButtonFont fx:id="driver_info_button" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_RIGHT" />
                                             </children>
                                         </StackPane>
@@ -727,7 +728,7 @@
                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                             </padding>
                         </HBox>
-                      <gatebass.myControl.MyButtonFont fx:id="print_view" blendMode="MULTIPLY" mnemonicParsing="false" style="-fx-translate-x: -5; -fx-translate-y: 2.5;" textFill="#2e7a8c" StackPane.alignment="TOP_RIGHT" />
+                        <gatebass.myControl.MyButtonFont fx:id="print_view" blendMode="MULTIPLY" mnemonicParsing="false" style="-fx-translate-x: -5; -fx-translate-y: 2.5;" textFill="#2e7a8c" StackPane.alignment="TOP_RIGHT" />
                     </children>
                     <VBox.margin>
                         <Insets />

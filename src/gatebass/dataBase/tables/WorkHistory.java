@@ -15,8 +15,6 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "workhistory")
 public class WorkHistory {
 
-//    public boolean isEdited = false;
-
     private String GATEBASS_TYPE = "";
     public static String STAF = "STAF";
     public static String CONTRACTOR = "CONTRACTOR";
@@ -59,6 +57,9 @@ public class WorkHistory {
     @DatabaseField
     private String comments;
 
+    @DatabaseField(defaultValue = "0")
+    private Boolean deActive;
+
     @DatabaseField(defaultValue = "")
     private String logs;
 
@@ -89,6 +90,14 @@ public class WorkHistory {
         this.companies = companies;
         this.jobTitle = jobTitle;
         this.jobTitleENG = jobTitleENG;
+    }
+
+    public Boolean getDeActive() {
+        return deActive;
+    }
+
+    public void setDeActive(Boolean deActive) {
+        this.deActive = deActive;
     }
 
     public String getLogs() {
@@ -238,6 +247,7 @@ public class WorkHistory {
     public boolean is_TEMPORARY_TYPE() {
         return this.GATEBASS_TYPE.equals(TEMPORARY);
     }
+
     public boolean is_CAR_TYPE() {
         return this.GATEBASS_TYPE.equals(CAR);
     }

@@ -14,6 +14,7 @@ import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Manage;
 import gatebass.dataBase.tables.Permission;
 import gatebass.dataBase.tables.WorkHistory;
+import gatebass.fxml.car_insert.Fxml_Car_Insert;
 import static gatebass.fxml.main.Fxml_Main.show_print_preView;
 import gatebass.fxml.individual_search.Fxml_Individual_Search;
 import gatebass.myControl.MyButtonFont;
@@ -74,6 +75,19 @@ import org.apache.commons.io.FileUtils;
  */
 public class Fxml_Individual_Insert extends ParentControl {
 
+   public interface ON_CAR {
+
+        void car(Cars cars);
+    }
+
+    private ON_CAR on_car;
+
+    public void set_on_car(ON_CAR on_car) {
+        this.on_car = on_car;
+    }
+
+
+
     @FXML
     private MyButtonFont print_view;
     @FXML
@@ -112,6 +126,8 @@ public class Fxml_Individual_Insert extends ParentControl {
     private TextArea work_comments;
     @FXML
     private TextField car_info;
+    @FXML
+    private MyButtonFont car_info_text_clear;
     @FXML
     private MyButtonFont car_info_button;
 
@@ -724,9 +740,9 @@ public class Fxml_Individual_Insert extends ParentControl {
         });
 
         editable.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            System.out.println("ss = " + Permission.isAcces(Permission.INDIVIDUAL_WORK_INSERT));
             work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_WORK_INSERT) || !newValue);
         });
+
     }
 
     private void set_editable_textField(TextField... textFields) {
@@ -743,6 +759,7 @@ public class Fxml_Individual_Insert extends ParentControl {
 
     private void setUp_Work_Page() {
 
+        car_info_text_clear.init("cancel", 15);
         car_info_button.init("search", 15);
         work_insert.init("plus", 15);
         work_edit.init("pencil", 15);
@@ -752,7 +769,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         contractor_print.init("vcard", "گیت باس پیمانکاری", 15);
 
         TextFiledLimited.set_Number_Limit(car_info);
-        car_info.setEditable(editable.get());
+        car_info.editableProperty().bind(editable.and(car_info_text_clear.visibleProperty().not()));
 
         car_info_button.visibleProperty().bind(editable);
         work_view.disableProperty().bind(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
@@ -796,6 +813,13 @@ public class Fxml_Individual_Insert extends ParentControl {
         String query = "SELECT * FROM companies WHERE active = 1 AND is_deleted = 0 ORDER BY company_fa ASC";
         MenuTableInit.companiesInit(query, comppany, companiesMenu);
 
+        car_info_text_clear.setOnAction((ActionEvent event) -> {
+            car_info.setText("");
+            car_info_button.changeText("search");
+            workHistory_iw.setCar_history_id(null);
+            car_info_text_clear.setVisible(false);
+        });
+
         car_info_button.setOnAction((ActionEvent event) -> {
             if (car_info.isEditable()) {
                 if (car_info.getText().isEmpty()) {
@@ -809,10 +833,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 car_history_table.getItems().setAll(databaseHelper.carsHistoryDao.getAll("car_id", cars_temp));
                 car_page.setVisible(true);
             } else {
-                car_info.setEditable(true);
-                car_info.setText("");
-                workHistory_iw.setCar_history_id(null);
-                car_info_button.changeText("search");
+                on_car.car(workHistory_iw.getCar_history_id().getCar_id());
             }
         });
 
@@ -920,10 +941,10 @@ public class Fxml_Individual_Insert extends ParentControl {
         car_submit.setOnAction((ActionEvent event) -> {
             workHistory_iw.setCar_history_id(car_history_table.getSelectionModel().getSelectedItem());
             car_page.setVisible(false);
-            car_info.setEditable(false);
             String str = workHistory_iw.getCar_history_id().getCar_id().getCar_name();
             car_info.setText(str);
-            car_info_button.changeText("cancel");
+            car_info_text_clear.setVisible(true);
+            car_info_button.changeText("truck");
         });
     }
 
@@ -1325,6 +1346,7 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         for (WorkHistory wh : work_table.getItems()) {
             wh.setIndividualsId(individual);
+            wh.setDeActive(!wh.equals(work_table.getItems().get(work_table.getItems().size())));
             databaseHelper.workHistoryDao.createOrUpdate(wh);
             if (wh.getCar_history_id() != null) {
                 CarHistory carHistory_temp = wh.getCar_history_id();
