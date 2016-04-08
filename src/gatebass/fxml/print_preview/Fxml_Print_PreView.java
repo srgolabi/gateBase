@@ -181,18 +181,45 @@ public class Fxml_Print_PreView extends ParentControl {
         });
 
         print.setOnAction((ActionEvent event) -> {
-            PrinterJob printerJob = PrinterJob.createPrinterJob(Printer.getDefaultPrinter());
-            if (printerJob != null) {
-                try {
-                    printerJob.getJobSettings().setPageLayout(layout_default);
-                    Boolean succes = printerJob.printPage(container);
-                    if (succes) {
-                        printerJob.endJob();
-                    }
-                } catch (Exception e) {
+            if (print_all.isSelected() && !print_all.isDisable()) {
+                for (int i = 0; i < getINT(page_total); i++) {
+                    set_page_number(1);
+                    print_page();
                 }
+            } else if (print_current.isSelected() && !print_current.isDisable()) {
+                print_page();
+            } else if (print_selecttion_page.getText().isEmpty()) {
+                return;
             }
+            if (getINT(print_selecttion_page) <= getINT(page_total)) {
+                page_number.setText((getINT(print_selecttion_page) - 1) + "");
+                set_page_number(1);
+            } else {
+                return;
+            }
+
         });
+
+        delete_all.setOnAction((ActionEvent event) -> {
+            work_list.clear();
+            gatebass.GateBass.work_list.clear();
+            thisStage.close();
+        });
+
+    }
+
+    private void print_page() {
+        PrinterJob printerJob = PrinterJob.createPrinterJob(active_printer);
+        if (printerJob != null) {
+            try {
+                printerJob.getJobSettings().setPageLayout(layout_default);
+                Boolean succes = printerJob.printPage(container);
+                if (succes) {
+                    printerJob.endJob();
+                }
+            } catch (Exception e) {
+            }
+        }
     }
 
     private void on_change_paper_parametr(PageOrientation po) {
@@ -278,7 +305,7 @@ public class Fxml_Print_PreView extends ParentControl {
     }
 
     private void set_temporary_value() {
-        if (work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1).is_CAR_TYPE()){
+        if (work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1).is_CAR_TYPE()) {
             set_car_value();
             return;
         }
