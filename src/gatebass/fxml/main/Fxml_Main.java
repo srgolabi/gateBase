@@ -85,6 +85,11 @@ public class Fxml_Main extends ParentControl {
     @Override
     public void setStage(Stage s) {
         super.setStage(s);
+
+        manageUser.setDisable(!Permission.isAcces(Permission.USER_VIEW) || !Permission.isAcces(Permission.USER_INSERT));
+        manageCompanies.setDisable(!Permission.isAcces(Permission.COMPANY_VIEW) || !Permission.isAcces(Permission.COMPANY_INSERT));
+        changeUserPass.setDisable(!Permission.isAcces(Permission.CHANGE_PASS));
+
         UtilsStage utilsStage_T = new UtilsStage(Fxml_Print_PreView.class, true, "چاپ", Modality.APPLICATION_MODAL, thisStage.getOwner());
         fxml_Print_PreView = utilsStage_T.getLoader().getController();
         fxml_Print_PreView.setStage(utilsStage_T.getStage());
@@ -220,6 +225,8 @@ public class Fxml_Main extends ParentControl {
             UtilsStage2 utilsStage = new UtilsStage2(Fxml_User_Manage.class, "مدیریت حساب ها", Modality.APPLICATION_MODAL, thisStage);
             utilsStage.t.show_And_Wait();
         });
+
+        bindToTime();
     }
 
     public static void show_print_preView(List<WorkHistory> work_list) {

@@ -1,166 +1,179 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="parent" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="820.0" spacing="20.0" style="-fx-font-family: &quot;B Yekan&quot;;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass_car.Fxml_Gate_Bass_Car">
-    <children>
-        <AnchorPane id="AnchorPane" prefHeight="396.0" prefWidth="570.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
-            <children>
-                <VBox prefHeight="396.0" prefWidth="570.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <children>
-                        <HBox alignment="CENTER" style="-fx-border-color: transparent transparent #000000 transparent; -fx-border-width: 2; -fx-background-color: #71cc50;" VBox.vgrow="ALWAYS">
-                            <children>
-                                <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label style="-fx-font-size: 20;" text="شرکت پتروشیمی مخازن سبز عسلویه" />
-                                    </children>
-                                    <HBox.margin>
-                                        <Insets />
-                                    </HBox.margin>
-                                    <padding>
-                                        <Insets right="27.0" />
-                                    </padding>
-                                </HBox>
-                                <Label fx:id="id" style="-fx-font-size: 14;" text="102030">
-                                    <HBox.margin>
-                                        <Insets right="5.0" />
-                                    </HBox.margin>
-                                </Label>
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" style="-fx-border-color: transparent transparent #000000 transparent; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label style="-fx-font-size: 17.5;" text="شرکت پیمانکار:">
-                                    <HBox.margin>
-                                        <Insets left="20.0" />
-                                    </HBox.margin>
-                                </Label>
-                                <Label fx:id="contractor" prefWidth="100.0" style="-fx-font-size: 17.5;" text="سیمتریک" />
-                                <HBox HBox.hgrow="ALWAYS" />
-                                <Label fx:id="car_name" alignment="CENTER" prefWidth="105.0" style="-fx-font-size: 17.5;" text="پزو206" />
-                                <HBox HBox.hgrow="ALWAYS" />
-                                <Label fx:id="driver_name" alignment="CENTER_RIGHT" prefWidth="205.0" style="-fx-font-size: 17.5;" text="محمد حسن بلاغتی">
-                                    <HBox.margin>
-                                        <Insets right="20.0" />
-                                    </HBox.margin>
-                                </Label>
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" maxHeight="81.0" style="-fx-border-color: transparent transparent #000000 transparent; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label fx:id="pellak" style="-fx-font-size: 32;" text=" ایران 36 - 355 ب 55" />
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" maxHeight="78.0" style="-fx-border-color: transparent transparent #000000 transparent; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label fx:id="date" style="-fx-font-size: 23;" text="1394/05/20" />
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" style="-fx-background-color: #71cc50;" VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label style="-fx-font-size: 17.5;" text="حراست پتروشیمی مخازن سبز عسلویه" />
-                            </children>
-                        </HBox>
-                    </children>
-                </VBox>
-                <Label layoutX="75.0" layoutY="265.0" prefHeight="30.0" prefWidth="80.0">
-                    <styleClass>
-                        <String fx:value="base-button" />
-                        <String fx:value="star1" />
-                    </styleClass>
-                </Label>
-                <Label layoutX="420.0" layoutY="265.0" prefHeight="30.0" prefWidth="80.0">
-                    <styleClass>
-                        <String fx:value="base-button" />
-                        <String fx:value="star1" />
-                    </styleClass>
-                </Label>
-                <Label layoutX="40.0" layoutY="342.0" prefHeight="26.0" prefWidth="80.0">
-                    <styleClass>
-                        <String fx:value="star2" />
-                        <String fx:value="base-button" />
-                    </styleClass>
-                </Label>
-                <Label layoutX="450.0" layoutY="342.0" prefHeight="26.0" prefWidth="80.0">
-                    <styleClass>
-                        <String fx:value="base-button" />
-                        <String fx:value="star2" />
-                    </styleClass>
-                </Label>
-                <Label layoutX="2.0" layoutY="2.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="79.0" prefWidth="190.0">
-                    <styleClass>
-                        <String fx:value="base-button" />
-                        <String fx:value="agtp-fuul-logo" />
-                    </styleClass>
-                </Label>
-            </children>
-        </AnchorPane>
-        <AnchorPane id="AnchorPane" prefHeight="396.0" prefWidth="570.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
-            <children>
-                <VBox prefHeight="396.0" prefWidth="570.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: transparent transparent #000000 transparent; -fx-background-color: #71cc50; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label style="-fx-font-size: 30.5;" text="راننده محترم:" VBox.vgrow="ALWAYS" />
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
-                            <children>
-                                <Label style="-fx-font-size: 13.5;" text="رعایت مقررات راهنمایی ورانندگی وایمنی در محدوده سایت الزامی می باشد. " VBox.vgrow="ALWAYS">
-                                    <VBox.margin>
-                                        <Insets left="10.0" />
-                                    </VBox.margin>
-                                </Label>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
-                            <children>
-                                <Label style="-fx-font-size: 13.5;" text="حداکثر سرعت مجاز در مسیر سایت 20کیلومتردر ساعت می باشد ." VBox.vgrow="ALWAYS">
-                                    <VBox.margin>
-                                        <Insets left="10.0" />
-                                    </VBox.margin>
-                                </Label>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
-                            <children>
-                                <Label style="-fx-font-size: 13.5;" text="از کارت خود به خوبی محافظت نموده ودر صورت مفقود شدن فوراً مراتب را به واحد حراست سایت اطلاع دهید." VBox.vgrow="ALWAYS">
-                                    <VBox.margin>
-                                        <Insets left="10.0" />
-                                    </VBox.margin>
-                                </Label>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
-                            <children>
-                                <Label style="-fx-font-size: 13.5;" text="جریمه صدور کارت المثنی 300.000  ریال  می باشد." VBox.vgrow="ALWAYS">
-                                    <VBox.margin>
-                                        <Insets left="10.0" />
-                                    </VBox.margin>
-                                </Label>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
-                            <children>
-                                <Label style="-fx-font-size: 13.5;" text="حداقل 10 روز قبل از پایان اعتبار کارت جهت تمدید اقدام نمایید." VBox.vgrow="ALWAYS">
-                                    <VBox.margin>
-                                        <Insets left="10.0" />
-                                    </VBox.margin>
-                                </Label>
-                            </children>
-                        </VBox>
-                    </children>
-                </VBox>
-            </children>
-        </AnchorPane>
-    </children>
-    <stylesheets>
-        <URL value="@../../resourse/css/FileIcon.css" />
-    </stylesheets>
-</VBox>
+
+<HBox xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass_car.Fxml_Gate_Bass_Car">
+   <children>
+      <VBox fx:id="parent" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="820.0" spacing="20.0" style="-fx-font-family: &quot;B Yekan&quot;;">
+          <children>
+              <AnchorPane id="AnchorPane" prefHeight="396.0" prefWidth="570.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
+                  <children>
+                      <VBox prefHeight="396.0" prefWidth="570.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <children>
+                              <HBox alignment="CENTER" style="-fx-border-color: transparent transparent #000000 transparent; -fx-border-width: 2; -fx-background-color: #71cc50;" VBox.vgrow="ALWAYS">
+                                  <children>
+                                      <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                          <children>
+                                              <Label style="-fx-font-size: 20;" text="شرکت پتروشیمی مخازن سبز عسلویه" />
+                                          </children>
+                                          <HBox.margin>
+                                              <Insets />
+                                          </HBox.margin>
+                                          <padding>
+                                              <Insets right="27.0" />
+                                          </padding>
+                                      </HBox>
+                                      <Label fx:id="id" style="-fx-font-size: 14;" text="102030">
+                                          <HBox.margin>
+                                              <Insets right="5.0" />
+                                          </HBox.margin>
+                                      </Label>
+                                  </children>
+                              </HBox>
+                              <HBox alignment="CENTER" style="-fx-border-color: transparent transparent #000000 transparent; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                                  <children>
+                                      <Label style="-fx-font-size: 17.5;" text="شرکت پیمانکار:">
+                                          <HBox.margin>
+                                              <Insets left="20.0" />
+                                          </HBox.margin>
+                                      </Label>
+                                      <Label fx:id="contractor" prefWidth="100.0" style="-fx-font-size: 17.5;" text="سیمتریک" />
+                                      <HBox HBox.hgrow="ALWAYS" />
+                                      <Label fx:id="car_name" alignment="CENTER" prefWidth="105.0" style="-fx-font-size: 17.5;" text="پزو206" />
+                                      <HBox HBox.hgrow="ALWAYS" />
+                                      <Label fx:id="driver_name" alignment="CENTER_RIGHT" prefWidth="205.0" style="-fx-font-size: 17.5;" text="محمد حسن بلاغتی">
+                                          <HBox.margin>
+                                              <Insets right="20.0" />
+                                          </HBox.margin>
+                                      </Label>
+                                  </children>
+                              </HBox>
+                              <HBox alignment="CENTER" maxHeight="81.0" style="-fx-border-color: transparent transparent #000000 transparent; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                                  <children>
+                                      <Label fx:id="pellak" style="-fx-font-size: 32;" text=" ایران 36 - 355 ب 55" />
+                                  </children>
+                              </HBox>
+                              <HBox alignment="CENTER" maxHeight="78.0" style="-fx-border-color: transparent transparent #000000 transparent; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                                  <children>
+                                      <Label fx:id="date" style="-fx-font-size: 23;" text="1394/05/20" />
+                                  </children>
+                              </HBox>
+                              <HBox alignment="CENTER" style="-fx-background-color: #71cc50;" VBox.vgrow="ALWAYS">
+                                  <children>
+                                      <Label style="-fx-font-size: 17.5;" text="حراست پتروشیمی مخازن سبز عسلویه" />
+                                  </children>
+                              </HBox>
+                          </children>
+                      </VBox>
+                      <Label layoutX="75.0" layoutY="265.0" prefHeight="30.0" prefWidth="80.0">
+                          <styleClass>
+                              <String fx:value="base-button" />
+                              <String fx:value="star1" />
+                          </styleClass>
+                      </Label>
+                      <Label layoutX="420.0" layoutY="265.0" prefHeight="30.0" prefWidth="80.0">
+                          <styleClass>
+                              <String fx:value="base-button" />
+                              <String fx:value="star1" />
+                          </styleClass>
+                      </Label>
+                      <Label layoutX="40.0" layoutY="342.0" prefHeight="26.0" prefWidth="80.0">
+                          <styleClass>
+                              <String fx:value="star2" />
+                              <String fx:value="base-button" />
+                          </styleClass>
+                      </Label>
+                      <Label layoutX="450.0" layoutY="342.0" prefHeight="26.0" prefWidth="80.0">
+                          <styleClass>
+                              <String fx:value="base-button" />
+                              <String fx:value="star2" />
+                          </styleClass>
+                      </Label>
+                      <Label layoutX="2.0" layoutY="2.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="79.0" prefWidth="190.0">
+                          <styleClass>
+                              <String fx:value="base-button" />
+                              <String fx:value="agtp-fuul-logo" />
+                          </styleClass>
+                      </Label>
+                  </children>
+              </AnchorPane>
+              <AnchorPane id="AnchorPane" prefHeight="396.0" prefWidth="570.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
+                  <children>
+                      <VBox prefHeight="396.0" prefWidth="570.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: transparent transparent #000000 transparent; -fx-background-color: #71cc50; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                                  <children>
+                                      <Label style="-fx-font-size: 30.5;" text="راننده محترم:" VBox.vgrow="ALWAYS" />
+                                  </children>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                  <children>
+                                      <Label style="-fx-font-size: 13.5;" text="رعایت مقررات راهنمایی ورانندگی وایمنی در محدوده سایت الزامی می باشد. " VBox.vgrow="ALWAYS">
+                                          <VBox.margin>
+                                              <Insets left="10.0" />
+                                          </VBox.margin>
+                                      </Label>
+                                  </children>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                  <children>
+                                      <Label style="-fx-font-size: 13.5;" text="حداکثر سرعت مجاز در مسیر سایت 20کیلومتردر ساعت می باشد ." VBox.vgrow="ALWAYS">
+                                          <VBox.margin>
+                                              <Insets left="10.0" />
+                                          </VBox.margin>
+                                      </Label>
+                                  </children>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                  <children>
+                                      <Label style="-fx-font-size: 13.5;" text="از کارت خود به خوبی محافظت نموده ودر صورت مفقود شدن فوراً مراتب را به واحد حراست سایت اطلاع دهید." VBox.vgrow="ALWAYS">
+                                          <VBox.margin>
+                                              <Insets left="10.0" />
+                                          </VBox.margin>
+                                      </Label>
+                                  </children>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                  <children>
+                                      <Label style="-fx-font-size: 13.5;" text="جریمه صدور کارت المثنی 300.000  ریال  می باشد." VBox.vgrow="ALWAYS">
+                                          <VBox.margin>
+                                              <Insets left="10.0" />
+                                          </VBox.margin>
+                                      </Label>
+                                  </children>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                  <children>
+                                      <Label style="-fx-font-size: 13.5;" text="حداقل 10 روز قبل از پایان اعتبار کارت جهت تمدید اقدام نمایید." VBox.vgrow="ALWAYS">
+                                          <VBox.margin>
+                                              <Insets left="10.0" />
+                                          </VBox.margin>
+                                      </Label>
+                                  </children>
+                              </VBox>
+                          </children>
+                      </VBox>
+                  </children>
+              </AnchorPane>
+          </children>
+          <stylesheets>
+              <URL value="@../../resourse/css/FileIcon.css" />
+          </stylesheets>
+      </VBox>
+      <HBox alignment="BOTTOM_LEFT" style="-fx-border-color: #aaaaaa; -fx-border-width: 0 0 1 1;">
+         <children>
+            <MyButtonFont fx:id="delete" mnemonicParsing="false" prefHeight="25" prefWidth="25" />
+         </children>
+         <padding>
+            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+         </padding>
+      </HBox>
+   </children>
+</HBox>

@@ -61,7 +61,9 @@ public class GateBass extends Application {
         actUser = new InitActUser();
         databaseHelper = new DatabaseHelper();
         if (databaseHelper.usersDao.getAll().isEmpty()) {
-            databaseHelper.usersDao.createOrUpdate(new Users("golabi", "123", "", "رضا"));
+            Users user_temp = new Users("adminGolabi", "@dm!ng00l@b!", "", "مدیر سیستم");
+            user_temp.setAdmin(true);
+            databaseHelper.usersDao.createOrUpdate(user_temp);
             databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count", "2157"));
             databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count_car", "50"));
             databaseHelper.manageDao.createOrUpdate(new Manage(2, "company_folder_count", "1"));
@@ -137,7 +139,6 @@ public class GateBass extends Application {
 
     public void showMainStage(Stage stage) {
         UtilsStage utilsStage = new UtilsStage(Fxml_Main.class, "", Modality.NONE, stage.getOwner());
-//        UtilsStage utilsStage = new UtilsStage("main/FXMLMain.fxml", "", Modality.NONE, stage.getOwner());
         Fxml_Main fXML_Main = utilsStage.getLoader().getController();
         fXML_Main.setStage(utilsStage.getStage());
         utilsStage.getStage().show();

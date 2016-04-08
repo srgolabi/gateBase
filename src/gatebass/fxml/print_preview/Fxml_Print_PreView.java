@@ -188,14 +188,16 @@ public class Fxml_Print_PreView extends ParentControl {
                 }
             } else if (print_current.isSelected() && !print_current.isDisable()) {
                 print_page();
-            } else if (print_selecttion_page.getText().isEmpty()) {
-                return;
-            }
-            if (getINT(print_selecttion_page) <= getINT(page_total)) {
-                page_number.setText((getINT(print_selecttion_page) - 1) + "");
-                set_page_number(1);
+            } else if (!print_selecttion_page.getText().isEmpty()) {
+                if (getINT(print_selecttion_page) <= getINT(page_total)) {
+                    page_number.setText((getINT(print_selecttion_page) - 1) + "");
+                    set_page_number(1);
+                } else {
+                    return;
+                }
             } else {
                 return;
+
             }
 
         });
@@ -329,10 +331,10 @@ public class Fxml_Print_PreView extends ParentControl {
         set_layout_parametr();
         UtilsStage2<Fxml_Gate_Bass_Car> utilsStage = new UtilsStage2(Fxml_Gate_Bass_Car.class, "", Modality.APPLICATION_MODAL, thisStage);
         utilsStage.t.set_value(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
-//        utilsStage.t.delete.setOnAction((ActionEvent event) -> {
-//            work_list.remove(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
-//            set_value(work_list);
-//        });
+        utilsStage.t.delete.setOnAction((ActionEvent event) -> {
+            work_list.remove(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
+            set_value(work_list);
+        });
         container.getChildren().clear();
         container.getChildren().add(utilsStage.t.parent);
     }

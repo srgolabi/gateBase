@@ -38,7 +38,7 @@ public class Fxml_Gate_Bass_Car extends ParentControl {
 
     public void set_value(WorkHistory wh) {
 
-//        delete.init("trash", 12);
+        delete.init("trash", 12);
         id.setText(wh.getCar_history_id().getCar_id().getCard_id());
         contractor.setText(wh.getCar_history_id().getSherkat());
         car_name.setText(wh.getCar_history_id().getCar_id().getCar_name());
