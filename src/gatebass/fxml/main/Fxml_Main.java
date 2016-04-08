@@ -2,6 +2,7 @@ package gatebass.fxml.main;
 
 import static gatebass.GateBass.onCloseApp;
 import static gatebass.GateBass.users;
+import static gatebass.GateBass.work_list;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Permission;
@@ -17,6 +18,7 @@ import gatebass.fxml.login.Fxml_Login;
 import gatebass.fxml.individual_insert.Fxml_Individual_Insert;
 import gatebass.fxml.print_preview.Fxml_Print_PreView;
 import gatebass.fxml.user_manage.Fxml_User_Manage;
+import gatebass.myControl.MyButtonFont;
 import gatebass.register.Register;
 import gatebass.utils.ParentControl;
 import gatebass.utils.PersianCalendar;
@@ -50,7 +52,7 @@ public class Fxml_Main extends ParentControl {
     @FXML
     private Button car_insert;
     @FXML
-    private Button print_manual;
+    private MyButtonFont show_print_view;
     @FXML
     private Button report;
     @FXML
@@ -85,6 +87,7 @@ public class Fxml_Main extends ParentControl {
     @Override
     public void setStage(Stage s) {
         super.setStage(s);
+        show_print_view.init("print", 22);
 
         manageUser.setDisable(!Permission.isAcces(Permission.USER_VIEW) || !Permission.isAcces(Permission.USER_INSERT));
         manageCompanies.setDisable(!Permission.isAcces(Permission.COMPANY_VIEW) || !Permission.isAcces(Permission.COMPANY_INSERT));
@@ -224,6 +227,14 @@ public class Fxml_Main extends ParentControl {
         manageUser.setOnAction((ActionEvent event) -> {
             UtilsStage2 utilsStage = new UtilsStage2(Fxml_User_Manage.class, "مدیریت حساب ها", Modality.APPLICATION_MODAL, thisStage);
             utilsStage.t.show_And_Wait();
+        });
+
+        show_print_view.setOnAction((ActionEvent event) -> {
+            if (work_list.isEmpty()) {
+                UtilsStage.showMsg("موردی جهت چاپ وجود ندارد", "هشدار", false, thisStage);
+            } else {
+                show_print_preView(work_list);
+            }
         });
 
         bindToTime();

@@ -556,7 +556,6 @@ public class Fxml_Individual_Insert extends ParentControl {
             if (work_list.isEmpty()) {
                 UtilsStage.showMsg("موردی جهت چاپ وجود ندارد", "هشدار", false, thisStage);
             } else {
-                System.out.println("size : " + work_list.size());
                 show_print_preView(work_list);
             }
         });
