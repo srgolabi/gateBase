@@ -57,9 +57,6 @@ public class WorkHistory {
     @DatabaseField
     private String comments;
 
-    @DatabaseField(defaultValue = "0")
-    private Boolean deActive;
-
     @DatabaseField(defaultValue = "")
     private String logs;
 
@@ -90,14 +87,6 @@ public class WorkHistory {
         this.companies = companies;
         this.jobTitle = jobTitle;
         this.jobTitleENG = jobTitleENG;
-    }
-
-    public Boolean getDeActive() {
-        return deActive;
-    }
-
-    public void setDeActive(Boolean deActive) {
-        this.deActive = deActive;
     }
 
     public String getLogs() {

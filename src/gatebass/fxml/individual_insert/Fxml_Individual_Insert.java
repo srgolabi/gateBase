@@ -14,7 +14,6 @@ import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Manage;
 import gatebass.dataBase.tables.Permission;
 import gatebass.dataBase.tables.WorkHistory;
-import gatebass.fxml.car_insert.Fxml_Car_Insert;
 import static gatebass.fxml.main.Fxml_Main.show_print_preView;
 import gatebass.fxml.individual_search.Fxml_Individual_Search;
 import gatebass.myControl.MyButtonFont;
@@ -1346,7 +1345,6 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         for (WorkHistory wh : work_table.getItems()) {
             wh.setIndividualsId(individual);
-            wh.setDeActive(!wh.equals(work_table.getItems().get(work_table.getItems().size())));
             databaseHelper.workHistoryDao.createOrUpdate(wh);
             if (wh.getCar_history_id() != null) {
                 CarHistory carHistory_temp = wh.getCar_history_id();

@@ -26,7 +26,7 @@
 
 <HBox nodeOrientation="RIGHT_TO_LEFT" spacing="20.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-background-color: #BBDEFB; -fx-font-size: 14;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.get_report.Fxml_Get_Report">
     <children>
-        <VBox nodeOrientation="RIGHT_TO_LEFT" spacing="20.0">
+        <VBox nodeOrientation="RIGHT_TO_LEFT">
             <children>
                 <HBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" style="-fx-border-color: #2e7a8c; -fx-border-width: 0 0 1 0;">
                     <children>
@@ -42,6 +42,9 @@
                     <padding>
                         <Insets bottom="4.0" left="10.0" right="10.0" />
                     </padding>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
                 </HBox>
                 <StackPane fx:id="main_page" VBox.vgrow="ALWAYS">
                     <children>
@@ -82,7 +85,7 @@
                                         </VBox>
                                         <StackPane prefWidth="400.0">
                                             <children>
-                                                <HBox fx:id="company_page" alignment="BOTTOM_RIGHT" spacing="20.0" StackPane.alignment="BOTTOM_RIGHT">
+                                                <HBox fx:id="company_page" alignment="BOTTOM_RIGHT" spacing="20.0" visible="false" StackPane.alignment="BOTTOM_RIGHT">
                                                     <StackPane.margin>
                                                         <Insets />
                                                     </StackPane.margin>
@@ -172,7 +175,7 @@
                                                         <Insets />
                                                     </StackPane.margin>
                                                 </HBox>
-                                                <HBox fx:id="string_page_root" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="10.0" visible="false" StackPane.alignment="BOTTOM_LEFT">
+                                                <HBox fx:id="string_page_root" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="10.0" StackPane.alignment="BOTTOM_LEFT">
                                                     <children>
                                                         <HBox fx:id="other_operator_page" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
                                                             <children>
@@ -189,6 +192,9 @@
                                                                 <Label text="مقدار" textFill="#2e7a8c" />
                                                                 <TextField fx:id="string_text" maxWidth="1.7976931348623157E308" />
                                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
                                                         </VBox>
                                                     </children>
                                                 </HBox>
@@ -243,7 +249,7 @@
                                 </HBox>
                             </children>
                             <StackPane.margin>
-                                <Insets bottom="20.0" />
+                                <Insets bottom="15.0" />
                             </StackPane.margin>
                         </VBox>
                         <TableView fx:id="field_table_individual" fixedCellSize="25.0" maxHeight="135.0" maxWidth="169.0" prefHeight="128.0" styleClass="hide-column-header" visible="false" StackPane.alignment="TOP_LEFT">
@@ -323,6 +329,11 @@
                         </TableView>
                     </children>
                 </StackPane>
+            <CheckBox fx:id="valid_card" mnemonicParsing="false" text="کارتهای دارای اعتبار" textFill="#2e7a8c">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+            </CheckBox>
             </children>
         </VBox>
         <VBox spacing="18.0">

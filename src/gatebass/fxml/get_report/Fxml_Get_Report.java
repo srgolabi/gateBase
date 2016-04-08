@@ -14,12 +14,15 @@ import gatebass.utils.MenuTableInit;
 import gatebass.myControl.tableView.MyColumnTable;
 import gatebass.utils.MyTime;
 import gatebass.utils.ParentControl;
+import gatebass.utils.PersianCalendar;
 import gatebass.utils.TextFiledLimited;
 import gatebass.utils.UtilsStage;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -29,6 +32,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -48,6 +52,8 @@ public class Fxml_Get_Report extends ParentControl {
 
     @FXML
     private StackPane main_page;
+    @FXML
+    private CheckBox valid_card;
 
     @FXML
     private RadioButton report_type_individual;
@@ -188,6 +194,7 @@ public class Fxml_Get_Report extends ParentControl {
                 add_query_to_table.changeText("edit");
             }
         });
+
         String query_individual
                 = "SELECT individuals.id , individuals.card_id , individuals.first_name , individuals.last_name , workhistory_j.car_history_id,\n"
                 + "count(individualReplica_J.Individual_id)  replica_count , count(individualWarning_J.Individual_id) warning_count , individuals.father_first_name , individuals.national_id ,\n"
@@ -215,8 +222,9 @@ public class Fxml_Get_Report extends ParentControl {
                 + " LEFT OUTER JOIN history history_j3 ON history_j3.id = workhistory.card_expiration_date_id\n"
                 + " LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id\n"
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
+                + " GROUP_BY_QUERY\n"
                 + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n"
-                + "WHERE_SEARCH_QUERY\n"
+                + "WHERE_VALID_CARD_QUERY WHERE_SEARCH_QUERY\n"
                 + "GROUP BY individuals.id\n"
                 + "HAVING_SEARCH_QUERY";
 
@@ -386,12 +394,19 @@ public class Fxml_Get_Report extends ParentControl {
         });
 
         done.setOnAction((ActionEvent event) -> {
+            PersianCalendar pc = new PersianCalendar();
+            query_for_search = query_individual.replace("GROUP_BY_QUERY", valid_card.isSelected() ? "" : "");
             if (main_page.isDisable()) {
                 if (report_type_individual_list.isSelected()) {
-                    query_for_search = query_individual.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
+                    query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
                 } else if (report_type_car_list.isSelected()) {
-                    query_for_search = query_car.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
+                    query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
                 }
+
+                query_for_search = query_for_search.replace("WHERE_VALID_CARD_QUERY", valid_card.isSelected()
+                        ? "WHERE workhistory_j.card_expiration_date >= " + "'" + pc.year2dig() + "/" + pc.month() + "/" + pc.day() + "'"
+                        : "");
+                
             } else {
                 String where_q = "";
                 String having_q = "";
@@ -402,18 +417,21 @@ public class Fxml_Get_Report extends ParentControl {
                         where_q = where_q + (qb.and_or.get().equals("و  ") ? " AND " : qb.and_or.get().equals("یا  ") ? " OR " : "") + qb.open_bracket.get() + qb.operator.get() + qb.close_bracket.get();
                     }
                 }
-                if (!where_q.isEmpty()) {
-                    where_q = "WHERE " + where_q;
-                }
+
+                query_for_search = query_for_search.replace("WHERE_VALID_CARD_QUERY", valid_card.isSelected()
+                        ? "WHERE workhistory_j.card_expiration_date >= " + "'" + pc.year() + "/" + pc.month() + "/" + pc.day() + "' AND "
+                        : "WHERE ");
+
                 if (!having_q.isEmpty()) {
                     having_q = "HAVING " + having_q;
                 }
                 if (report_type_individual.isSelected()) {
-                    query_for_search = query_individual.replace("WHERE_SEARCH_QUERY", where_q).replace("HAVING_SEARCH_QUERY", having_q);
+                    query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", where_q).replace("HAVING_SEARCH_QUERY", having_q);
                 } else if (report_type_car.isSelected()) {
                     query_for_search = query_car.replace("WHERE_SEARCH_QUERY", where_q).replace("HAVING_SEARCH_QUERY", having_q);
                 }
             }
+
             thisStage.close();
         });
     }
@@ -664,14 +682,17 @@ public class Fxml_Get_Report extends ParentControl {
             this.field_type.set(field_type);
         }
 
-        public Query_Base(String field_name, String field_type, String other_operator_first, String other_operator_second) {
-            this();
-            this.field_name = field_name;
-            this.field_type.set(field_type);
-            this.other_operator_first.set(other_operator_first);
-            this.other_operator_second.set(other_operator_second);
+        public Query_Base(String field_name, String field_type, String culomn_query, boolean valid_card) {
+            this(field_name, field_type, culomn_query);
         }
 
+//        public Query_Base(String field_name, String field_type, String other_operator_first, String other_operator_second) {
+//            this();
+//            this.field_name = field_name;
+//            this.field_type.set(field_type);
+//            this.other_operator_first.set(other_operator_first);
+//            this.other_operator_second.set(other_operator_second);
+//        }
         public String getField_name() {
             return field_name;
         }
