@@ -248,8 +248,9 @@ public class Fxml_Get_Report extends ParentControl {
                 + " (SELECT workhistory.* , individuals_j1.first_name , individuals_j1.last_name FROM workhistory\n"
                 + "  LEFT OUTER JOIN individuals individuals_j1 ON workhistory.individuals_id = individuals_j1.id \n"
                 + "  ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
+                + " GROUP_BY_QUERY\n"
                 + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
-                + "WHERE_SEARCH_QUERY\n"
+                + "WHERE_VALID_CARD_QUERY WHERE_SEARCH_QUERY\n"
                 + "GROUP BY cars.id"
                 + "HAVING_SEARCH_QUERY";
 
@@ -397,14 +398,13 @@ public class Fxml_Get_Report extends ParentControl {
             if (main_page.isDisable()) {
                 if (report_type_individual_list.isSelected()) {
                     query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
+
                 } else if (report_type_car_list.isSelected()) {
                     query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
                 }
-
                 query_for_search = query_for_search.replace("WHERE_VALID_CARD_QUERY", valid_card.isSelected()
-                        ? "WHERE workhistory_j.card_expiration_date >= " + "'" + pc.year2dig() + "/" + pc.month() + "/" + pc.day() + "'"
+                        ? "WHERE card_expiration_date >= " + "'" + pc.year2dig() + "/" + pc.month() + "/" + pc.day() + "'"
                         : "");
-                
             } else {
                 String where_q = "";
                 String having_q = "";
@@ -417,7 +417,7 @@ public class Fxml_Get_Report extends ParentControl {
                 }
 
                 query_for_search = query_for_search.replace("WHERE_VALID_CARD_QUERY", valid_card.isSelected()
-                        ? "WHERE workhistory_j.card_expiration_date >= " + "'" + pc.year() + "/" + pc.month() + "/" + pc.day() + "' AND "
+                        ? "WHERE card_expiration_date >= " + "'" + pc.year() + "/" + pc.month() + "/" + pc.day() + "' AND "
                         : "WHERE ");
 
                 if (!having_q.isEmpty()) {
@@ -559,9 +559,9 @@ public class Fxml_Get_Report extends ParentControl {
                     date_day.setText(arr[2]);
                     math_number_equals.getToggleGroup().selectToggle(
                             selected_field.value.equals(">") ? math_number_greater_than
-                                    : selected_field.value.equals(">=") ? math_number_greater_than_equals
-                                            : selected_field.value.equals("<") ? math_number_less_than
-                                                    : selected_field.value.equals("=<") ? math_number_less_than_equals : math_number_equals
+                            : selected_field.value.equals(">=") ? math_number_greater_than_equals
+                            : selected_field.value.equals("<") ? math_number_less_than
+                            : selected_field.value.equals("=<") ? math_number_less_than_equals : math_number_equals
                     );
                     break;
                 case "haveOrNot":
@@ -577,9 +577,9 @@ public class Fxml_Get_Report extends ParentControl {
                     number_text.setText(selected_field.value);
                     math_number_equals.getToggleGroup().selectToggle(
                             selected_field.value.equals(">") ? math_number_greater_than
-                                    : selected_field.value.equals(">=") ? math_number_greater_than_equals
-                                            : selected_field.value.equals("<") ? math_number_less_than
-                                                    : selected_field.value.equals("=<") ? math_number_less_than_equals : math_number_equals
+                            : selected_field.value.equals(">=") ? math_number_greater_than_equals
+                            : selected_field.value.equals("<") ? math_number_less_than
+                            : selected_field.value.equals("=<") ? math_number_less_than_equals : math_number_equals
                     );
                     break;
                 case "company":
@@ -588,7 +588,7 @@ public class Fxml_Get_Report extends ParentControl {
                 case "veteran_status":
                     veteran_moaf.getToggleGroup().selectToggle(
                             selected_field.value.equals("0") ? veteran_payan_khedmat
-                                    : selected_field.value.equals("1") ? veteran_namalom : veteran_moaf);
+                            : selected_field.value.equals("1") ? veteran_namalom : veteran_moaf);
                     break;
 
             }
