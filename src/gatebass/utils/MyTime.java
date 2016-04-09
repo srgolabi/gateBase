@@ -8,7 +8,6 @@ package gatebass.utils;
 import static gatebass.GateBass.databaseHelper;
 import gatebass.dataBase.tables.History;
 import javafx.beans.property.BooleanProperty;
-import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -109,7 +108,6 @@ public class MyTime {
         String day = calendar.day().length() == 2 ? calendar.day() : "0" + calendar.day();
 
         String tempHistory = yaer + "/" + month + "/" + day;
-        System.out.println("a = " + tempHistory);
         History letterHistory = databaseHelper.historyDao.getFirst("date", tempHistory);
         if (letterHistory == null) {
             letterHistory = new History(yaer, month, day);

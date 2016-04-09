@@ -102,7 +102,6 @@ public class Permission {
         if (!b) {
             UtilsStage.showMsg("دسترسی شما محدود می باشد.", "هشدار", false, new Stage());
         }
-        System.out.println("ss = " + b);
         return b;
     }
     /*

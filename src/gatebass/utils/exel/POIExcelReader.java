@@ -38,8 +38,8 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  */
 public class POIExcelReader {
 
-    private final int end_row = 2167;
-    private final int start_row = 1;
+//    private int end_row = 2242;
+    private int start_row = 1;
 
     /**
      * Creates a new instance of POIExcelReader
@@ -54,6 +54,7 @@ public class POIExcelReader {
      */
     @SuppressWarnings("unchecked")
     public void displayFromExcel(String xlsPath) {
+//        end_row = 2242;
         InputStream inputStream = null;
 
         try {
@@ -75,9 +76,9 @@ public class POIExcelReader {
             List<Individuals> individualses = new ArrayList<>();
             while (rows.hasNext()) {
                 HSSFRow row = (HSSFRow) rows.next();
-                if (row.getRowNum() >= end_row) {
-                    break;
-                }
+//                if (row.getRowNum() >= end_row) {
+//                    break;
+//                }
 
                 if (row.getRowNum() <= start_row) {
                     continue;
@@ -92,7 +93,7 @@ public class POIExcelReader {
                 Individuals individuals = null;
 
 // display row number in the console.
-                System.out.println("Row No.: " + row.getRowNum());
+//                System.out.println("Row No.: " + row.getRowNum());
 // once get a row its time to iterate through cells.
                 Iterator cells = row.cellIterator();
                 while (cells.hasNext()) {
@@ -301,17 +302,16 @@ public class POIExcelReader {
             while (rows.hasNext()) {
                 check = false;
                 HSSFRow row = (HSSFRow) rows.next();
-                if (row.getRowNum() >= end_row) {
-                    break;
-                }
+//                if (row.getRowNum() >= end_row) {
+//                    break;
+//                }
                 if (row.getRowNum() <= start_row) {
                     continue;
                 }
 
                 Companies companies = new Companies();
 
-                System.out.println("Row No.: " + row.getRowNum());
-
+//                System.out.println("Row No.: " + row.getRowNum());
                 String companyName = row.getCell(2).getRichStringCellValue().getString();
                 if (!companyName.isEmpty()) {
                     Companies companiesTEMP = databaseHelper.companiesDao.getFirst("company_fa", companyName);
@@ -379,7 +379,7 @@ public class POIExcelReader {
 
                 History historyH = null;
 
-                System.out.println("Row No.: " + row.getRowNum());
+//                System.out.println("Row No.: " + row.getRowNum());
                 try {
 
                     String history = row.getCell(7).getRichStringCellValue().getString();
@@ -574,17 +574,16 @@ public class POIExcelReader {
             while (rows.hasNext()) {
                 check = false;
                 HSSFRow row = (HSSFRow) rows.next();
-                if (row.getRowNum() >= end_row) {
-                    break;
-                }
+//                if (row.getRowNum() >= end_row) {
+//                    break;
+//                }
                 if (row.getRowNum() <= start_row) {
                     continue;
                 }
 
                 WorkHistory workHistory = new WorkHistory();
 
-                System.out.println("Row No.: " + row.getRowNum());
-
+//                System.out.println("Row No.: " + row.getRowNum());
                 String row_value = row.getCell(2).getRichStringCellValue().getString();
                 if (!row_value.isEmpty()) {
                     Companies companiesTEMP = databaseHelper.companiesDao.getFirst("company_fa", row_value);
@@ -715,17 +714,16 @@ public class POIExcelReader {
             while (rows.hasNext()) {
                 check = false;
                 HSSFRow row = (HSSFRow) rows.next();
-                if (row.getRowNum() >= end_row) {
-                    break;
-                }
+//                if (row.getRowNum() >= end_row) {
+//                    break;
+//                }
                 if (row.getRowNum() <= start_row) {
                     continue;
                 }
 
                 Companies companies = new Companies();
 
-                System.out.println("Row No.: " + row.getRowNum());
-
+//                System.out.println("Row No.: " + row.getRowNum());
                 String companyName = row.getCell(2).getRichStringCellValue().getString();
                 if (!companyName.isEmpty()) {
                     Companies companiesTEMP = databaseHelper.companiesDao.getFirst("company_fa", companyName);
@@ -987,9 +985,9 @@ public class POIExcelReader {
             List<Cars> carses = new ArrayList<>();
             while (rows.hasNext()) {
                 HSSFRow row = (HSSFRow) rows.next();
-                if (row.getRowNum() >= end_row) {
-                    break;
-                }
+//                if (row.getRowNum() >= end_row) {
+//                    break;
+//                }
 
                 if (row.getRowNum() <= start_row) {
                     continue;
@@ -1117,9 +1115,9 @@ public class POIExcelReader {
             while (rows.hasNext()) {
                 check = false;
                 HSSFRow row = (HSSFRow) rows.next();
-                if (row.getRowNum() >= end_row) {
-                    break;
-                }
+//                if (row.getRowNum() >= end_row) {
+//                    break;
+//                }
                 if (row.getRowNum() <= start_row) {
                     continue;
                 }
@@ -1362,11 +1360,14 @@ public class POIExcelReader {
             Iterator rows = sheet.rowIterator();
             List<Individuals> individualses = new ArrayList<>();
             List<WorkHistory> whs = new ArrayList<>();
+
+            Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count");
+            int card_sequential = Integer.parseInt(manage.getValue());
             while (rows.hasNext()) {
                 HSSFRow row = (HSSFRow) rows.next();
-                if (row.getRowNum() >= end_row) {
-                    break;
-                }
+//                if (row.getRowNum() >= end_row) {
+//                    break;
+//                }
 
                 if (row.getRowNum() <= start_row) {
                     continue;
@@ -1401,19 +1402,25 @@ public class POIExcelReader {
                         individuals = new Individuals();
                         individuals.setNational_id(meli);
 
-                        try {
-                            individuals.setCard_id(((long) row.getCell(0).getNumericCellValue()) + "");
-                        } catch (Exception e) {
-                        }
-                        try {
-                            individuals.setCard_id(row.getCell(0).getRichStringCellValue().getString());
-                        } catch (Exception e) {
-                        }
+                        individuals.setCard_id(card_sequential + "");
+                        card_sequential++;
+
+//                        try {
+//                            individuals.setCard_id(((long) row.getCell(0).getNumericCellValue()) + "");
+//                        } catch (Exception e) {
+//                        }
+//                        try {
+//                            individuals.setCard_id(row.getCell(0).getRichStringCellValue().getString());
+//                        } catch (Exception e) {
+//                        }
                         if (!row.getCell(1).getRichStringCellValue().getString().isEmpty()) {
                             individuals.setFirst_name(row.getCell(1).getRichStringCellValue().getString());
                         }
-                        if (!row.getCell(2).getRichStringCellValue().getString().isEmpty()) {
-                            individuals.setFather_first_name(row.getCell(2).getRichStringCellValue().getString());
+                        try {
+                            if (!row.getCell(2).getRichStringCellValue().getString().isEmpty()) {
+                                individuals.setFather_first_name(row.getCell(2).getRichStringCellValue().getString());
+                            }
+                        } catch (Exception e) {
                         }
                         try {
                             individuals.setId_number(((long) row.getCell(3).getNumericCellValue()) + "");
@@ -1435,6 +1442,14 @@ public class POIExcelReader {
                             }
                         } catch (Exception e) {
                         }
+                        try {
+                            individuals.setComments("شماره کارت قدیم : " + ((long) row.getCell(0).getNumericCellValue()) + (individuals.getComments() != null ? "\n" + individuals.getComments() : ""));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            individuals.setCard_id("شماره کارت قدیم : " + row.getCell(0).getRichStringCellValue().getString() +(individuals.getComments() != null ? "\n" + individuals.getComments() : ""));
+                        } catch (Exception e) {
+                        }
 
                         String split = FileSystems.getDefault().getSeparator();
                         individuals.setFilesPatch("data" + split + "1394" + split + dd / 50 + split + individuals.getNational_id() + split);
@@ -1451,7 +1466,7 @@ public class POIExcelReader {
         }
     }
 
-        @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     public void displayFromExcel35(String xlsPath) {
         InputStream inputStream = null;
 
@@ -1474,9 +1489,9 @@ public class POIExcelReader {
             List<WorkHistory> whs = new ArrayList<>();
             while (rows.hasNext()) {
                 HSSFRow row = (HSSFRow) rows.next();
-                if (row.getRowNum() >= end_row) {
-                    break;
-                }
+//                if (row.getRowNum() >= end_row) {
+//                    break;
+//                }
 
                 if (row.getRowNum() <= start_row) {
                     continue;
@@ -1515,7 +1530,7 @@ public class POIExcelReader {
             e.printStackTrace();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private WorkHistory works_add(HSSFRow row, Individuals individuals) {
         WorkHistory wh = new WorkHistory();

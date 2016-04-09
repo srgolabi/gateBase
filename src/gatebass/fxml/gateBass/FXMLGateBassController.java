@@ -38,6 +38,12 @@ public class FXMLGateBassController extends ParentControl {
     @FXML
     private Label date_expire;
     @FXML
+    public Label tarikh_engheza;
+    @FXML
+    private Label date_issude;
+    @FXML
+    private Label date_issude_title;
+    @FXML
     private Label national_id;
     @FXML
     private Label postal_code;
@@ -52,21 +58,22 @@ public class FXMLGateBassController extends ParentControl {
     public Arc circle_down;
     @FXML
     public HBox down_card;
-    @FXML
-    public Label tarikh_engheza;
 
     public void set_value(WorkHistory wh) {
         Individuals iv = wh.getIndividual();
         String[] colors;
         if (wh.is_STAF_TYPE()) {
-            colors = new String[]{"#1e90ff", "#70bef2", "#1e90ff", "#ffff00"};
+            colors = new String[]{"#77933c", "#d7e4bd", "#77933c", "#ffff00"};
         } else {
+            date_issude.setVisible(false);
+            date_issude_title.setVisible(false);
             colors = new String[]{"#1e90ff", "#70bef2", "#1e90ff", "#ffff00"};
         }
         circle_up.setFill(Color.valueOf(colors[0]));
         circle_down.setFill(Color.valueOf(colors[1]));
         down_card.setStyle("-fx-background-color: " + colors[2] + circle_up.getStyle());
         tarikh_engheza.setTextFill(Color.valueOf(colors[3]));
+        date_issude_title.setTextFill(Color.valueOf(colors[3]));
         delete.init("trash", 12);
         first_name.setText(iv.getFirst_name());
         last_name.setText(iv.getLast_name());
@@ -74,6 +81,7 @@ public class FXMLGateBassController extends ParentControl {
         company.setText(wh.getSherkat());
         card_id.setText(iv.getCard_id());
         date_expire.setText(wh.getEngheza());
+        date_issude.setText(wh.getSodor());
         national_id.setText(iv.getNational_id());
         postal_code.setText(iv.getPostal_code());
         if (iv.getPicture_address() != null) {

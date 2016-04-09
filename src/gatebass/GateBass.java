@@ -65,8 +65,8 @@ public class GateBass extends Application {
             user_temp.setAdmin(true);
             databaseHelper.usersDao.createOrUpdate(user_temp);
             databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count", "2157"));
-            databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count_car", "50"));
-            databaseHelper.manageDao.createOrUpdate(new Manage(2, "company_folder_count", "1"));
+            databaseHelper.manageDao.createOrUpdate(new Manage(2, "card_id_count_car", "50"));
+            databaseHelper.manageDao.createOrUpdate(new Manage(3, "company_folder_count", "1"));
 
             List<Permission> permissions = new ArrayList<>();
             Permission pLetter = new Permission(Permission.INDIVIDUAL, "INDIVIDUAL", "سیستم اطلاعات فردی", 50, null);

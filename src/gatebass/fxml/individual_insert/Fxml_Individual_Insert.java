@@ -74,7 +74,7 @@ import org.apache.commons.io.FileUtils;
  */
 public class Fxml_Individual_Insert extends ParentControl {
 
-   public interface ON_CAR {
+    public interface ON_CAR {
 
         void car(Cars cars);
     }
@@ -84,8 +84,6 @@ public class Fxml_Individual_Insert extends ParentControl {
     public void set_on_car(ON_CAR on_car) {
         this.on_car = on_car;
     }
-
-
 
     @FXML
     private MyButtonFont print_view;
@@ -674,7 +672,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 individualComments, work_insert, insert_individual
         );
 
-        TextFiledLimited.set_Number_Length_Limit(national_id, 10);
+        TextFiledLimited.set_Number_Limit(national_id);
         TextFiledLimited.set_Number_Length_Limit(serial_number, 6);
         TextFiledLimited.set_Number_Length_Limit(series_id_2, 2);
         TextFiledLimited.set_Number_Length_Limit(series_id_1, 3);
@@ -706,6 +704,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 return;
             }
             if (national_id.getText().length() != 10) {
+                national_id.requestFocus();
                 UtilsStage.showMsg("کد ملی باید 10 رقم باشد.", "هشدار", false, thisStage);
                 tabPane.getSelectionModel().select(0);
                 national_id.requestFocus();
@@ -1337,6 +1336,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 new File(f.getAddress()).renameTo(new File(server + ttemp));
                 f.setAddress(ttemp);
             }
+            f.setIndividual_id(individual);
         }
         individual.setCard_id(server);
         fileSelected.refresh();
@@ -1351,6 +1351,16 @@ public class Fxml_Individual_Insert extends ParentControl {
                 databaseHelper.carsHistoryDao.createOrUpdate(carHistory_temp);
             }
         }
+
+        for (IndividualReplica ir : replica_Table.getItems()) {
+            ir.setIndividual_id(individual);
+        }
+        databaseHelper.individualReplicaDao.insertList(replica_Table.getItems());
+
+        for (IndividualWarning iw : warning_Table.getItems()) {
+            iw.setIndividual_id(individual);
+        }
+        databaseHelper.individualWarningDao.insertList(warning_Table.getItems());
 
         editMode = true;
         return true;

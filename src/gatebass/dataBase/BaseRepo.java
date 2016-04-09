@@ -6,6 +6,7 @@ import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import gatebass.dataBase.tables.Individuals;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -56,6 +57,9 @@ public class BaseRepo<T, ID> {
                 try {
                     insertCount += dao.createOrUpdate(t).getNumLinesChanged();
                 } catch (SQLException e) {
+                    if (t instanceof Individuals){
+                        System.out.println("national = " + ((Individuals)t).getNational_id());
+                    }
                 }
             }
             return insertCount;

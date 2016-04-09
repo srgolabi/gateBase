@@ -412,7 +412,6 @@ public class Fxml_Car_Insert extends ParentControl {
             wh.setCar_history_id(work_table.getSelectionModel().getSelectedItem());
             wh.set_TYPE(WorkHistory.CAR);
             work_list.add(wh);
-            System.out.println("gatebass.f == " + work_list.size());
         });
         work_insert.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
             if (event.isShiftDown() && event.getCode() == TAB) {
@@ -610,6 +609,7 @@ public class Fxml_Car_Insert extends ParentControl {
                 new File(f.getAddress()).renameTo(new File(server + ttemp));
                 f.setAddress(ttemp);
             }
+            f.setCar_id(car);
         }
         fileSelected.refresh();
         databaseHelper.individualFileDao.insertList(fileSelected.getItems());
@@ -623,6 +623,11 @@ public class Fxml_Car_Insert extends ParentControl {
                 databaseHelper.workHistoryDao.createOrUpdate(workHistory_temp);
             }
         }
+        for (IndividualReplica ir : replica_Table.getItems()) {
+            ir.setCar_id(car);
+        }
+        databaseHelper.individualReplicaDao.insertList(replica_Table.getItems());
+
         editMode = true;
         return true;
     }

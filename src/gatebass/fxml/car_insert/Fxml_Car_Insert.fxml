@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -18,7 +26,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane style="-fx-font-family: &quot;B Yekan&quot;;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.car_insert.Fxml_Car_Insert">
+<StackPane style="-fx-font-family: &quot;B Yekan&quot;;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.car_insert.Fxml_Car_Insert">
     <children>
         <VBox alignment="TOP_RIGHT" maxHeight="390.0" maxWidth="646.0" nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 13.5;">
             <children>
@@ -268,7 +276,7 @@
                                                                 <PropertyValueFactory property="Tarikh" />
                                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn editable="false" prefWidth="75.0" text="میبلغ واریزی">
+                                                        <TableColumn editable="false" prefWidth="75.0" text="مبلغ واریزی">
                                                             <cellValueFactory>
                                                                 <PropertyValueFactory property="mablagh" />
                                                             </cellValueFactory>
@@ -595,7 +603,7 @@
                                                         <Insets left="5.0" right="25.0" />
                                                     </padding>
                                                 </TextField>
-                                                <gatebass.myControl.MyButtonFont fx:id="driver_info_text_clear" visible="false"  focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_LEFT" />
+                                                <gatebass.myControl.MyButtonFont fx:id="driver_info_text_clear" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" visible="false" StackPane.alignment="CENTER_LEFT" />
                                                 <gatebass.myControl.MyButtonFont fx:id="driver_info_button" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_RIGHT" />
                                             </children>
                                         </StackPane>

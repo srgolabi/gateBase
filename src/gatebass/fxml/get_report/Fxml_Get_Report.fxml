@@ -120,7 +120,7 @@
                                                                 <RadioButton fx:id="math_number_greater_than" mnemonicParsing="false" text="&gt;" textFill="#2e7a8c" toggleGroup="$math_operator_group" />
                                                                 <RadioButton fx:id="math_number_equals" mnemonicParsing="false" selected="true" text="=" textFill="#2e7a8c" toggleGroup="$math_operator_group" />
                                                                 <RadioButton fx:id="math_number_less_than" mnemonicParsing="false" text="&lt;" textFill="#2e7a8c" toggleGroup="$math_operator_group" />
-                                                                <RadioButton fx:id="math_number_less_than_equals" mnemonicParsing="false" text="=&lt;" textFill="#2e7a8c" toggleGroup="$math_operator_group" />
+                                                                <RadioButton fx:id="math_number_less_than_equals" mnemonicParsing="false" text="&lt;=" textFill="#2e7a8c" toggleGroup="$math_operator_group" />
                                                             </children>
                                                         </HBox>
                                                         <VBox fx:id="number_page" visible="false" HBox.hgrow="ALWAYS">

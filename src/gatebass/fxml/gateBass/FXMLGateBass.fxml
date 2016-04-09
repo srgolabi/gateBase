@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
@@ -8,11 +14,11 @@
 <?import javafx.scene.shape.Arc?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 <?import gatebass.myControl.*?>
+
 <!--<?import gatebass.myControl.*?>-->
 
-<HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 8; -fx-background-color: #ffffff;" stylesheets="@../../resourse/css/FileIcon.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gateBass.FXMLGateBassController">
+<HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 8; -fx-background-color: #ffffff;" stylesheets="@../../resourse/css/FileIcon.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gateBass.FXMLGateBassController">
    <children>
       <HBox alignment="BOTTOM_LEFT" style="-fx-border-color: #aaaaaa; -fx-border-width: 0 1 1 0;">
          <children>
@@ -35,14 +41,14 @@
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </HBox>
-                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Assalouye Green Tank  Farm Petrochimical Co.">
+                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" minHeight="10.0" text="Assalouye Green Tank  Farm Petrochimical Co.">
                                  <font>
-                                    <Font name="Century" size="9.5" />
+                                    <Font name="Georgia Bold" size="8.0" />
                                  </font>
                               </Label>
                            </children>
                            <VBox.margin>
-                              <Insets left="4.0" right="25.0" />
+                              <Insets left="4.0" right="30.0" />
                            </VBox.margin>
                         </VBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
@@ -83,6 +89,11 @@
                         </HBox>
                         <HBox fx:id="down_card" alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
                            <children>
+                              <Label fx:id="date_issude_title" maxHeight="1.7976931348623157E308" text="تاریخ صدور : " />
+                              <Label fx:id="date_issude" maxHeight="1.7976931348623157E308" style="-fx-font-size: 12;" text="94/08/25" textFill="YELLOW">
+                                 <HBox.margin>
+                                    <Insets right="35.0" />
+                                 </HBox.margin></Label>
                               <Label fx:id="tarikh_engheza" maxHeight="1.7976931348623157E308" text="تاریخ انقضا : " />
                               <Label fx:id="date_expire" maxHeight="1.7976931348623157E308" style="-fx-font-size: 12;" text="94/08/25" textFill="YELLOW" />
                            </children>
@@ -95,19 +106,19 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Arc fx:id="circle_down" fill="#70bef2" length="180.0" radiusX="25.0" radiusY="36.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND">
+                  <Arc fx:id="circle_down" fill="#d7e4bd" length="180.0" radiusX="30.0" radiusY="36.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND">
                      <StackPane.margin>
                         <Insets right="2.0" top="25.0" />
                      </StackPane.margin>
                   </Arc>
-                  <Arc fx:id="circle_up" fill="DODGERBLUE" length="180.0" radiusX="20.0" radiusY="35.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND">
+                  <Arc fx:id="circle_up" fill="#77933c" length="180.0" radiusX="25.0" radiusY="35.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND">
                      <StackPane.margin>
                         <Insets right="2.0" top="15.0" />
                      </StackPane.margin>
                   </Arc>
-                  <Text strokeWidth="0.0" style="-fx-font-family: &quot;IranNastaliq&quot;; -fx-font-size: 23;" text="شرکت پتروشیمی مخازن سبز عسلویه" textAlignment="JUSTIFY">
+                  <Text strokeWidth="0.0" style="-fx-font-family: &quot;IranNastaliq&quot;; -fx-font-size: 21;" text="شرکت پتروشیمی مخازن سبز عسلویه" textAlignment="JUSTIFY">
                      <StackPane.margin>
-                        <Insets right="50.0" top="2.0" />
+                        <Insets right="60.0" top="4.0" />
                      </StackPane.margin>
                   </Text>
                </children>

@@ -220,7 +220,6 @@ public class Fxml_Get_Report extends ParentControl {
                 + " LEFT OUTER JOIN history history_j3 ON history_j3.id = workhistory.card_expiration_date_id\n"
                 + " LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id\n"
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
-                + " GROUP_BY_QUERY\n"
                 + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n"
                 + "WHERE_VALID_CARD_QUERY WHERE_SEARCH_QUERY\n"
                 + "GROUP BY individuals.id\n"
@@ -248,7 +247,6 @@ public class Fxml_Get_Report extends ParentControl {
                 + " (SELECT workhistory.* , individuals_j1.first_name , individuals_j1.last_name FROM workhistory\n"
                 + "  LEFT OUTER JOIN individuals individuals_j1 ON workhistory.individuals_id = individuals_j1.id \n"
                 + "  ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
-                + " GROUP_BY_QUERY\n"
                 + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
                 + "WHERE_VALID_CARD_QUERY WHERE_SEARCH_QUERY\n"
                 + "GROUP BY cars.id"
@@ -304,7 +302,6 @@ public class Fxml_Get_Report extends ParentControl {
         });
 
         report_type_individual.setOnAction((ActionEvent event) -> {
-            System.out.println("asdasdsdd");
             String temp = fields_text_individual.getText();
             fields_text_individual.setText("");
             fields_text_individual.setText(temp);
@@ -394,16 +391,16 @@ public class Fxml_Get_Report extends ParentControl {
 
         done.setOnAction((ActionEvent event) -> {
             PersianCalendar pc = new PersianCalendar();
-            query_for_search = query_individual.replace("GROUP_BY_QUERY", valid_card.isSelected() ? "" : "");
+//            query_for_search = query_individual.replace("GROUP_BY_QUERY", valid_card.isSelected() ? "" : "");
             if (main_page.isDisable()) {
                 if (report_type_individual_list.isSelected()) {
-                    query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
+                    query_for_search = query_individual.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
 
                 } else if (report_type_car_list.isSelected()) {
-                    query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
+                    query_for_search = query_car.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
                 }
                 query_for_search = query_for_search.replace("WHERE_VALID_CARD_QUERY", valid_card.isSelected()
-                        ? "WHERE card_expiration_date >= " + "'" + pc.year2dig() + "/" + pc.month() + "/" + pc.day() + "'"
+                        ? "WHERE card_expiration_date >= " + "'" + pc.year2dig() + "/" + (pc.month().length() == 1 ? "0" + pc.month() : pc.month()) + "/" + (pc.day().length() == 1 ? "0" + pc.day() : pc.day()) + "'"
                         : "");
             } else {
                 String where_q = "";
@@ -559,9 +556,9 @@ public class Fxml_Get_Report extends ParentControl {
                     date_day.setText(arr[2]);
                     math_number_equals.getToggleGroup().selectToggle(
                             selected_field.value.equals(">") ? math_number_greater_than
-                            : selected_field.value.equals(">=") ? math_number_greater_than_equals
-                            : selected_field.value.equals("<") ? math_number_less_than
-                            : selected_field.value.equals("=<") ? math_number_less_than_equals : math_number_equals
+                                    : selected_field.value.equals(">=") ? math_number_greater_than_equals
+                                            : selected_field.value.equals("<") ? math_number_less_than
+                                                    : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
                     );
                     break;
                 case "haveOrNot":
@@ -577,9 +574,9 @@ public class Fxml_Get_Report extends ParentControl {
                     number_text.setText(selected_field.value);
                     math_number_equals.getToggleGroup().selectToggle(
                             selected_field.value.equals(">") ? math_number_greater_than
-                            : selected_field.value.equals(">=") ? math_number_greater_than_equals
-                            : selected_field.value.equals("<") ? math_number_less_than
-                            : selected_field.value.equals("=<") ? math_number_less_than_equals : math_number_equals
+                                    : selected_field.value.equals(">=") ? math_number_greater_than_equals
+                                            : selected_field.value.equals("<") ? math_number_less_than
+                                                    : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
                     );
                     break;
                 case "company":
@@ -588,7 +585,7 @@ public class Fxml_Get_Report extends ParentControl {
                 case "veteran_status":
                     veteran_moaf.getToggleGroup().selectToggle(
                             selected_field.value.equals("0") ? veteran_payan_khedmat
-                            : selected_field.value.equals("1") ? veteran_namalom : veteran_moaf);
+                                    : selected_field.value.equals("1") ? veteran_namalom : veteran_moaf);
                     break;
 
             }

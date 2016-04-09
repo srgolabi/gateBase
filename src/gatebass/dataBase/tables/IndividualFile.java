@@ -80,6 +80,10 @@ public class IndividualFile {
         this.individual_id = individual_id;
     }
 
+    public void setCar_id(Cars car_id) {
+        this.car_id = car_id;
+    }
+
     public Individuals getIndividual_id() {
         return individual_id;
     }

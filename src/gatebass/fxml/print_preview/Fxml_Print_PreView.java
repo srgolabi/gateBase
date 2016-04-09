@@ -182,6 +182,7 @@ public class Fxml_Print_PreView extends ParentControl {
 
         print.setOnAction((ActionEvent event) -> {
             if (print_all.isSelected() && !print_all.isDisable()) {
+                page_number.setText("0");
                 for (int i = 0; i < getINT(page_total); i++) {
                     set_page_number(1);
                     print_page();

@@ -82,6 +82,11 @@ public class IndividualReplica extends Base {
         this.Individual_id = Individual_id;
     }
 
+    public void setCar_id(Cars car_id) {
+        this.car_id = car_id;
+    }
+    
+
     public void setMablagh(String mablagh) {
         this.mablagh = mablagh;
     }

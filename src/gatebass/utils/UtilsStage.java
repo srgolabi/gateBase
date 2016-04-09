@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -68,9 +70,9 @@ public class UtilsStage {
     }
 
     public static boolean showMsg(String msg, String title, boolean okIsShow, Stage thisStage) {
-        UtilsStage2<Fxml_Warning_Window> utilsStage = new UtilsStage2(Fxml_Warning_Window.class, title,Modality.APPLICATION_MODAL, thisStage);
+        UtilsStage2<Fxml_Warning_Window> utilsStage = new UtilsStage2(Fxml_Warning_Window.class, title, Modality.APPLICATION_MODAL, new Stage());
         utilsStage.t.set_msg_txt(msg);
-                utilsStage.t.ok.setVisible(okIsShow);
+        utilsStage.t.ok.setVisible(okIsShow);
         if (okIsShow) {
             utilsStage.t.ok.setDefaultButton(true);
             utilsStage.t.cancel.setCancelButton(true);
