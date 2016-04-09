@@ -678,9 +678,10 @@ public class Fxml_Car_Insert extends ParentControl {
         card_expiration_date = new MyTime(expire_year, expire_month, expire_day);
 
         TextFiledLimited.setEnterFocuse(
-                comppany, bimeh_day, bimeh_month, bimeh_year, certificate_day, certificate_month,
-                certificate_year, issued_day, issued_month, issued_year, expire_day, expire_month,
-                expire_year, void_day, void_month, void_year, work_submit, work_back
+                pellak, color, driver_info, comppany, bimeh_day, bimeh_month, bimeh_year,
+                certificate_day, certificate_month, certificate_year, issued_day, issued_month,
+                issued_year, expire_day, expire_month, expire_year, void_day,
+                void_month, void_year, work_submit, work_back
         );
 
         work_table.setRowFactory((TableView<CarHistory> tableView) -> {

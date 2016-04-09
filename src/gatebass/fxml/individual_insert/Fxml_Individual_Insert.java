@@ -784,7 +784,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         card_expiration_date = new MyTime(card_expiration_year, card_expiration_month, card_expiration_day);
 
         TextFiledLimited.setEnterFocuse(
-                comppany, job_phone_number, work_comments, job_title, employment_day,
+                comppany, job_phone_number, work_comments, job_title, job_title_ENG, employment_day,
                 employment_month, employment_year, card_issued_day, card_issued_month,
                 card_issued_year, card_expiration_day, card_expiration_month, card_expiration_year,
                 card_delivery_day, card_delivery_month, card_delivery_year

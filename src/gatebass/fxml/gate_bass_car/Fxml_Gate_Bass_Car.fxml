@@ -13,9 +13,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+
 <HBox style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass_car.Fxml_Gate_Bass_Car">
     <children>
-        <VBox fx:id="parent" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="820.0" spacing="20.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-background-color: #ffffff;">
+        <VBox fx:id="parent" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="820.0" spacing="25.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-background-color: #ffffff;">
             <children>
                 <AnchorPane id="AnchorPane" prefHeight="396.0" prefWidth="570.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
                     <children>
@@ -110,7 +111,7 @@
                 </AnchorPane>
                 <AnchorPane id="AnchorPane" prefHeight="396.0" prefWidth="570.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
                     <children>
-                        <VBox prefHeight="396.0" prefWidth="570.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox prefHeight="396.0" prefWidth="570.0" style="-fx-font-size: 13.6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: transparent transparent #000000 transparent; -fx-background-color: #71cc50; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
                                     <children>
@@ -119,7 +120,7 @@
                                 </VBox>
                                 <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Label style="-fx-font-size: 13.5;" text="رعایت مقررات راهنمایی ورانندگی وایمنی در محدوده سایت الزامی می باشد. " VBox.vgrow="ALWAYS">
+                                        <Label text="رعایت مقررات راهنمایی ورانندگی وایمنی در محدوده سایت الزامی می باشد. " VBox.vgrow="ALWAYS">
                                             <VBox.margin>
                                                 <Insets left="10.0" />
                                             </VBox.margin>
@@ -128,7 +129,7 @@
                                 </VBox>
                                 <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Label style="-fx-font-size: 13.5;" text="حداکثر سرعت مجاز در مسیر سایت 20کیلومتردر ساعت می باشد ." VBox.vgrow="ALWAYS">
+                                        <Label text="حداکثر سرعت مجاز در مسیر سایت 20کیلومتردر ساعت می باشد ." VBox.vgrow="ALWAYS">
                                             <VBox.margin>
                                                 <Insets left="10.0" />
                                             </VBox.margin>
@@ -137,7 +138,7 @@
                                 </VBox>
                                 <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Label style="-fx-font-size: 13.5;" text="از کارت خود به خوبی محافظت نموده ودر صورت مفقود شدن فوراً مراتب را به واحد حراست سایت اطلاع دهید." VBox.vgrow="ALWAYS">
+                                        <Label text="از کارت خود به خوبی محافظت نموده ودر صورت مفقود شدن فوراً مراتب را به واحد حراست سایت اطلاع دهید." VBox.vgrow="ALWAYS">
                                             <VBox.margin>
                                                 <Insets left="10.0" />
                                             </VBox.margin>
@@ -146,7 +147,7 @@
                                 </VBox>
                                 <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Label style="-fx-font-size: 13.5;" text="جریمه صدور کارت المثنی 300.000  ریال  می باشد." VBox.vgrow="ALWAYS">
+                                        <Label text="جریمه صدور کارت المثنی 300.000  ریال  می باشد." VBox.vgrow="ALWAYS">
                                             <VBox.margin>
                                                 <Insets left="10.0" />
                                             </VBox.margin>
@@ -155,7 +156,7 @@
                                 </VBox>
                                 <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Label style="-fx-font-size: 13.5;" text="حداقل 10 روز قبل از پایان اعتبار کارت جهت تمدید اقدام نمایید." VBox.vgrow="ALWAYS">
+                                        <Label text="حداقل 10 روز قبل از پایان اعتبار کارت جهت تمدید اقدام نمایید." VBox.vgrow="ALWAYS">
                                             <VBox.margin>
                                                 <Insets left="10.0" />
                                             </VBox.margin>
