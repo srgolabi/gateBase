@@ -771,7 +771,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         car_info_button.visibleProperty().bind(editable);
         work_view.disableProperty().bind(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_INSERT) || !editable.get());
-        work_edit.disableProperty().bind(work_view.disableProperty().or(editable.not()));
+        work_edit.disableProperty().bind(work_view.disableProperty().or(editable.not()).or(work_insert.disableProperty()));
 
         temporary_print.disableProperty().bind(work_edit.disableProperty());
         staff_print.disableProperty().bind(work_edit.disableProperty());
@@ -877,9 +877,6 @@ public class Fxml_Individual_Insert extends ParentControl {
                 return;
             }
 
-//            if (workHistory_iw == null) {
-//                workHistory_iw = new WorkHistory();
-//            }
             workHistory_iw.setCompanies(databaseHelper.companiesDao.getFirst("company_fa", comppany.getText()));
             workHistory_iw.setJobPhoneNumber(job_phone_number.getText());
             workHistory_iw.setJobTitle(job_title.getText());
@@ -909,7 +906,6 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         work_back.setOnAction((ActionEvent event) -> {
             work_page.setVisible(false);
-//            work_button_page.setVisible(false);
             MyTime.set_empty_myTime(employment_date, card_delivery_date, card_expiration_date, card_issued_date);
             TextFiledLimited.set_empty_textField(job_title, comppany, job_title_ENG, job_phone_number, work_comments);
         });
