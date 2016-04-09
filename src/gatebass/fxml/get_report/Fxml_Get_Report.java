@@ -375,7 +375,6 @@ public class Fxml_Get_Report extends ParentControl {
                     temp.operator.set("= 'value'");
                     OPERATOR = temp.value.equals("0") ? "دارای کارت پایان خدمت می باشند." : temp.value.equals("1") ? "از خدمت معاف شده اند." : "وضعیت خدمتی نامعلوم داردند.";
                     break;
-
             }
             temp.operator.set(temp.culomn_query.get() + " " + temp.operator.get().replace("value", temp.value));
             temp.table_title.set(temp.table_title_fix.get().replace("OPERATOR", OPERATOR).replace("VALUE", VALUE));
@@ -400,7 +399,8 @@ public class Fxml_Get_Report extends ParentControl {
                     query_for_search = query_car.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
                 }
                 query_for_search = query_for_search.replace("WHERE_VALID_CARD_QUERY", valid_card.isSelected()
-                        ? "WHERE card_expiration_date >= " + "'" + pc.year2dig() + "/" + (pc.month().length() == 1 ? "0" + pc.month() : pc.month()) + "/" + (pc.day().length() == 1 ? "0" + pc.day() : pc.day()) + "'"
+                        //                        ? "WHERE card_expiration_date >= " + "'" + pc.year2dig() + "/" + (pc.month().length() == 1 ? "0" + pc.month() : pc.month()) + "/" + (pc.day().length() == 1 ? "0" + pc.day() : pc.day()) + "'"
+                        ? "WHERE workhistory_j.card_delivery_date is not null"
                         : "");
             } else {
                 String where_q = "";
@@ -414,7 +414,8 @@ public class Fxml_Get_Report extends ParentControl {
                 }
 
                 query_for_search = query_for_search.replace("WHERE_VALID_CARD_QUERY", valid_card.isSelected()
-                        ? "WHERE card_expiration_date >= " + "'" + pc.year() + "/" + pc.month() + "/" + pc.day() + "' AND "
+                        //                        ? "WHERE card_expiration_date >= " + "'" + pc.year() + "/" + pc.month() + "/" + pc.day() + "' AND "
+                        ? "WHERE workhistory_j.card_delivery_date is not null"
                         : "WHERE ");
 
                 if (!having_q.isEmpty()) {
