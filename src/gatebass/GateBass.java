@@ -38,21 +38,21 @@ public class GateBass extends Application {
     public static List<WorkHistory> work_list = new ArrayList<>();
 
     private void importFromExcel() {
-//        POIExcelReader poiExample = new POIExcelReader();
-//        String xlsPath = "d://test//Gatepass.xls";
-//        poiExample.compnaiesFromExcel(xlsPath);
-//        poiExample.historyFromExcel(xlsPath);
-//        poiExample.displayFromExcel(xlsPath);
-//        poiExample.worksFromExcel(xlsPath);
-//        xlsPath = "d://test//Gatepass-Cars.xls";
-//        poiExample.compnaiesFromExcel2(xlsPath);
-//        poiExample.historyFromExcel2(xlsPath);
-//        poiExample.displayFromExcel2(xlsPath);
-//        poiExample.worksFromExcel2(xlsPath);
-//        xlsPath = "d://test//temporary.xls";
-//        poiExample.historyFromExcel3(xlsPath);
-//        poiExample.displayFromExcel3(xlsPath);
-//        poiExample.displayFromExcel35(xlsPath);
+        POIExcelReader poiExample = new POIExcelReader();
+        String xlsPath = "d://test//Gatepass.xls";
+        poiExample.compnaiesFromExcel(xlsPath);
+        poiExample.historyFromExcel(xlsPath);
+        poiExample.displayFromExcel(xlsPath);
+        poiExample.worksFromExcel(xlsPath);
+        xlsPath = "d://test//Gatepass-Cars.xls";
+        poiExample.compnaiesFromExcel2(xlsPath);
+        poiExample.historyFromExcel2(xlsPath);
+        poiExample.displayFromExcel2(xlsPath);
+        poiExample.worksFromExcel2(xlsPath);
+        xlsPath = "d://test//temporary.xls";
+        poiExample.historyFromExcel3(xlsPath);
+        poiExample.displayFromExcel3(xlsPath);
+        poiExample.displayFromExcel35(xlsPath);
 
     }
 
@@ -64,7 +64,7 @@ public class GateBass extends Application {
             Users user_temp = new Users("adminGolabi", "@dm!ng00l@b!", "", "مدیر سیستم");
             user_temp.setAdmin(true);
             databaseHelper.usersDao.createOrUpdate(user_temp);
-            databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count", "2157"));
+            databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count", "932349"));
             databaseHelper.manageDao.createOrUpdate(new Manage(2, "card_id_count_car", "50"));
             databaseHelper.manageDao.createOrUpdate(new Manage(3, "company_folder_count", "1"));
 

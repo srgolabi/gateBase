@@ -1088,7 +1088,6 @@ public class POIExcelReader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @SuppressWarnings("unchecked")
@@ -1359,10 +1358,9 @@ public class POIExcelReader {
             HSSFSheet sheet = workBook.getSheetAt(0);
             Iterator rows = sheet.rowIterator();
             List<Individuals> individualses = new ArrayList<>();
-            List<WorkHistory> whs = new ArrayList<>();
 
             Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count");
-            int card_sequential = Integer.parseInt(manage.getValue());
+            long card_sequential = Long.parseLong(manage.getValue());
             while (rows.hasNext()) {
                 HSSFRow row = (HSSFRow) rows.next();
 //                if (row.getRowNum() >= end_row) {
@@ -1401,9 +1399,6 @@ public class POIExcelReader {
 
                         individuals = new Individuals();
                         individuals.setNational_id(meli);
-
-                        individuals.setCard_id(card_sequential + "");
-                        card_sequential++;
 
 //                        try {
 //                            individuals.setCard_id(((long) row.getCell(0).getNumericCellValue()) + "");
@@ -1447,12 +1442,15 @@ public class POIExcelReader {
                         } catch (Exception e) {
                         }
                         try {
-                            individuals.setCard_id("شماره کارت قدیم : " + row.getCell(0).getRichStringCellValue().getString() +(individuals.getComments() != null ? "\n" + individuals.getComments() : ""));
+                            individuals.setCard_id("شماره کارت قدیم : " + row.getCell(0).getRichStringCellValue().getString() + (individuals.getComments() != null ? "\n" + individuals.getComments() : ""));
                         } catch (Exception e) {
                         }
 
                         String split = FileSystems.getDefault().getSeparator();
                         individuals.setFilesPatch("data" + split + "1394" + split + dd / 50 + split + individuals.getNational_id() + split);
+                        individuals.setCard_id(card_sequential + "");
+                        card_sequential++;
+
                         individualses.add(individuals);
                     }
 
