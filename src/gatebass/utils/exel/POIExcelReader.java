@@ -658,6 +658,7 @@ public class POIExcelReader {
                     if (!row_value.isEmpty()) {
                         row_value = row_value.substring(2);
                         History HistoryTEMP = databaseHelper.historyDao.getFirst("date", row_value);
+
                         workHistory.setCardDeliveryDate(HistoryTEMP);
                     }
                 } catch (Exception e) {
@@ -667,6 +668,9 @@ public class POIExcelReader {
                     row_value = ((long) row.getCell(6).getNumericCellValue()) + "";
                     if (!row_value.isEmpty()) {
                         Individuals individuals = databaseHelper.individualsDao.getFirst("national_id", row_value);
+                        if (workHistory.getCardDeliveryDate() == null) {
+                            System.out.println("aaaaaaaaaaaaa = " + individuals.getNational_id());
+                        }
                         workHistory.setIndividualsId(individuals);
                     }
                 } catch (Exception e) {
@@ -791,7 +795,7 @@ public class POIExcelReader {
 
                 History historyH = null;
 
-                System.out.println("Row No.: " + row.getRowNum());
+//                System.out.println("Row No.: " + row.getRowNum());
                 try {
 
                     String history = row.getCell(6).getRichStringCellValue().getString();
@@ -1002,7 +1006,7 @@ public class POIExcelReader {
                 Cars cars = null;
 
 // display row number in the console.
-                System.out.println("Row No.: " + row.getRowNum());
+//                System.out.println("Row No.: " + row.getRowNum());
 // once get a row its time to iterate through cells.
                 Iterator cells = row.cellIterator();
                 while (cells.hasNext()) {
@@ -1123,7 +1127,7 @@ public class POIExcelReader {
 
                 CarHistory carHistory = new CarHistory();
 
-                System.out.println("Row No.: " + row.getRowNum());
+//                System.out.println("Row No.: " + row.getRowNum());
 
                 String row_value = row.getCell(2).getRichStringCellValue().getString();
                 if (!row_value.isEmpty()) {
@@ -1261,7 +1265,7 @@ public class POIExcelReader {
 
                 History historyH = null;
 
-                System.out.println("Row No.: " + row.getRowNum());
+//                System.out.println("Row No.: " + row.getRowNum());
                 try {
 
                     String history = row.getCell(7).getRichStringCellValue().getString();
@@ -1380,7 +1384,7 @@ public class POIExcelReader {
                 Individuals individuals = null;
 
 // display row number in the console.
-                System.out.println("Row No.: " + row.getRowNum());
+//                System.out.println("Row No.: " + row.getRowNum());
 // once get a row its time to iterate through cells.
                 String meli = "";
 
@@ -1393,7 +1397,7 @@ public class POIExcelReader {
                         meli = (row.getCell(6).getRichStringCellValue().getString());
                     } catch (Exception e) {
                     }
-                    System.out.println("meli = " + meli);
+//                    System.out.println("meli = " + meli);
                     individuals = databaseHelper.individualsDao.getFirst("national_id", meli);
                     if (individuals == null) {
 
@@ -1504,7 +1508,7 @@ public class POIExcelReader {
                 Individuals individuals = null;
 
 // display row number in the console.
-                System.out.println("Row No.: " + row.getRowNum());
+//                System.out.println("Row No.: " + row.getRowNum());
 // once get a row its time to iterate through cells.
                 String meli = "";
 
@@ -1517,7 +1521,7 @@ public class POIExcelReader {
                         meli = (row.getCell(6).getRichStringCellValue().getString());
                     } catch (Exception e) {
                     }
-                    System.out.println("meli = " + meli);
+//                    System.out.println("meli = " + meli);
                     individuals = databaseHelper.individualsDao.getFirst("national_id", meli);
                 }
                 whs.add(works_add(row, individuals));

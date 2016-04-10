@@ -44,15 +44,15 @@ public class GateBass extends Application {
         poiExample.historyFromExcel(xlsPath);
         poiExample.displayFromExcel(xlsPath);
         poiExample.worksFromExcel(xlsPath);
-        xlsPath = "d://test//Gatepass-Cars.xls";
-        poiExample.compnaiesFromExcel2(xlsPath);
-        poiExample.historyFromExcel2(xlsPath);
-        poiExample.displayFromExcel2(xlsPath);
-        poiExample.worksFromExcel2(xlsPath);
-        xlsPath = "d://test//temporary.xls";
-        poiExample.historyFromExcel3(xlsPath);
-        poiExample.displayFromExcel3(xlsPath);
-        poiExample.displayFromExcel35(xlsPath);
+//        xlsPath = "d://test//Gatepass-Cars.xls";
+//        poiExample.compnaiesFromExcel2(xlsPath);
+//        poiExample.historyFromExcel2(xlsPath);
+//        poiExample.displayFromExcel2(xlsPath);
+//        poiExample.worksFromExcel2(xlsPath);
+//        xlsPath = "d://test//temporary.xls";
+//        poiExample.historyFromExcel3(xlsPath);
+//        poiExample.displayFromExcel3(xlsPath);
+//        poiExample.displayFromExcel35(xlsPath);
 
     }
 
