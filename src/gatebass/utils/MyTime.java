@@ -77,14 +77,8 @@ public class MyTime {
         if (!getTxt(year) && !getTxt(mount) && !getTxt(day)) {
             return false;
         }
-        UtilsStage.showMsg(st, "خطا", false, s);
+        UtilsMsg.show(st, "خطا", false, s);
         return true;
-
-//        if (!(getTxt(year) && getTxt(mount) && getTxt(day))) {
-//            UtilsStage.showMsg(st, "خطا", false, s);
-//            return true;
-//        }
-//        return false;
     }
 
     private boolean getTxt(TextField field) {

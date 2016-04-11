@@ -9,7 +9,7 @@ import gatebass.myControl.MyButtonFont;
 import gatebass.utils.MyTime;
 import gatebass.utils.ParentControl;
 import gatebass.utils.TextFiledLimited;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -23,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -39,6 +40,8 @@ public class Fxml_Individual_Search extends ParentControl {
         void ok(Individuals l);
     }
 
+    @FXML
+    public ScrollPane root;
     @FXML
     private TextField first_name;
     @FXML
@@ -214,7 +217,7 @@ public class Fxml_Individual_Search extends ParentControl {
             }
             sub_query = sub_query + sub_query_b;
             if (sub_query.isEmpty()) {
-                UtilsStage.showMsg("موردی جهت جست و جو وجود ندارد", "هشدار", false, thisStage);
+                UtilsMsg.show("موردی جهت جست و جو وجود ندارد", "هشدار", false, thisStage);
                 return;
             }
             String query = "SELECT individuals.* FROM individuals\n"

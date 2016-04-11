@@ -24,6 +24,7 @@ import gatebass.utils.MyTime;
 import gatebass.utils.ParentControl;
 import gatebass.utils.PersianCalendar;
 import gatebass.utils.TextFiledLimited;
+import gatebass.utils.UtilsMsg;
 import gatebass.utils.UtilsStage;
 import java.io.File;
 import java.io.IOException;
@@ -369,7 +370,8 @@ public class Fxml_Individual_Insert extends ParentControl {
 
     public BooleanProperty editable = new SimpleBooleanProperty(false);
 
-    private Fxml_Individual_Search simpleSearchController;
+//    private Fxml_Individual_Search simpleSearchController;
+    private UtilsStage<Fxml_Individual_Search> simpleSearchController;
 
     public static int PAYAN_KHEDMAT = 0;
     public static int BEDONE_KART = 1;
@@ -552,7 +554,7 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         print_view.setOnAction((ActionEvent event) -> {
             if (work_list.isEmpty()) {
-                UtilsStage.showMsg("موردی جهت چاپ وجود ندارد", "هشدار", false, thisStage);
+                UtilsMsg.show("موردی جهت چاپ وجود ندارد", "هشدار", false, thisStage);
             } else {
                 show_print_preView(work_list);
             }
@@ -705,7 +707,7 @@ public class Fxml_Individual_Insert extends ParentControl {
             }
             if (national_id.getText().length() != 10) {
                 national_id.requestFocus();
-                UtilsStage.showMsg("کد ملی باید 10 رقم باشد.", "هشدار", false, thisStage);
+                UtilsMsg.show("کد ملی باید 10 رقم باشد.", "هشدار", false, thisStage);
                 tabPane.getSelectionModel().select(0);
                 national_id.requestFocus();
                 return;
@@ -713,7 +715,7 @@ public class Fxml_Individual_Insert extends ParentControl {
             if (!editMode) {
                 Individuals temp = databaseHelper.individualsDao.getFirst("national_id", national_id.getText());
                 if (temp != null) {
-                    if (UtilsStage.showMsg("فردی با این شماره ملی قبلا ثبت شده. اکنون اطلاعات آن بارگذاری شود؟", "هشدار", true, thisStage)) {
+                    if (UtilsMsg.show("فردی با این شماره ملی قبلا ثبت شده. اکنون اطلاعات آن بارگذاری شود؟", "هشدار", true, thisStage)) {
                         individual = temp;
                         loadIndividual();
                     } else {
@@ -726,7 +728,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         insert_individual.setOnAction((ActionEvent event) -> {
             try {
                 if (insert()) {
-                    UtilsStage.showMsg(editMode ? "تغییرات با موفقیت ثبت گردید." : "اطلاعات با موفقیت در سیستم ثبت شد.", "هشدار", false, thisStage);
+                    UtilsMsg.show(editMode ? "تغییرات با موفقیت ثبت گردید." : "اطلاعات با موفقیت در سیستم ثبت شد.", "هشدار", false, thisStage);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Fxml_Individual_Insert.class.getName()).log(Level.SEVERE, null, ex);
@@ -824,7 +826,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 }
                 Cars cars_temp = databaseHelper.carDao.getFirst("shasi_number", car_info.getText());
                 if (cars_temp == null) {
-                    UtilsStage.showMsg("خودرویی با این شماره شاسی ثبت نگردیده است.", "هشدار", false, thisStage);
+                    UtilsMsg.show("خودرویی با این شماره شاسی ثبت نگردیده است.", "هشدار", false, thisStage);
                     return;
                 }
                 car_history_table.getItems().setAll(databaseHelper.carsHistoryDao.getAll("car_id", cars_temp));
@@ -852,27 +854,27 @@ public class Fxml_Individual_Insert extends ParentControl {
         work_submit.setOnAction((ActionEvent event) -> {
             boolean b = false;
             if (comppany.getText().trim().isEmpty()) {
-                UtilsStage.showMsg("فیلد شرکت را باید پر کنید.", "اخطار", false, thisStage);
+                UtilsMsg.show("فیلد شرکت را باید پر کنید.", "اخطار", false, thisStage);
                 comppany.requestFocus();
                 return;
             }
             if (comppany.getStyle().contains("red")) {
-                UtilsStage.showMsg("فیلد شرکت بدرستی پر نگردیده", "اخطار", false, thisStage);
+                UtilsMsg.show("فیلد شرکت بدرستی پر نگردیده", "اخطار", false, thisStage);
                 comppany.requestFocus();
                 return;
             }
             if (job_title.getText().trim().isEmpty()) {
-                UtilsStage.showMsg("فیلد عنوان شغلی را باید پر کنید.", "اخطار", false, thisStage);
+                UtilsMsg.show("فیلد عنوان شغلی را باید پر کنید.", "اخطار", false, thisStage);
                 job_title.requestFocus();
                 return;
             }
             if (!card_issued_date.isFull()) {
-                UtilsStage.showMsg("تاریخ صدور کارت را باید پر کنید", "اخطار", false, thisStage);
+                UtilsMsg.show("تاریخ صدور کارت را باید پر کنید", "اخطار", false, thisStage);
                 card_issued_year.requestFocus();
                 return;
             }
             if (!card_expiration_date.isFull()) {
-                UtilsStage.showMsg("تاریخ انقضاء کارت را باید پر کنید", "اخطار", false, thisStage);
+                UtilsMsg.show("تاریخ انقضاء کارت را باید پر کنید", "اخطار", false, thisStage);
                 card_expiration_year.requestFocus();
                 return;
             }
@@ -976,7 +978,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                     }
                     warning_page.setVisible(false);
                 } else {
-                    UtilsStage.showMsg("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
+                    UtilsMsg.show("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
                 }
             } else {
                 warning_page.setVisible(true);
@@ -1035,7 +1037,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                     }
                     replica_page.setVisible(false);
                 } else {
-                    UtilsStage.showMsg("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
+                    UtilsMsg.show("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
                 }
             } else {
                 replica_page.setVisible(true);
@@ -1080,13 +1082,10 @@ public class Fxml_Individual_Insert extends ParentControl {
             searchPane.setVisible(false);
         });
 
-        UtilsStage utilsStage = new UtilsStage(Fxml_Individual_Search.class, "", Modality.NONE, thisStage.getOwner());
-        simpleSearchController = utilsStage.getLoader().getController();
-        simpleSearchController.setStage(thisStage);
-        simpleSearchController.setControls(search_Resault, search_Next, search_Back, search_first, search_end, search_submit, searchPane);
-        searchPane.getChildren().add(utilsStage.page);
-
-        simpleSearchController.setOnAction((Individuals l) -> {
+        simpleSearchController = new UtilsStage(Fxml_Individual_Search.class); 
+        simpleSearchController.t.setControls(search_Resault, search_Next, search_Back, search_first, search_end, search_submit, searchPane);
+        searchPane.getChildren().add(simpleSearchController.t.root);
+        simpleSearchController.t.setOnAction((Individuals l) -> {
             search_page_controls.setVisible(true);
             if (l != null) {
                 individual = l;
@@ -1219,7 +1218,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         if (!national_id.getText().equals(individual.getNational_id())) {
             Individuals temp = databaseHelper.individualsDao.getFirst("national_id", national_id.getText());
             if (temp != null) {
-                UtilsStage.showMsg("فردی با این شماره ملی قبلا ثبت شده.", "هشدار", true, thisStage);
+                UtilsMsg.show("فردی با این شماره ملی قبلا ثبت شده.", "هشدار", true, thisStage);
                 national_id.requestFocus();
             }
         }

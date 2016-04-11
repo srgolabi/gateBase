@@ -114,6 +114,30 @@
                                 <gatebass.fxml.get_report.FormattedTableCellFactory />
                             </cellFactory>
                         </FilterableStringTableColumn>
+                        <FilterableLongTableColumn editable="false" maxWidth="1000" text="تاریخ صدور">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="card_issued_date" />
+                            </cellValueFactory>
+                            <cellFactory>
+                                <gatebass.fxml.get_report.FormattedTableCellFactory />
+                            </cellFactory>
+                        </FilterableLongTableColumn>
+                        <FilterableLongTableColumn editable="false" maxWidth="1000" text="تاریخ انقضاء">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="card_expiration_date" />
+                            </cellValueFactory>
+                            <cellFactory>
+                                <gatebass.fxml.get_report.FormattedTableCellFactory />
+                            </cellFactory>
+                        </FilterableLongTableColumn>
+                        <FilterableLongTableColumn editable="false" maxWidth="1000" text="تاریخ تحویل">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="card_delivery_date" />
+                            </cellValueFactory>
+                            <cellFactory>
+                                <gatebass.fxml.get_report.FormattedTableCellFactory />
+                            </cellFactory>
+                        </FilterableLongTableColumn>
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

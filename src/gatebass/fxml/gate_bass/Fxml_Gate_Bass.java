@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gatebass.fxml.gateBass;
+package gatebass.fxml.gate_bass;
 
 import static gatebass.GateBass.server;
 import gatebass.dataBase.tables.Individuals;
@@ -23,8 +23,10 @@ import javafx.scene.shape.Arc;
  *
  * @author reza
  */
-public class FXMLGateBassController extends ParentControl {
+public class Fxml_Gate_Bass extends ParentControl {
 
+    @FXML
+    public HBox root;
     @FXML
     private Label first_name;
     @FXML

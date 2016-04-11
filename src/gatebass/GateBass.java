@@ -9,8 +9,9 @@ import gatebass.fxml.login.Fxml_Login;
 import gatebass.fxml.main.Fxml_Main;
 import gatebass.register.InitActUser;
 import gatebass.register.Register;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import gatebass.utils.exel.POIExcelReader;
+import gatebass.utils.UtilsStage;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +39,12 @@ public class GateBass extends Application {
     public static List<WorkHistory> work_list = new ArrayList<>();
 
     private void importFromExcel() {
-        POIExcelReader poiExample = new POIExcelReader();
-        String xlsPath = "d://test//Gatepass.xls";
-        poiExample.compnaiesFromExcel(xlsPath);
-        poiExample.historyFromExcel(xlsPath);
-        poiExample.displayFromExcel(xlsPath);
-        poiExample.worksFromExcel(xlsPath);
+//        POIExcelReader poiExample = new POIExcelReader();
+//        String xlsPath = "d://test//Gatepass.xls";
+//        poiExample.compnaiesFromExcel(xlsPath);
+//        poiExample.historyFromExcel(xlsPath);
+//        poiExample.displayFromExcel(xlsPath);
+//        poiExample.worksFromExcel(xlsPath);
 //        xlsPath = "d://test//Gatepass-Cars.xls";
 //        poiExample.compnaiesFromExcel2(xlsPath);
 //        poiExample.historyFromExcel2(xlsPath);
@@ -53,7 +54,6 @@ public class GateBass extends Application {
 //        poiExample.historyFromExcel3(xlsPath);
 //        poiExample.displayFromExcel3(xlsPath);
 //        poiExample.displayFromExcel35(xlsPath);
-
     }
 
     @Override
@@ -61,7 +61,8 @@ public class GateBass extends Application {
         actUser = new InitActUser();
         databaseHelper = new DatabaseHelper();
         if (databaseHelper.usersDao.getAll().isEmpty()) {
-            Users user_temp = new Users("adminGolabi", "@dm!ng00l@b!", "", "مدیر سیستم");
+//            Users user_temp = new Users("adminGolabi", "@dm!ng00l@b!", "", "مدیر سیستم");
+            Users user_temp = new Users("adminGolabi", "123", "", "مدیر سیستم");
             user_temp.setAdmin(true);
             databaseHelper.usersDao.createOrUpdate(user_temp);
             databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count", "932349"));
@@ -119,18 +120,16 @@ public class GateBass extends Application {
 
         } else {
             register.writeEncrype("piamoit", "asdfghjklkiuytre");
-            UtilsStage.showMsg("نرم افزار غیرفعال شده است.\nبا پشتیبان نرم افزار تماس حاصل نمایید.", "هشدار", false, stage);
+            UtilsMsg.show("نرم افزار غیرفعال شده است.\nبا پشتیبان نرم افزار تماس حاصل نمایید.", "هشدار", false, stage);
             onCloseApp();
         }
     }
 
     public void showLoginStage(Stage stage) {
-        UtilsStage utilsStage = new UtilsStage(Fxml_Login.class, "", Modality.APPLICATION_MODAL, stage.getOwner());
-        Fxml_Login fXML_Login = utilsStage.getLoader().getController();
-        fXML_Login.setStage(utilsStage.getStage());
-        fXML_Login.show_And_Wait();
-        if (fXML_Login.isAccess) {
-            this.users = fXML_Login.usersTemp;
+        UtilsStage<Fxml_Login> fXML_Login = new UtilsStage(Fxml_Login.class, "", Modality.APPLICATION_MODAL, stage);
+        fXML_Login.t.show_And_Wait();
+        if (fXML_Login.t.isAccess) {
+            this.users = fXML_Login.t.usersTemp;
             showMainStage(stage);
         } else {
             onCloseApp();
@@ -138,11 +137,9 @@ public class GateBass extends Application {
     }
 
     public void showMainStage(Stage stage) {
-        UtilsStage utilsStage = new UtilsStage(Fxml_Main.class, "", Modality.NONE, stage.getOwner());
-        Fxml_Main fXML_Main = utilsStage.getLoader().getController();
-        fXML_Main.setStage(utilsStage.getStage());
-        utilsStage.getStage().show();
-        utilsStage.getStage().setOnCloseRequest((WindowEvent event) -> {
+        UtilsStage<Fxml_Main> fXML_Main = new UtilsStage(Fxml_Main.class, "", Modality.NONE, stage);
+        fXML_Main.t.thisStage.show();
+        fXML_Main.t.thisStage.setOnCloseRequest((WindowEvent event) -> {
             onCloseApp();
         });
     }

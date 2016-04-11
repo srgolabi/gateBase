@@ -6,7 +6,9 @@ import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import static gatebass.GateBass.databaseHelper;
 import gatebass.dataBase.tables.Individuals;
+import gatebass.dataBase.tables.Manage;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,8 +31,8 @@ public class BaseRepo<T, ID> {
         } catch (SQLException e) {
         }
     }
-    
-        public BaseRepo(ConnectionSource connectionSource, Class<T> clazz , boolean aa) {
+
+    public BaseRepo(ConnectionSource connectionSource, Class<T> clazz, boolean aa) {
         try {
             dao = DaoManager.createDao(connectionSource, clazz);
         } catch (SQLException e) {
@@ -57,8 +59,32 @@ public class BaseRepo<T, ID> {
                 try {
                     insertCount += dao.createOrUpdate(t).getNumLinesChanged();
                 } catch (SQLException e) {
-                    if (t instanceof Individuals){
-                        System.out.println("national = " + ((Individuals)t).getNational_id());
+                    if (t instanceof Individuals) {
+                        System.out.println("national = " + ((Individuals) t).getNational_id());
+                    }
+                }
+            }
+            return insertCount;
+        });
+        return tList.size() == insertedCount;
+    }
+
+    public boolean insertList_FromExcel(List<T> tList) throws SQLException {
+        int insertedCount = 0;
+        Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count");
+        long card_sequential_t = Long.parseLong(manage.getValue());
+
+        TransactionManager.callInTransaction(dao.getConnectionSource(), () -> {
+            int insertCount = 0;
+            long card_sequential = card_sequential_t;
+            for (T t : tList) {
+                ((Individuals) t).setCard_id(card_sequential + "");
+                try {
+                    insertCount += dao.createOrUpdate(t).getNumLinesChanged();
+                    card_sequential++;
+                } catch (SQLException e) {
+                    if (t instanceof Individuals) {
+                        System.out.println("national = " + ((Individuals) t).getNational_id());
                     }
                 }
             }

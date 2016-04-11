@@ -6,20 +6,20 @@
 package gatebass.fxml.print_preview;
 
 import gatebass.dataBase.tables.WorkHistory;
-import gatebass.fxml.gateBassTemporary.FXMLGateBassTemporary;
+import gatebass.fxml.gate_bass.Fxml_Gate_Bass;
+import gatebass.fxml.gate_bass_temporary.Fxml_Gate_Bass_Temporary;
 import gatebass.fxml.gate_bass_car.Fxml_Gate_Bass_Car;
-import gatebass.fxml.queuePrint.FXMLQueuePrintController;
 import gatebass.myControl.MyButtonFont;
 import gatebass.utils.ParentControl;
 import gatebass.utils.TextFiledLimited;
 import gatebass.utils.UtilsStage;
-import gatebass.utils.exel.UtilsStage2;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.print.PageLayout;
 import javafx.print.PageOrientation;
 import javafx.print.Paper;
@@ -37,7 +37,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -258,6 +257,10 @@ public class Fxml_Print_PreView extends ParentControl {
     }
 
     public void set_value(List<WorkHistory> work_list) {
+        if (work_list.isEmpty()) {
+            delete_all.getOnAction().handle(null);
+            return;
+        }
         this.work_list = work_list;
         int temporary_count = 0;
         List<WorkHistory> wh_temp1 = new ArrayList<>();
@@ -293,18 +296,23 @@ public class Fxml_Print_PreView extends ParentControl {
     private void set_gate_value() {
         layout_default = layout_gate;
         set_layout_parametr();
-        UtilsStage utilsStage = new UtilsStage("queuePrint/FXMLQueuePrint.fxml", "", Modality.APPLICATION_MODAL, thisStage.getOwner());
-        FXMLQueuePrintController controller = utilsStage.getLoader().getController();
-        controller.setStage(utilsStage.getStage());
         int page_num = getINT(page_number) * 4;
         int end_page = getINT(page_number) == gate_page_total ? page_num - gate_count : 0;
-        controller.set_value(work_list.subList(page_num - 4, page_num - end_page));
-        controller.set_action_property((WorkHistory wh_d) -> {
-            work_list.remove(wh_d);
-            set_value(work_list);
-        });
+        VBox vBox = new VBox(8.0);
+        vBox.setPadding(new Insets(8, 8, 8, 8));
+        vBox.setStyle("-fx-background-color: #ffffff;");
+        vBox.setPrefHeight(820);
+        for (WorkHistory wh : work_list.subList(page_num - 4, page_num - end_page)) {
+            UtilsStage<Fxml_Gate_Bass> utilsStage = new UtilsStage(Fxml_Gate_Bass.class);
+            utilsStage.t.delete.setOnAction((ActionEvent event) -> {
+                work_list.remove(wh);
+                set_value(work_list);
+            });
+            utilsStage.t.set_value(wh);
+            vBox.getChildren().add(utilsStage.t.root);
+        }
         container.getChildren().clear();
-        container.getChildren().add(utilsStage.page);
+        container.getChildren().add(vBox);
     }
 
     private void set_temporary_value() {
@@ -314,30 +322,27 @@ public class Fxml_Print_PreView extends ParentControl {
         }
         layout_default = layout_temporary;
         set_layout_parametr();
-        UtilsStage utilsStage = new UtilsStage("gateBassTemporary/FXMLGateBassTemporary.fxml", "", Modality.APPLICATION_MODAL, thisStage.getOwner());
-        FXMLGateBassTemporary controller = utilsStage.getLoader().getController();
-        controller.setStage(utilsStage.getStage());
-        controller.set_value(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
-
-        controller.delete.setOnAction((ActionEvent event) -> {
-            work_list.remove(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
-            set_value(work_list);
-        });
-        container.getChildren().clear();
-        container.getChildren().add(utilsStage.page);
-    }
-
-    private void set_car_value() {
-        layout_default = layout_car;
-        set_layout_parametr();
-        UtilsStage2<Fxml_Gate_Bass_Car> utilsStage = new UtilsStage2(Fxml_Gate_Bass_Car.class, "", Modality.APPLICATION_MODAL, thisStage);
+        UtilsStage<Fxml_Gate_Bass_Temporary> utilsStage = new UtilsStage(Fxml_Gate_Bass_Temporary.class);
         utilsStage.t.set_value(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
         utilsStage.t.delete.setOnAction((ActionEvent event) -> {
             work_list.remove(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
             set_value(work_list);
         });
         container.getChildren().clear();
-        container.getChildren().add(utilsStage.t.parent);
+        container.getChildren().add(utilsStage.t.root);
+    }
+
+    private void set_car_value() {
+        layout_default = layout_car;
+        set_layout_parametr();
+        UtilsStage<Fxml_Gate_Bass_Car> utilsStage = new UtilsStage(Fxml_Gate_Bass_Car.class);
+        utilsStage.t.set_value(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
+        utilsStage.t.delete.setOnAction((ActionEvent event) -> {
+            work_list.remove(work_list.get(work_list.size() - (getINT(page_total) - getINT(page_number)) - 1));
+            set_value(work_list);
+        });
+        container.getChildren().clear();
+        container.getChildren().add(utilsStage.t.root);
     }
 
     private void set_layout_parametr() {

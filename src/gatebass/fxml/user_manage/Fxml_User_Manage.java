@@ -14,7 +14,7 @@ import gatebass.myControl.CheckBoxTreeCellMy;
 import gatebass.myControl.MyButtonFont;
 import gatebass.utils.ErrorCheck;
 import gatebass.utils.ParentControl;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -241,14 +241,14 @@ public class Fxml_User_Manage extends ParentControl {
 
             ErrorCheck errorCheck = new ErrorCheck("نام", "نام کاربری", "رمز عبور", "تکرار رمز عبور");
             if (!pass.getText().equals(again_pass.getText())) {
-                UtilsStage.showMsg("رمزعبور با تکرار آن مطابق نیست.", "خطا", false, thisStage);
+                UtilsMsg.show("رمزعبور با تکرار آن مطابق نیست.", "خطا", false, thisStage);
                 return;
             }
             if (errorCheck.checked(false, "خطا", thisStage, user_name_fa, user_name, pass, again_pass) != -1) {
                 return;
             }
             if (databaseHelper.usersDao.getFirst("username", user_name.getText()) != null && new_user.getId() == null) {
-                UtilsStage.showMsg("این نام کاربری قبلا ثبت شده است.", "خطا", false, thisStage);
+                UtilsMsg.show("این نام کاربری قبلا ثبت شده است.", "خطا", false, thisStage);
                 return;
             }
 
@@ -319,7 +319,7 @@ public class Fxml_User_Manage extends ParentControl {
         submit_4.setOnAction((ActionEvent event) -> {
             ErrorCheck errorCheck = new ErrorCheck("رمز عبور", "تکرار رمز عبور");
             if (!pass_4.getText().equals(again_pass_4.getText())) {
-                UtilsStage.showMsg("رمزعبور با تکرار آن مطابق نیست.", "خطا", false, thisStage);
+                UtilsMsg.show("رمزعبور با تکرار آن مطابق نیست.", "خطا", false, thisStage);
                 return;
             }
             if (errorCheck.checked(false, "خطا", thisStage, pass_4, again_pass_4) != -1) {

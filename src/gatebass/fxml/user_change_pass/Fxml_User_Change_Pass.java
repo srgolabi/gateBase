@@ -4,7 +4,7 @@ import static gatebass.GateBass.databaseHelper;
 import static gatebass.GateBass.users;
 import gatebass.utils.ParentControl;
 import gatebass.utils.TextFiledLimited;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -49,13 +49,13 @@ public class Fxml_User_Change_Pass extends ParentControl {
     @FXML
     private void ok() {
         if (!pass.getText().equals(passAgain.getText())) {
-            UtilsStage.showMsg("رمزعبور با تکرار آن مطابق نیست.", "اخطار", false, thisStage);
+            UtilsMsg.show("رمزعبور با تکرار آن مطابق نیست.", "اخطار", false, thisStage);
             return;
         }
         okClicked = true;
         thisStage.close();
         users.setPassword(pass.getText());
         databaseHelper.usersDao.createOrUpdate(users);
-        UtilsStage.showMsg("رمز عبور با موفقیت تغییر یافت.", "", false, thisStage);
+        UtilsMsg.show("رمز عبور با موفقیت تغییر یافت.", "", false, thisStage);
     }
 }

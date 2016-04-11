@@ -6,7 +6,7 @@ import gatebass.dataBase.tables.Individuals;
 import gatebass.myControl.MyButtonFont;
 import gatebass.utils.MyTime;
 import gatebass.utils.TextFiledLimited;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -96,7 +96,7 @@ public class Simple_Search {
                     color_search, model_search, comments_search);
 
             if (sub_query.isEmpty()) {
-                UtilsStage.showMsg("موردی جهت جست و جو وجود ندارد", "هشدار", false, thisStage);
+                UtilsMsg.show("موردی جهت جست و جو وجود ندارد", "هشدار", false, thisStage);
                 return;
             }
             String query = "SELECT cars.* FROM cars\n"

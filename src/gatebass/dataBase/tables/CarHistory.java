@@ -15,8 +15,6 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "carHistory")
 public class CarHistory {
 
-//    public boolean isCreated = false;
-//    public boolean isEdited = false;
     @DatabaseField(generatedId = true)
     private Integer id;
 
@@ -47,8 +45,8 @@ public class CarHistory {
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "certificate_date_id")
     private History certificateDateId;
 
-    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "card_void_date_id")
-    private History cardVoidDateId;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "card_delivery_date_id")
+    private History cardDeliveryDateId;
 
     @DatabaseField(defaultValue = "")
     private String logs;
@@ -71,11 +69,11 @@ public class CarHistory {
         return cardExpirationDateId.getDate();
     }
 
-    public String getVoid() {
-        if (cardVoidDateId == null) {
+    public String getTahvil() {
+        if (cardDeliveryDateId == null) {
             return "";
         }
-        return cardVoidDateId.getDate();
+        return cardDeliveryDateId.getDate();
     }
 
     public String getSalamt() {
@@ -119,8 +117,8 @@ public class CarHistory {
         this.cardExpirationDateId = cardExpirationDateId;
     }
 
-    public void setCardVoidDateId(History cardVoidDateId) {
-        this.cardVoidDateId = cardVoidDateId;
+    public void setCardDeliveryDateId(History cardDeliveryDate) {
+        this.cardDeliveryDateId = cardDeliveryDate;
     }
 
     public void setLogs(String logs) {
@@ -151,8 +149,8 @@ public class CarHistory {
         return cardExpirationDateId;
     }
 
-    public History getCardVoidDateId() {
-        return cardVoidDateId;
+    public History getCardDeliveryDateId() {
+        return cardDeliveryDateId;
     }
 
     public String getLogs() {

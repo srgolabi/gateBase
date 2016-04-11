@@ -14,7 +14,7 @@ import gatebass.myControl.MyButtonFont;
 import gatebass.utils.AGTPFont;
 import gatebass.utils.ParentControl;
 import gatebass.utils.PersianCalendar;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -263,7 +263,7 @@ public class Fxml_Alarm_List extends ParentControl {
                 return;
             }
         }
-        UtilsStage.showMsg("دسترسی شما محدود می باشد.", "هشدار", false, thisStage);
+        UtilsMsg.show("دسترسی شما محدود می باشد.", "هشدار", false, thisStage);
     }
 
     private void add_car_alarm(String query, String sub_query, String alarm_info) {
@@ -299,8 +299,7 @@ public class Fxml_Alarm_List extends ParentControl {
                 + "WHERE ( individuals.alarm_state = 0 AND WHERE_SEARCH_QUERY ) OR individuals.alarm_state = 1\n"
                 + "GROUP BY individuals.id";
         PersianCalendar pc = new PersianCalendar();
-//        String sub_query = pc.year().substring(2) + "/" + pc.month() + "/" + pc.day();
-        String sub_query = "94/07/30";
+        String sub_query = pc.year().substring(2) + "/" + pc.month() + "/" + pc.day();
 
         add_car_alarm(
                 query_individual,
@@ -314,11 +313,11 @@ public class Fxml_Alarm_List extends ParentControl {
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id\n"
                 + ") individualReplica_J ON individualReplica_J.Individual_id =  cars.id\n"
                 + "LEFT OUTER JOIN\n"
-                + "(SELECT carHistory.* , history_j1.date bimeh_date, history_j2.date card_expiration_date , history_j3.date card_issued_date , history_j4.date card_void_date , history_j5.date certificate_date , companies_j.company_fa , driver_info.first_name || ' ' || driver_info.last_name driver_name FROM carHistory\n"
+                + "(SELECT carHistory.* , history_j1.date bimeh_date, history_j2.date card_expiration_date , history_j3.date card_issued_date , history_j4.date card_delivery_date , history_j5.date certificate_date , companies_j.company_fa , driver_info.first_name || ' ' || driver_info.last_name driver_name FROM carHistory\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = carHistory.bimeh_date_id\n"
                 + " LEFT OUTER JOIN history history_j2 ON history_j2.id = carHistory.card_expiration_date_id\n"
                 + " LEFT OUTER JOIN history history_j3 ON history_j3.id = carHistory.card_issued_date_id\n"
-                + " LEFT OUTER JOIN history history_j4 ON history_j4.id = carHistory.card_void_date_id\n"
+                + " LEFT OUTER JOIN history history_j4 ON history_j4.id = carHistory.card_delivery_date_id\n"
                 + " LEFT OUTER JOIN history history_j5 ON history_j5.id = carHistory.certificate_date_id\n"
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = carHistory.companies_id\n"
                 + " LEFT OUTER JOIN\n"

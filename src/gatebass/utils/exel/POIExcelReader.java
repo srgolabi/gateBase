@@ -367,22 +367,24 @@ public class POIExcelReader {
 
         try {
             fileSystem = new POIFSFileSystem(inputStream);
-
             HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
             HSSFSheet sheet = workBook.getSheetAt(0);
             Iterator rows = sheet.rowIterator();
-            boolean check = false;
+            boolean check;
             List<History> historys = new ArrayList<>();
             while (rows.hasNext()) {
                 check = false;
                 HSSFRow row = (HSSFRow) rows.next();
-
+                if (row.getRowNum() <= start_row) {
+                    continue;
+                }
                 History historyH = null;
 
 //                System.out.println("Row No.: " + row.getRowNum());
-                try {
+                String history = "";
 
-                    String history = row.getCell(7).getRichStringCellValue().getString();
+                try {
+                    history = row.getCell(7).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
                         History HistoryTEMP = databaseHelper.historyDao.getFirst("date", history);
@@ -393,17 +395,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
-                    check = false;
-                    historyH = null;
+                check = false;
+                historyH = null;
+                history = "";
 
+                try {
                     history = row.getCell(18).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -415,17 +419,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
-                    check = false;
-                    historyH = null;
+                check = false;
+                historyH = null;
+                history = "";
 
+                try {
                     history = row.getCell(24).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -437,14 +443,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(29).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -456,14 +467,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(30).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -475,14 +491,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(31).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -494,14 +515,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(32).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -513,14 +539,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(33).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -532,14 +563,11 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
-
                 } catch (Exception e) {
                 }
             }
@@ -663,14 +691,12 @@ public class POIExcelReader {
                     }
                 } catch (Exception e) {
                 }
+//                System.out.println("Row No.: " + row.getRowNum() + " CardDelivery.: " + (workHistory.getCardDeliveryDate() == null ? "null" : workHistory.getCardDeliveryDate().getDate()));
 
                 try {
                     row_value = ((long) row.getCell(6).getNumericCellValue()) + "";
                     if (!row_value.isEmpty()) {
                         Individuals individuals = databaseHelper.individualsDao.getFirst("national_id", row_value);
-                        if (workHistory.getCardDeliveryDate() == null) {
-                            System.out.println("aaaaaaaaaaaaa = " + individuals.getNational_id());
-                        }
                         workHistory.setIndividualsId(individuals);
                     }
                 } catch (Exception e) {
@@ -794,11 +820,11 @@ public class POIExcelReader {
                 HSSFRow row = (HSSFRow) rows.next();
 
                 History historyH = null;
-
+                String history = "";
 //                System.out.println("Row No.: " + row.getRowNum());
-                try {
 
-                    String history = row.getCell(6).getRichStringCellValue().getString();
+                try {
+                    history = row.getCell(6).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
                         History HistoryTEMP = databaseHelper.historyDao.getFirst("date", history);
@@ -809,17 +835,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
-                    check = false;
-                    historyH = null;
+                check = false;
+                historyH = null;
+                history = "";
 
+                try {
                     history = row.getCell(7).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -831,17 +859,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
-                    check = false;
-                    historyH = null;
+                check = false;
+                historyH = null;
+                history = "";
 
+                try {
                     history = row.getCell(8).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -853,14 +883,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(9).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -872,14 +907,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(10).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -891,14 +931,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(11).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -910,14 +955,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(12).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -929,14 +979,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
+                check = false;
+                historyH = null;
+                history = "";
+
+                try {
                     history = row.getCell(13).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -948,14 +1003,11 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
-
                 } catch (Exception e) {
                 }
             }
@@ -1128,7 +1180,6 @@ public class POIExcelReader {
                 CarHistory carHistory = new CarHistory();
 
 //                System.out.println("Row No.: " + row.getRowNum());
-
                 String row_value = row.getCell(2).getRichStringCellValue().getString();
                 if (!row_value.isEmpty()) {
                     Companies companiesTEMP = databaseHelper.companiesDao.getFirst("company_fa", row_value);
@@ -1205,7 +1256,7 @@ public class POIExcelReader {
                     if (!row_value.isEmpty()) {
                         row_value = row_value.substring(2);
                         History HistoryTEMP = databaseHelper.historyDao.getFirst("date", row_value);
-                        carHistory.setCardVoidDateId(HistoryTEMP);
+                        carHistory.setCardDeliveryDateId(HistoryTEMP);
                     }
                 } catch (Exception e) {
                 }
@@ -1257,18 +1308,18 @@ public class POIExcelReader {
             HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
             HSSFSheet sheet = workBook.getSheetAt(0);
             Iterator rows = sheet.rowIterator();
-            boolean check = false;
+            boolean check;
             List<History> historys = new ArrayList<>();
             while (rows.hasNext()) {
                 check = false;
                 HSSFRow row = (HSSFRow) rows.next();
 
                 History historyH = null;
-
+                String history = "";
 //                System.out.println("Row No.: " + row.getRowNum());
-                try {
 
-                    String history = row.getCell(7).getRichStringCellValue().getString();
+                try {
+                    history = row.getCell(7).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
                         History HistoryTEMP = databaseHelper.historyDao.getFirst("date", history);
@@ -1279,17 +1330,18 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
+                check = false;
+                historyH = null;
+                history = "";
 
-                    check = false;
-                    historyH = null;
-
+                try {
                     history = row.getCell(10).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -1301,17 +1353,19 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
+                } catch (Exception e) {
+                }
 
-                    check = false;
-                    historyH = null;
+                check = false;
+                historyH = null;
+                history = "";
 
+                try {
                     history = row.getCell(11).getRichStringCellValue().getString();
                     if (!history.isEmpty()) {
                         history = history.substring(2);
@@ -1323,16 +1377,14 @@ public class POIExcelReader {
                                     history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
                                     history.substring(history.lastIndexOf("/") + 1));
                         }
-                    } else {
-                        continue;
                     }
                     if (check) {
                         historys.add(historyH);
 //                        databaseHelper.historyDao.createOrUpdate(historyH);
                     }
-
                 } catch (Exception e) {
                 }
+
             }
             databaseHelper.historyDao.insertList(historys);
         } catch (Exception e) {
@@ -1363,8 +1415,8 @@ public class POIExcelReader {
             Iterator rows = sheet.rowIterator();
             List<Individuals> individualses = new ArrayList<>();
 
-            Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count");
-            long card_sequential = Long.parseLong(manage.getValue());
+//            Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count");
+//            long card_sequential = Long.parseLong(manage.getValue());
             while (rows.hasNext()) {
                 HSSFRow row = (HSSFRow) rows.next();
 //                if (row.getRowNum() >= end_row) {
@@ -1452,8 +1504,8 @@ public class POIExcelReader {
 
                         String split = FileSystems.getDefault().getSeparator();
                         individuals.setFilesPatch("data" + split + "1394" + split + dd / 50 + split + individuals.getNational_id() + split);
-                        individuals.setCard_id(card_sequential + "");
-                        card_sequential++;
+//                        individuals.setCard_id(card_sequential + "");
+//                        card_sequential++;
 
                         individualses.add(individuals);
                     }
@@ -1461,7 +1513,7 @@ public class POIExcelReader {
                 }
 //                databaseHelper.individualsDao.createOrUpdate(individuals, dd);
             }
-            databaseHelper.individualsDao.insertList(individualses);
+            databaseHelper.individualsDao.insertList_FromExcel(individualses);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1554,6 +1606,11 @@ public class POIExcelReader {
         }
         if (!row.getCell(11).getRichStringCellValue().getString().isEmpty()) {
             wh.setCardExpirationDateId(databaseHelper.historyDao.getFirst("date", row.getCell(11).getRichStringCellValue().getString().substring(2)));
+        }
+        if (!row.getCell(13).getRichStringCellValue().getString().isEmpty()) {
+            if (row.getCell(13).getRichStringCellValue().getString().equals("غیرفعال")) {
+                wh.setCardDeliveryDate(wh.getCardExpirationDateId());
+            }
         }
         return wh;
     }

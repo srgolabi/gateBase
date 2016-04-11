@@ -37,6 +37,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -219,6 +220,11 @@ public class Fxml_Get_Report_Car_List extends ParentControl {
                 work_table.getItems().clear();
             }
         });
+
+        thisStage.setOnCloseRequest((WindowEvent event) -> {
+            thisStage.setMaximized(false);
+        });
+
     }
 
     @Override

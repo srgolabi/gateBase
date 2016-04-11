@@ -28,7 +28,7 @@ import gatebass.utils.MyTime;
 import gatebass.utils.ParentControl;
 import gatebass.utils.PersianCalendar;
 import gatebass.utils.TextFiledLimited;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -362,7 +362,7 @@ public class Fxml_Car_Insert extends ParentControl {
 
         print_view.setOnAction((ActionEvent event) -> {
             if (work_list.isEmpty()) {
-                UtilsStage.showMsg("موردی جهت چاپ وجود ندارد", "هشدار", false, thisStage);
+                UtilsMsg.show("موردی جهت چاپ وجود ندارد", "هشدار", false, thisStage);
             } else {
                 show_print_preView(work_list);
             }
@@ -435,7 +435,7 @@ public class Fxml_Car_Insert extends ParentControl {
             if (!editMode) {
                 Cars temp = databaseHelper.carDao.getFirst("shasi_number", shasi_number.getText());
                 if (temp != null) {
-                    if (UtilsStage.showMsg("خودرویی با این شماره شاسی قبلا ثبت شده است. اکنون اطلاعات آن بارگذاری شود؟", "هشدار", true, thisStage)) {
+                    if (UtilsMsg.show("خودرویی با این شماره شاسی قبلا ثبت شده است. اکنون اطلاعات آن بارگذاری شود؟", "هشدار", true, thisStage)) {
                         car = temp;
                         loadCars();
                     } else {
@@ -448,7 +448,7 @@ public class Fxml_Car_Insert extends ParentControl {
         insert_individual.setOnAction((ActionEvent event) -> {
             try {
                 if (insert()) {
-                    UtilsStage.showMsg(editMode ? "تغییرات با موفقیت ثبت گردید." : "اطلاعات با موفقیت در سیستم ثبت شد.", "هشدار", false, thisStage);
+                    UtilsMsg.show(editMode ? "تغییرات با موفقیت ثبت گردید." : "اطلاعات با موفقیت در سیستم ثبت شد.", "هشدار", false, thisStage);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Fxml_Individual_Insert.class.getName()).log(Level.SEVERE, null, ex);
@@ -555,7 +555,7 @@ public class Fxml_Car_Insert extends ParentControl {
         if (!shasi_number.getText().equals(car.getShasi_number())) {
             Cars temp = databaseHelper.carDao.getFirst("shasi_number", shasi_number.getText());
             if (temp != null) {
-                UtilsStage.showMsg("خودرویی با این شماره شاسی قبلا ثبت شده.", "هشدار", true, thisStage);
+                UtilsMsg.show("خودرویی با این شماره شاسی قبلا ثبت شده.", "هشدار", true, thisStage);
                 shasi_number.requestFocus();
             }
         }
@@ -718,7 +718,7 @@ public class Fxml_Car_Insert extends ParentControl {
                 }
                 Individuals idl = databaseHelper.individualsDao.getFirst("national_id", driver_info.getText());
                 if (idl == null) {
-                    UtilsStage.showMsg("فردی با این شماره ملی ثبت نگردیده است.", "هشدار", false, thisStage);
+                    UtilsMsg.show("فردی با این شماره ملی ثبت نگردیده است.", "هشدار", false, thisStage);
                     return;
                 }
                 driver_history_table.getItems().setAll(databaseHelper.workHistoryDao.getAll("individuals_id", idl));
@@ -751,25 +751,25 @@ public class Fxml_Car_Insert extends ParentControl {
         work_submit.setOnAction((ActionEvent event) -> {
 
             if (comppany.getText().trim().isEmpty()) {
-                UtilsStage.showMsg("فیلد شرکت را باید پر کنید.", "اخطار", false, thisStage);
+                UtilsMsg.show("فیلد شرکت را باید پر کنید.", "اخطار", false, thisStage);
                 comppany.requestFocus();
                 return;
             }
 
             if (comppany.getStyle().contains("red")) {
-                UtilsStage.showMsg("فیلد شرکت بدرستی پر نگردیده", "اخطار", false, thisStage);
+                UtilsMsg.show("فیلد شرکت بدرستی پر نگردیده", "اخطار", false, thisStage);
                 comppany.requestFocus();
                 return;
             }
 
             if (!card_issued_date.isFull()) {
-                UtilsStage.showMsg("تاریخ صدور کارت را باید پر کنید", "اخطار", false, thisStage);
+                UtilsMsg.show("تاریخ صدور کارت را باید پر کنید", "اخطار", false, thisStage);
                 issued_day.requestFocus();
                 return;
             }
 
             if (!card_expiration_date.isFull()) {
-                UtilsStage.showMsg("تاریخ انقضاء کارت را باید پر کنید", "اخطار", false, thisStage);
+                UtilsMsg.show("تاریخ انقضاء کارت را باید پر کنید", "اخطار", false, thisStage);
                 expire_day.requestFocus();
                 return;
             }
@@ -777,9 +777,9 @@ public class Fxml_Car_Insert extends ParentControl {
             carsHistory_iw.setCompanies(databaseHelper.companiesDao.getFirst("company_fa", comppany.getText()));
 
             if (card_void_date.isFull()) {
-                carsHistory_iw.setCardVoidDateId(card_void_date.writeAndGet());
+                carsHistory_iw.setCardDeliveryDateId(card_void_date.writeAndGet());
             } else {
-                carsHistory_iw.setCardVoidDateId(null);
+                carsHistory_iw.setCardDeliveryDateId(null);
             }
 
             if (bimeh_date.isFull()) {
@@ -838,7 +838,7 @@ public class Fxml_Car_Insert extends ParentControl {
         certificate_date.setText(carsHistory_iw.getCertificateDateId());
         card_issued_date.setText(carsHistory_iw.getCardIssuedDateId());
         card_expiration_date.setText(carsHistory_iw.getCardExpirationDateId());
-        card_void_date.setText(carsHistory_iw.getCardVoidDateId());
+        card_void_date.setText(carsHistory_iw.getCardDeliveryDateId());
     }
 
     private void setUp_Replica_Page() {
@@ -872,7 +872,7 @@ public class Fxml_Car_Insert extends ParentControl {
                     }
                     replica_page.setVisible(false);
                 } else {
-                    UtilsStage.showMsg("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
+                    UtilsMsg.show("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
                 }
             } else {
                 individualReplica_iw = null;

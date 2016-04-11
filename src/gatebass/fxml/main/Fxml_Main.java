@@ -22,8 +22,8 @@ import gatebass.myControl.MyButtonFont;
 import gatebass.register.Register;
 import gatebass.utils.ParentControl;
 import gatebass.utils.PersianCalendar;
+import gatebass.utils.UtilsMsg;
 import gatebass.utils.UtilsStage;
-import gatebass.utils.exel.UtilsStage2;
 import java.util.Calendar;
 import java.util.List;
 import javafx.animation.Animation;
@@ -76,13 +76,14 @@ public class Fxml_Main extends ParentControl {
 
     private boolean times = true;
 
-    UtilsStage2<Fxml_Individual_Insert> fxml_Individual_Insert;
-    UtilsStage2<Fxml_Get_Report> fxml_Get_Report;
-    UtilsStage2<Fxml_Get_Report_Individual_List> fxml_Get_Report_Individual_List;
-    UtilsStage2<Fxml_Get_Report_Car_List> fxml_Get_Report_Car_List;
-    UtilsStage2<Fxml_Car_Insert> fxml_Car_Insert;
-    UtilsStage2<Fxml_Alarm_List> fxml_Alarm_List;
-    private static Fxml_Print_PreView fxml_Print_PreView;
+    UtilsStage<Fxml_Individual_Insert> fxml_Individual_Insert;
+    UtilsStage<Fxml_Get_Report> fxml_Get_Report;
+    UtilsStage<Fxml_Get_Report_Individual_List> fxml_Get_Report_Individual_List;
+    UtilsStage<Fxml_Get_Report_Car_List> fxml_Get_Report_Car_List;
+    UtilsStage<Fxml_Car_Insert> fxml_Car_Insert;
+    UtilsStage<Fxml_Alarm_List> fxml_Alarm_List;
+//    private static Fxml_Print_PreView fxml_Print_PreView;
+    private static UtilsStage<Fxml_Print_PreView> fxml_Print_PreView;
 
     @Override
     public void setStage(Stage s) {
@@ -93,13 +94,11 @@ public class Fxml_Main extends ParentControl {
         manageCompanies.setDisable(!Permission.isAcces(Permission.COMPANY_VIEW) || !Permission.isAcces(Permission.COMPANY_INSERT));
         changeUserPass.setDisable(!Permission.isAcces(Permission.CHANGE_PASS));
 
-        UtilsStage utilsStage_T = new UtilsStage(Fxml_Print_PreView.class, true, "چاپ", Modality.APPLICATION_MODAL, thisStage.getOwner());
-        fxml_Print_PreView = utilsStage_T.getLoader().getController();
-        fxml_Print_PreView.setStage(utilsStage_T.getStage());
+        fxml_Print_PreView = new UtilsStage(Fxml_Print_PreView.class, true, "چاپ", Modality.APPLICATION_MODAL, thisStage.getOwner());
 
-        fxml_Get_Report = new UtilsStage2(Fxml_Get_Report.class, "گزارش گیری", Modality.APPLICATION_MODAL, thisStage);
+        fxml_Get_Report = new UtilsStage(Fxml_Get_Report.class, "گزارش گیری", Modality.APPLICATION_MODAL, thisStage);
 
-        fxml_Individual_Insert = new UtilsStage2(Fxml_Individual_Insert.class, "ثبت افراد جدید", Modality.NONE, thisStage);
+        fxml_Individual_Insert = new UtilsStage(Fxml_Individual_Insert.class, "ثبت افراد جدید", Modality.NONE, thisStage);
         fxml_Individual_Insert.t.set_on_car((Cars cars) -> {
             fxml_Car_Insert.t.editable.set(false);
             fxml_Car_Insert.t.car = cars;
@@ -107,7 +106,7 @@ public class Fxml_Main extends ParentControl {
             fxml_Car_Insert.t.show_Front_Or_Wait();
         });
 
-        fxml_Get_Report_Individual_List = new UtilsStage2(Fxml_Get_Report_Individual_List.class, true, "لیست افراد", Modality.NONE, thisStage);
+        fxml_Get_Report_Individual_List = new UtilsStage(Fxml_Get_Report_Individual_List.class, true, "لیست افراد", Modality.NONE, thisStage.getOwner());
         fxml_Get_Report_Individual_List.t.set_On_Get_Individual((Individuals individuals, boolean is_edit_mode) -> {
             fxml_Individual_Insert.t.editable.set(is_edit_mode);
             fxml_Individual_Insert.t.individual = individuals;
@@ -115,7 +114,7 @@ public class Fxml_Main extends ParentControl {
             fxml_Individual_Insert.t.show_Front_Or_Wait();
         });
 
-        fxml_Get_Report_Car_List = new UtilsStage2(Fxml_Get_Report_Car_List.class, true, "لیست خودروها", Modality.NONE, thisStage);
+        fxml_Get_Report_Car_List = new UtilsStage(Fxml_Get_Report_Car_List.class, true, "لیست خودروها", Modality.NONE, thisStage.getOwner());
         fxml_Get_Report_Car_List.t.set_On_Get_Car((Cars car, boolean is_edit_mode) -> {
             fxml_Car_Insert.t.editable.set(is_edit_mode);
             fxml_Car_Insert.t.car = car;
@@ -123,7 +122,7 @@ public class Fxml_Main extends ParentControl {
             fxml_Car_Insert.t.show_Front_Or_Wait();
         });
 
-        fxml_Car_Insert = new UtilsStage2(Fxml_Car_Insert.class, "سیستم اطلاعات خودرویی", Modality.NONE, thisStage);
+        fxml_Car_Insert = new UtilsStage(Fxml_Car_Insert.class, "سیستم اطلاعات خودرویی", Modality.NONE, thisStage);
         fxml_Car_Insert.t.set_ON_INDIVIDUAL((Individuals individuals) -> {
             fxml_Individual_Insert.t.editable.set(false);
             fxml_Individual_Insert.t.individual = individuals;
@@ -131,7 +130,7 @@ public class Fxml_Main extends ParentControl {
             fxml_Individual_Insert.t.show_Front_Or_Wait();
         });
 
-        fxml_Alarm_List = new UtilsStage2(Fxml_Alarm_List.class, "لیست هشدارها", Modality.APPLICATION_MODAL, thisStage);
+        fxml_Alarm_List = new UtilsStage(Fxml_Alarm_List.class, "لیست هشدارها", Modality.APPLICATION_MODAL, thisStage);
         fxml_Alarm_List.t.set_On_Get_Car(new Fxml_Alarm_List.Get_Object() {
 
             @Override
@@ -157,7 +156,7 @@ public class Fxml_Main extends ParentControl {
         });
 
         manageCompanies.setOnAction((ActionEvent event) -> {
-            UtilsStage2 utilsStage = new UtilsStage2(Fxml_Manage_Company.class, "شرکتها", Modality.APPLICATION_MODAL, thisStage);
+            UtilsStage utilsStage = new UtilsStage(Fxml_Manage_Company.class, "شرکتها", Modality.APPLICATION_MODAL, thisStage);
             utilsStage.t.show_And_Wait();
         });
 
@@ -201,7 +200,7 @@ public class Fxml_Main extends ParentControl {
         });
 
         changeUserPass.setOnAction((ActionEvent event) -> {
-            UtilsStage2 utilsStage = new UtilsStage2(Fxml_User_Change_Pass.class, "تغییر رمز عبور", Modality.APPLICATION_MODAL, thisStage);
+            UtilsStage utilsStage = new UtilsStage(Fxml_User_Change_Pass.class, "تغییر رمز عبور", Modality.APPLICATION_MODAL, thisStage);
             utilsStage.t.show_And_Wait();
         });
 
@@ -209,7 +208,7 @@ public class Fxml_Main extends ParentControl {
             thisStage.close();
             Register register = new Register();
             register.exitUser();
-            UtilsStage2<Fxml_Login> utilsStage = new UtilsStage2(Fxml_Login.class, "ورود", Modality.APPLICATION_MODAL, thisStage);
+            UtilsStage<Fxml_Login> utilsStage = new UtilsStage(Fxml_Login.class, "ورود", Modality.APPLICATION_MODAL, thisStage);
             utilsStage.t.show_And_Wait();
             if (utilsStage.t.isAccess) {
                 users = utilsStage.t.usersTemp;
@@ -220,18 +219,18 @@ public class Fxml_Main extends ParentControl {
         });
 
         changeUserPass.setOnAction((ActionEvent event) -> {
-            UtilsStage2 utilsStage = new UtilsStage2(Fxml_User_Change_Pass.class, "تغییر رمز عبور", Modality.APPLICATION_MODAL, thisStage);
+            UtilsStage utilsStage = new UtilsStage(Fxml_User_Change_Pass.class, "تغییر رمز عبور", Modality.APPLICATION_MODAL, thisStage);
             utilsStage.t.show_And_Wait();
         });
 
         manageUser.setOnAction((ActionEvent event) -> {
-            UtilsStage2 utilsStage = new UtilsStage2(Fxml_User_Manage.class, "مدیریت حساب ها", Modality.APPLICATION_MODAL, thisStage);
+            UtilsStage utilsStage = new UtilsStage(Fxml_User_Manage.class, "مدیریت حساب ها", Modality.APPLICATION_MODAL, thisStage);
             utilsStage.t.show_And_Wait();
         });
 
         show_print_view.setOnAction((ActionEvent event) -> {
             if (work_list.isEmpty()) {
-                UtilsStage.showMsg("موردی جهت چاپ وجود ندارد", "هشدار", false, thisStage);
+                UtilsMsg.show("موردی جهت چاپ وجود ندارد", "هشدار", false, thisStage);
             } else {
                 show_print_preView(work_list);
             }
@@ -241,8 +240,10 @@ public class Fxml_Main extends ParentControl {
     }
 
     public static void show_print_preView(List<WorkHistory> work_list) {
-        fxml_Print_PreView.set_value(work_list);
-        fxml_Print_PreView.thisStage.showAndWait();
+//        fxml_Print_PreView.set_value(work_list);
+//        fxml_Print_PreView.thisStage.showAndWait();
+        fxml_Print_PreView.t.set_value(work_list);
+        fxml_Print_PreView.t.show_Front_Or_Wait();
     }
 
     private void bindToTime() {
@@ -277,11 +278,9 @@ public class Fxml_Main extends ParentControl {
     }
 
     public void showMainStage(Stage stage) {
-        UtilsStage utilsStage = new UtilsStage(Fxml_Main.class, "", Modality.APPLICATION_MODAL, stage.getOwner());
-        Fxml_Main controller = utilsStage.getLoader().getController();
-        controller.setStage(utilsStage.getStage());
-        utilsStage.getStage().show();
-        utilsStage.getStage().setOnCloseRequest((WindowEvent event) -> {
+        UtilsStage<Fxml_Main> fXML_Main = new UtilsStage(Fxml_Main.class, "", Modality.NONE, stage);
+        fXML_Main.t.thisStage.show();
+        fXML_Main.t.thisStage.setOnCloseRequest((WindowEvent event) -> {
             onCloseApp();
         });
     }

@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 public class Fxml_Gate_Bass_Car extends ParentControl {
 
     @FXML
-    public VBox parent;
+    public VBox root;
     @FXML
     private Label id;
     @FXML

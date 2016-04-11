@@ -50,7 +50,7 @@ public class Cars_j {
     private String card_issued_date;
 
     @DatabaseField(defaultValue = "")
-    private String card_void_date;
+    private String card_delivery_date;
 
     @DatabaseField(defaultValue = "")
     private String certificate_date;
@@ -109,8 +109,12 @@ public class Cars_j {
         return card_issued_date;
     }
 
-    public String getCard_void_date() {
-        return card_void_date;
+    public String getCard_delivery_date() {
+        return card_delivery_date;
+    }
+
+    public WorkHistory getWorkHistory_id() {
+        return workHistory_id;
     }
 
     public String getCertificate_date() {

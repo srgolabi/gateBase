@@ -31,6 +31,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -39,6 +40,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -213,22 +215,21 @@ public class Fxml_Get_Report_Individual_List extends ParentControl {
             tableFiltered(textFiltered(textField.getText()));
         });
 
-        tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Individuals_j>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Individuals_j> observable, Individuals_j oldValue, Individuals_j newValue) {
-                if (newValue != null) {
-                    Individuals individuals = databaseHelper.individualsDao.queryForId(newValue.getId());
-                    replica_Table.getItems().setAll(databaseHelper.individualReplicaDao.getAll("individual_id", individuals));
-                    work_table.getItems().setAll(databaseHelper.workHistoryDao.getAll("individuals_id", newValue.getId()));
-                    warning_Table.getItems().setAll(databaseHelper.individualWarningDao.getAll("individual_id", individuals));
-                } else {
-                    replica_Table.getItems().clear();
-                    work_table.getItems().clear();
-                    warning_Table.getItems().clear();
-                }
-
+        tableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Individuals_j> observable, Individuals_j oldValue, Individuals_j newValue) -> {
+            if (newValue != null) {
+                Individuals individuals = databaseHelper.individualsDao.queryForId(newValue.getId());
+                replica_Table.getItems().setAll(databaseHelper.individualReplicaDao.getAll("individual_id", individuals));
+                work_table.getItems().setAll(databaseHelper.workHistoryDao.getAll("individuals_id", newValue.getId()));
+                warning_Table.getItems().setAll(databaseHelper.individualWarningDao.getAll("individual_id", individuals));
+            } else {
+                replica_Table.getItems().clear();
+                work_table.getItems().clear();
+                warning_Table.getItems().clear();
             }
+        });
+        
+        thisStage.setOnCloseRequest((WindowEvent event) -> {
+            thisStage.setMaximized(false);
         });
     }
 
@@ -249,8 +250,7 @@ public class Fxml_Get_Report_Individual_List extends ParentControl {
         final List<Individuals_j> remove = new ArrayList<>();
         final ObservableList<Individuals_j> newData = FXCollections.concat(individual_List);
         if (!newValue.trim().equals("")) {
-            newData.stream().filter((item) -> (!item.getFirst_name().contains(newValue)
-                    && !item.getLast_name().contains(newValue)
+            newData.stream().filter((item) -> (!item.getFull_name().contains(newValue)
                     && !item.getNational_id().contains(newValue)
                     && !item.getCard_id().contains(newValue))
             ).forEach((item) -> {

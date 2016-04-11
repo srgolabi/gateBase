@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToWidth="true" maxWidth="812.0" prefHeight="401.0" prefWidth="812.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.individual_search.Fxml_Individual_Search">
+<ScrollPane fx:id="root" fitToWidth="true" maxWidth="812.0" prefHeight="401.0" prefWidth="812.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.individual_search.Fxml_Individual_Search">
    <content>
       <VBox maxHeight="401.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="401.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 13.5; -fx-background-color: #78DDFF;" stylesheets="@../../resourse/css/Button.css">
          <children>

@@ -48,7 +48,7 @@ public class ErrorCheck {
                 error = error + s + (cont == errors.size() ? "" : " ، ");
             }
             error = error + " را پر کنید.";
-            return UtilsStage.showMsg(error, title, okShow, stage) ? 1 : 0;
+            return UtilsMsg.show(error, title, okShow, stage) ? 1 : 0;
 
         }
         return -1;

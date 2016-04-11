@@ -6,7 +6,7 @@ import gatebass.myControl.MyButtonFont;
 import gatebass.myControl.tableView.PrepareTable;
 import gatebass.utils.ErrorCheck;
 import gatebass.utils.ParentControl;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -96,7 +96,7 @@ public class Fxml_Manage_Company extends ParentControl {
 
         remove.setOnAction((ActionEvent event) -> {
             Companies u2 = company_table.getSelectionModel().getSelectedItem();
-            if (!UtilsStage.showMsg("آیا از حذف " + u2.getCompany_fa() + " مطمئن هستید؟", "هشدار", true, thisStage)) {
+            if (!UtilsMsg.show("آیا از حذف " + u2.getCompany_fa() + " مطمئن هستید؟", "هشدار", true, thisStage)) {
                 return;
             }
             u2.setIs_deleted(Boolean.TRUE);
@@ -144,7 +144,7 @@ public class Fxml_Manage_Company extends ParentControl {
             if (editCompanies.getId() == null) {
                 String query = "SELECT * FROM companies WHERE is_deleted = 0 AND ( company_fa LIKE '" + company_name_fa.getText() + "' OR company_en LIKE '" + company_name_en.getText() + "' )";
                 if (!databaseHelper.companiesDao.rawResults(query).isEmpty()) {
-                    UtilsStage.showMsg("اطلاعات وارد شده تکراری می باشد.", "اخطار", false, thisStage);
+                    UtilsMsg.show("اطلاعات وارد شده تکراری می باشد.", "اخطار", false, thisStage);
                     return;
                 }
             }

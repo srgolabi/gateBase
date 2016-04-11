@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gatebass.fxml.gateBassTemporary;
+package gatebass.fxml.gate_bass_temporary;
 
 import static gatebass.GateBass.server;
 import gatebass.dataBase.tables.Individuals;
@@ -20,8 +20,10 @@ import javafx.scene.layout.HBox;
  *
  * @author reza
  */
-public class FXMLGateBassTemporary extends ParentControl {
+public class Fxml_Gate_Bass_Temporary extends ParentControl {
 
+    @FXML
+    public HBox root;
     @FXML
     private Label date;
     @FXML

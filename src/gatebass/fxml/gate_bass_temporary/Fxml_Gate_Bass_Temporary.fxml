@@ -11,11 +11,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import gatebass.myControl.*?>
 
-<!--<?import gatebass.myControl.*?>-->
-
-<HBox style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gateBassTemporary.FXMLGateBassTemporary">
+<HBox fx:id="root" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass_temporary.Fxml_Gate_Bass_Temporary">
     <children>
         <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="570.0" prefWidth="395.0" stylesheets="@../../resourse/css/FileIcon.css">
             <children>
@@ -175,7 +172,7 @@
         </StackPane>
         <HBox alignment="BOTTOM_LEFT" style="-fx-border-color: #aaaaaa; -fx-border-width: 0 0 1 1;">
             <children>
-                <MyButtonFont fx:id="delete" mnemonicParsing="false" prefHeight="25" prefWidth="25" />
+                <gatebass.myControl.MyButtonFont fx:id="delete" mnemonicParsing="false" prefHeight="25" prefWidth="25" />
             </children>
             <padding>
                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />

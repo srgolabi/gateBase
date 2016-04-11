@@ -16,7 +16,7 @@ import gatebass.utils.MyTime;
 import gatebass.utils.ParentControl;
 import gatebass.utils.PersianCalendar;
 import gatebass.utils.TextFiledLimited;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.binding.Bindings;
@@ -24,6 +24,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
@@ -52,6 +53,8 @@ public class Fxml_Get_Report extends ParentControl {
     private StackPane main_page;
     @FXML
     private CheckBox valid_card;
+    @FXML
+    private CheckBox remove_repeat_item;
 
     @FXML
     private RadioButton report_type_individual;
@@ -181,7 +184,14 @@ public class Fxml_Get_Report extends ParentControl {
         done.init("level_down", 18);
 
         close_edit.visibleProperty().bind(selected_item_for_edit.greaterThan(-1));
-
+        remove_repeat_item.disableProperty().bind(valid_card.selectedProperty());
+        
+        valid_card.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (newValue){
+                remove_repeat_item.setSelected(false);
+            }
+        });
+        
         close_edit.setOnAction((ActionEvent event) -> {
             selected_item_for_edit.set(-1);
         });
@@ -194,7 +204,7 @@ public class Fxml_Get_Report extends ParentControl {
         });
 
         String query_individual
-                = "SELECT individuals.id , individuals.card_id , individuals.first_name , individuals.last_name , workhistory_j.car_history_id,\n"
+                = "SELECT individuals.id , individuals.card_id , individuals.first_name || ' ' || individuals.last_name full_name, workhistory_j.car_history_id,\n"
                 + "count(individualReplica_J.Individual_id)  replica_count , count(individualWarning_J.Individual_id) warning_count , individuals.father_first_name , individuals.national_id ,\n"
                 + "individuals.id_number , history_J1.date soldiery_start_info , history_J2.date soldiery_end_info , individuals.soldiery_id , individuals.soldiery_location , individuals.soldiery_unit , individuals.soldiery_exempt ,\n"
                 + "history_J3.date birth_day_info , individuals.birth_state , individuals.issued , individuals.serial_number ,individuals.field_of_study || ' - ' || individuals.academic_degree study_info ,\n"
@@ -221,14 +231,15 @@ public class Fxml_Get_Report extends ParentControl {
                 + " LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id\n"
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
                 + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n"
-                + "WHERE_VALID_CARD_QUERY WHERE_SEARCH_QUERY\n"
-                + "GROUP BY individuals.id\n"
-                + "HAVING_SEARCH_QUERY";
+                + "WHERE_SEARCH_QUERY\n"
+                + "GROUP BY GROUP_BY_QUERY"
+                + "HAVING_SEARCH_QUERY\n"
+                + "ORDER BY card_id desc";
 
         String query_car
                 = "SELECT cars.id , cars.card_id , cars.car_name , cars.shasi_number , cars.model , cars.comments , cars.logs , carhistory_j.driver_name ,\n"
                 + "count(individualReplica_J.Individual_id)  replica_count , GROUP_CONCAT(DISTINCT carhistory_j.company_fa) company_info ,\n"
-                + "carhistory_j.bimeh_date , carhistory_j.card_expiration_date , carhistory_j.card_issued_date , carhistory_j.card_void_date , carhistory_j.certificate_date ,\n"
+                + "carhistory_j.bimeh_date , carhistory_j.card_expiration_date , carhistory_j.card_issued_date , carhistory_j.card_delivery_date , carhistory_j.certificate_date ,\n"
                 + "carhistory_j.workHistory_id\n"
                 + "FROM cars\n"
                 + "LEFT OUTER JOIN\n"
@@ -236,11 +247,11 @@ public class Fxml_Get_Report extends ParentControl {
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id\n"
                 + ") individualReplica_J ON individualReplica_J.Individual_id =  cars.id\n"
                 + "LEFT OUTER JOIN\n"
-                + "(SELECT carHistory.* , history_j1.date bimeh_date, history_j2.date card_expiration_date , history_j3.date card_issued_date , history_j4.date card_void_date , history_j5.date certificate_date , companies_j.company_fa , driver_info.first_name || ' ' || driver_info.last_name driver_name FROM carHistory\n"
+                + "(SELECT carHistory.* , history_j1.date bimeh_date, history_j2.date card_expiration_date , history_j3.date card_issued_date , history_j4.date card_delivery_date , history_j5.date certificate_date , companies_j.company_fa , driver_info.first_name || ' ' || driver_info.last_name driver_name FROM carHistory\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = carHistory.bimeh_date_id\n"
                 + " LEFT OUTER JOIN history history_j2 ON history_j2.id = carHistory.card_expiration_date_id\n"
                 + " LEFT OUTER JOIN history history_j3 ON history_j3.id = carHistory.card_issued_date_id\n"
-                + " LEFT OUTER JOIN history history_j4 ON history_j4.id = carHistory.card_void_date_id\n"
+                + " LEFT OUTER JOIN history history_j4 ON history_j4.id = carHistory.card_delivery_date_id\n"
                 + " LEFT OUTER JOIN history history_j5 ON history_j5.id = carHistory.certificate_date_id\n"
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = carHistory.companies_id\n"
                 + " LEFT OUTER JOIN\n"
@@ -248,9 +259,11 @@ public class Fxml_Get_Report extends ParentControl {
                 + "  LEFT OUTER JOIN individuals individuals_j1 ON workhistory.individuals_id = individuals_j1.id \n"
                 + "  ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
                 + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
-                + "WHERE_VALID_CARD_QUERY WHERE_SEARCH_QUERY\n"
-                + "GROUP BY cars.id"
-                + "HAVING_SEARCH_QUERY";
+                + "WHERE_SEARCH_QUERY\n"
+                //                + "GROUP BY cars.id"
+                + "GROUP BY GROUP_BY_QUERY"
+                + "HAVING_SEARCH_QUERY\n"
+                + "ORDER BY card_id desc";
 
         TextFiledLimited.setEnterFocuse(date_day, date_month, date_year, date_year);
         date_time = new MyTime(date_year, date_month, date_day);
@@ -319,7 +332,7 @@ public class Fxml_Get_Report extends ParentControl {
                     if (date_time.isDamage("تاریخ به درستی پر نشده.", thisStage)) {
                         return;
                     } else if (!date_time.isFull()) {
-                        UtilsStage.showMsg("تاریخ به درستی پر نشده.", "خطا", false, thisStage);
+                        UtilsMsg.show("تاریخ به درستی پر نشده.", "خطا", false, thisStage);
                         return;
                     }
                     temp.value = date_time.getDate();
@@ -334,7 +347,7 @@ public class Fxml_Get_Report extends ParentControl {
                     break;
                 case "string":
                     if (string_text.getText().isEmpty()) {
-                        UtilsStage.showMsg("فیلد مقدار را پر کنید.", "خطا", false, thisStage);
+                        UtilsMsg.show("فیلد مقدار را پر کنید.", "خطا", false, thisStage);
                         string_text.requestFocus();
                         return;
                     }
@@ -345,7 +358,7 @@ public class Fxml_Get_Report extends ParentControl {
                     break;
                 case "int":
                     if (number_text.getText().isEmpty()) {
-                        UtilsStage.showMsg("فیلد تعداد را پر کنید.", "خطا", false, thisStage);
+                        UtilsMsg.show("فیلد تعداد را پر کنید.", "خطا", false, thisStage);
                         number_text.requestFocus();
                         return;
                     }
@@ -357,11 +370,11 @@ public class Fxml_Get_Report extends ParentControl {
                 case "company":
                     Companies c = databaseHelper.companiesDao.getFirst("company_fa", company_text.getText());
                     if (company_text.getText().isEmpty()) {
-                        UtilsStage.showMsg("فیلد نام شرکت را پر کنید.", "خطا", false, thisStage);
+                        UtilsMsg.show("فیلد نام شرکت را پر کنید.", "خطا", false, thisStage);
                         company_text.requestFocus();
                         return;
                     } else if (c == null) {
-                        UtilsStage.showMsg("فیلد نام شرکت به بدرستی پر نشده.", "خطا", false, thisStage);
+                        UtilsMsg.show("فیلد نام شرکت به بدرستی پر نشده.", "خطا", false, thisStage);
                         company_text.requestFocus();
                         return;
                     } else {
@@ -389,19 +402,15 @@ public class Fxml_Get_Report extends ParentControl {
         });
 
         done.setOnAction((ActionEvent event) -> {
-            PersianCalendar pc = new PersianCalendar();
-//            query_for_search = query_individual.replace("GROUP_BY_QUERY", valid_card.isSelected() ? "" : "");
-            if (main_page.isDisable()) {
-                if (report_type_individual_list.isSelected()) {
-                    query_for_search = query_individual.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
 
-                } else if (report_type_car_list.isSelected()) {
-                    query_for_search = query_car.replace("WHERE_SEARCH_QUERY", "").replace("HAVING_SEARCH_QUERY", "");
-                }
-                query_for_search = query_for_search.replace("WHERE_VALID_CARD_QUERY", valid_card.isSelected()
-                        //                        ? "WHERE card_expiration_date >= " + "'" + pc.year2dig() + "/" + (pc.month().length() == 1 ? "0" + pc.month() : pc.month()) + "/" + (pc.day().length() == 1 ? "0" + pc.day() : pc.day()) + "'"
-                        ? "WHERE workhistory_j.card_delivery_date is null"
-                        : "");
+            query_for_search = (report_type_car.isSelected() || report_type_car_list.isSelected())
+                    ? query_car.replace("GROUP_BY_QUERY", (valid_card.isSelected() || remove_repeat_item.isSelected()) ? "carhistory_j.id" : "cars.id")
+                    : query_individual.replace("GROUP_BY_QUERY", (valid_card.isSelected() || !remove_repeat_item.isSelected()) ? "workhistory_j.id" : "individuals.id");
+
+            if (main_page.isDisable()) {
+                query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", valid_card.isSelected()
+                        ? "WHERE card_delivery_date is null"
+                        : "").replace("HAVING_SEARCH_QUERY", "");
             } else {
                 String where_q = "";
                 String having_q = "";
@@ -413,19 +422,24 @@ public class Fxml_Get_Report extends ParentControl {
                     }
                 }
 
-                query_for_search = query_for_search.replace("WHERE_VALID_CARD_QUERY", valid_card.isSelected()
-                        //                        ? "WHERE card_expiration_date >= " + "'" + pc.year() + "/" + pc.month() + "/" + pc.day() + "' AND "
-                        ? "WHERE workhistory_j.card_delivery_date is null"
-                        : "WHERE ");
+                if (valid_card.isSelected()) {
+                    if (!where_q.isEmpty()) {
+                        where_q = "WHERE card_delivery_date is null AND " + where_q;
+                    } else {
+                        where_q = "WHERE card_delivery_date is null";
+                    }
+                } else if (!valid_card.isSelected()) {
+                    if (!where_q.isEmpty()) {
+                        where_q = "WHERE " + where_q;
+                    } else {
+                        where_q = "";
+                    }
+                }
 
                 if (!having_q.isEmpty()) {
                     having_q = "HAVING " + having_q;
                 }
-                if (report_type_individual.isSelected()) {
-                    query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", where_q).replace("HAVING_SEARCH_QUERY", having_q);
-                } else if (report_type_car.isSelected()) {
-                    query_for_search = query_car.replace("WHERE_SEARCH_QUERY", where_q).replace("HAVING_SEARCH_QUERY", having_q);
-                }
+                query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", where_q).replace("HAVING_SEARCH_QUERY", having_q);
             }
 
             thisStage.close();
@@ -557,9 +571,9 @@ public class Fxml_Get_Report extends ParentControl {
                     date_day.setText(arr[2]);
                     math_number_equals.getToggleGroup().selectToggle(
                             selected_field.value.equals(">") ? math_number_greater_than
-                                    : selected_field.value.equals(">=") ? math_number_greater_than_equals
-                                            : selected_field.value.equals("<") ? math_number_less_than
-                                                    : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
+                            : selected_field.value.equals(">=") ? math_number_greater_than_equals
+                            : selected_field.value.equals("<") ? math_number_less_than
+                            : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
                     );
                     break;
                 case "haveOrNot":
@@ -575,9 +589,9 @@ public class Fxml_Get_Report extends ParentControl {
                     number_text.setText(selected_field.value);
                     math_number_equals.getToggleGroup().selectToggle(
                             selected_field.value.equals(">") ? math_number_greater_than
-                                    : selected_field.value.equals(">=") ? math_number_greater_than_equals
-                                            : selected_field.value.equals("<") ? math_number_less_than
-                                                    : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
+                            : selected_field.value.equals(">=") ? math_number_greater_than_equals
+                            : selected_field.value.equals("<") ? math_number_less_than
+                            : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
                     );
                     break;
                 case "company":
@@ -586,7 +600,7 @@ public class Fxml_Get_Report extends ParentControl {
                 case "veteran_status":
                     veteran_moaf.getToggleGroup().selectToggle(
                             selected_field.value.equals("0") ? veteran_payan_khedmat
-                                    : selected_field.value.equals("1") ? veteran_namalom : veteran_moaf);
+                            : selected_field.value.equals("1") ? veteran_namalom : veteran_moaf);
                     break;
 
             }

@@ -4,7 +4,7 @@ import static gatebass.GateBass.databaseHelper;
 import static gatebass.GateBass.register;
 import gatebass.dataBase.tables.Users;
 import gatebass.utils.ParentControl;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import java.sql.SQLException;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
@@ -60,19 +60,19 @@ public class Fxml_Login extends ParentControl {
         List<Users> userses = databaseHelper.usersDao.rawResults(
                 "SELECT * FROM users WHERE UPPER(username) LIKE 'VALUE'".replace("VALUE", userName.getText().toUpperCase()));
         if (userses.isEmpty()) {
-            UtilsStage.showMsg("نام کاربری صحیح نمی باشد.", "هشدار", false, thisStage);
+            UtilsMsg.show("نام کاربری صحیح نمی باشد.", "هشدار", false, thisStage);
             userName.requestFocus();
             return;
         }
 
         if (!userses.get(0).getPassword().equals(password.getText())) {
-            UtilsStage.showMsg("رمز عبور صحیح نمی باشد.", "اخطار", false, thisStage);
+            UtilsMsg.show("رمز عبور صحیح نمی باشد.", "اخطار", false, thisStage);
             password.requestFocus();
             return;
         }
 
         if (!userses.get(0).getActive()) {
-            UtilsStage.showMsg("این نام کاربری غیرفعال شده است.", "اخطار", false, thisStage);
+            UtilsMsg.show("این نام کاربری غیرفعال شده است.", "اخطار", false, thisStage);
             return;
         }
         register.userID = userses.get(0).getId();

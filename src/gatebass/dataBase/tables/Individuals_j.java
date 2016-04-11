@@ -17,10 +17,7 @@ public class Individuals_j {
     private String card_id;
 
     @DatabaseField(defaultValue = "")
-    private String first_name;
-
-    @DatabaseField(defaultValue = "")
-    private String last_name;
+    private String full_name;
 
     @DatabaseField(defaultValue = "0")
     private Integer replica_count;
@@ -167,14 +164,6 @@ public class Individuals_j {
         return card_id;
     }
 
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
     public String getFather_first_name() {
         return father_first_name;
     }
@@ -295,12 +284,20 @@ public class Individuals_j {
         this.card_id = card_id;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public String getFull_name() {
+        return full_name;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public CarHistory getCar_history_id() {
+        return car_history_id;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
+    }
+
+    public void setCar_history_id(CarHistory car_history_id) {
+        this.car_history_id = car_history_id;
     }
 
     public void setReplica_count(Integer replica_count) {

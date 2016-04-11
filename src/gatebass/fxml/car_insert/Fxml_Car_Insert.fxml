@@ -162,7 +162,7 @@
                                                         </TableColumn>
                                                         <TableColumn id="center-alignment" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" text="تاریخ ابطال" visible="false">
                                                             <cellValueFactory>
-                                                                <PropertyValueFactory property="void" />
+                                                                <PropertyValueFactory property="tahvil" />
                                                             </cellValueFactory>
                                                         </TableColumn>
                                                         <TableColumn id="center-alignment" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" text="تاریخ سلامت" visible="false">

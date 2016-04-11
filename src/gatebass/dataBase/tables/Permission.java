@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import static gatebass.GateBass.databaseHelper;
 import static gatebass.GateBass.users;
-import gatebass.utils.UtilsStage;
+import gatebass.utils.UtilsMsg;
 import javafx.stage.Stage;
 import javax.rmi.CORBA.Util;
 
@@ -100,7 +100,7 @@ public class Permission {
                 "SELECT * FROM userPermission WHERE user_id = " + users.getId() + " AND state = 1 AND permission_id = " + permissionId
         ).isEmpty() || users.getAdmin();
         if (!b) {
-            UtilsStage.showMsg("دسترسی شما محدود می باشد.", "هشدار", false, new Stage());
+            UtilsMsg.show("دسترسی شما محدود می باشد.", "هشدار", false, new Stage());
         }
         return b;
     }

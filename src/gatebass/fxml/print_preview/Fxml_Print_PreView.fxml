@@ -15,10 +15,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <HBox maxWidth="800.0" prefWidth="800.0" style="-fx-background-color: #BBDEFB;" stylesheets="@../../resourse/css/Button.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.print_preview.Fxml_Print_PreView">
     <children>
-        <ScrollPane prefWidth="400.0" style="-fx-background: #78DDFF;" HBox.hgrow="ALWAYS">
+        <ScrollPane prefWidth="600.0" style="-fx-background: #78DDFF;" HBox.hgrow="ALWAYS">
             <content>
                 <VBox fx:id="container" />
             </content>
