@@ -19,7 +19,6 @@ public class ErrorCheck {
 
     private List<String> textFieldmsg = new ArrayList<>();
     private List<String> errors = new ArrayList<>();
-    private String patrOfMsg;
 
     public ErrorCheck(String... str) {
         textFieldmsg = Arrays.asList(str);

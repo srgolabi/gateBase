@@ -71,23 +71,15 @@ import org.apache.commons.io.FileUtils;
 /**
  * FXML Controller class
  *
- * @author Hamid Reza daneshjoo
+ * @author SR.Golabi
  */
 public class Fxml_Car_Insert extends ParentControl {
 
-    public interface ON_INDIVIDUAL {
-
-        void individual(Individuals individuals);
-    }
-
-    private ON_INDIVIDUAL on_individual;
-
-    public void set_ON_INDIVIDUAL(ON_INDIVIDUAL on_individual) {
-        this.on_individual = on_individual;
-    }
-
+    @FXML
+    private Label print_count;
     @FXML
     private MyButtonFont print_view;
+
     @FXML
     private Label card_number;
     @FXML
@@ -97,6 +89,8 @@ public class Fxml_Car_Insert extends ParentControl {
     private HBox button_page;
     @FXML
     private Button insert_individual;
+    @FXML
+    private Button exit;
     @FXML
     private Button new_individual;
     @FXML
@@ -294,7 +288,7 @@ public class Fxml_Car_Insert extends ParentControl {
                         clear_work();
                     } else if (searchPane.isVisible()) {
                         simple_Search.clear();
-                    } else {
+                    } else if (editable.get()) {
                         clear();
                     }
                     break;
@@ -319,7 +313,7 @@ public class Fxml_Car_Insert extends ParentControl {
                         if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.S) && event.isShiftDown())) {
                             clear_work();
                         }
-                    } else {
+                    } else if (editable.get()) {
                         insert_individual.getOnAction().handle(null);
                         if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.S) && event.isShiftDown())) {
                             clear();
@@ -359,6 +353,11 @@ public class Fxml_Car_Insert extends ParentControl {
 
         print_view.init("print", 15);
         print_view.visibleProperty().bind(searchPane.visibleProperty().not().and(work_page.visibleProperty().not()));
+        print_count.visibleProperty().bind(print_view.visibleProperty().and(work_list.sizeProperty().greaterThan(0)));
+        print_count.textProperty().bind(work_list.sizeProperty().asString());
+        insert_individual.visibleProperty().bind(editable);
+        new_individual.visibleProperty().bind(editable);
+        exit.visibleProperty().bind(editable.not());
 
         print_view.setOnAction((ActionEvent event) -> {
             if (work_list.isEmpty()) {
@@ -455,6 +454,9 @@ public class Fxml_Car_Insert extends ParentControl {
             }
         });
 
+        exit.setOnAction((ActionEvent event) -> {
+            thisStage.close();
+        });
         new_individual.setOnAction((ActionEvent event) -> {
             clear();
         });
@@ -657,7 +659,7 @@ public class Fxml_Car_Insert extends ParentControl {
         work_insert.init("plus", 15);
         work_edit.init("pencil", 15);
         work_view.init("eye", 15);
-        add_to_print.init("newspaper", "عبور موقت", 15);
+        add_to_print.init("temporary_gate", "عبور موقت", 16);
 
         TextFiledLimited.set_Number_Length_Limit(driver_info, 10);
         driver_info.editableProperty().bind(editable.and(driver_info_text_clear.visibleProperty().not()));
@@ -724,7 +726,7 @@ public class Fxml_Car_Insert extends ParentControl {
                 driver_history_table.getItems().setAll(databaseHelper.workHistoryDao.getAll("individuals_id", idl));
                 driver_page.setVisible(true);
             } else {
-                on_individual.individual(carsHistory_iw.getWorkHistory_id().getIndividual());
+                my_action.get(carsHistory_iw.getWorkHistory_id().getIndividual(), false);
             }
         });
 
@@ -899,6 +901,8 @@ public class Fxml_Car_Insert extends ParentControl {
             replica_sharh.setText("");
             if (newValue) {
                 replica_day.requestFocus();
+            } else {
+                individualReplica_iw = null;
             }
         });
     }
@@ -953,7 +957,7 @@ public class Fxml_Car_Insert extends ParentControl {
             String str = carsHistory_iw.getWorkHistory_id().getIndividual().getFirst_name() + " " + carsHistory_iw.getWorkHistory_id().getIndividual().getLast_name();
             driver_info.setText(str);
             driver_info_text_clear.setVisible(true);
-            driver_info_button.changeText("truck");
+            driver_info_button.changeText("user");
         });
     }
 }

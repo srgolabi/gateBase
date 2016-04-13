@@ -52,6 +52,8 @@ public class Fxml_Main extends ParentControl {
     @FXML
     private Button car_insert;
     @FXML
+    private Label print_count;
+    @FXML
     private MyButtonFont show_print_view;
     @FXML
     private Button report;
@@ -82,7 +84,6 @@ public class Fxml_Main extends ParentControl {
     UtilsStage<Fxml_Get_Report_Car_List> fxml_Get_Report_Car_List;
     UtilsStage<Fxml_Car_Insert> fxml_Car_Insert;
     UtilsStage<Fxml_Alarm_List> fxml_Alarm_List;
-//    private static Fxml_Print_PreView fxml_Print_PreView;
     private static UtilsStage<Fxml_Print_PreView> fxml_Print_PreView;
 
     @Override
@@ -93,39 +94,41 @@ public class Fxml_Main extends ParentControl {
         manageUser.setDisable(!Permission.isAcces(Permission.USER_VIEW) || !Permission.isAcces(Permission.USER_INSERT));
         manageCompanies.setDisable(!Permission.isAcces(Permission.COMPANY_VIEW) || !Permission.isAcces(Permission.COMPANY_INSERT));
         changeUserPass.setDisable(!Permission.isAcces(Permission.CHANGE_PASS));
+        print_count.visibleProperty().bind(work_list.sizeProperty().greaterThan(0));
+        print_count.textProperty().bind(work_list.sizeProperty().asString());
 
         fxml_Print_PreView = new UtilsStage(Fxml_Print_PreView.class, true, "چاپ", Modality.APPLICATION_MODAL, thisStage.getOwner());
 
         fxml_Get_Report = new UtilsStage(Fxml_Get_Report.class, "گزارش گیری", Modality.APPLICATION_MODAL, thisStage);
 
         fxml_Individual_Insert = new UtilsStage(Fxml_Individual_Insert.class, "ثبت افراد جدید", Modality.NONE, thisStage);
-        fxml_Individual_Insert.t.set_on_car((Cars cars) -> {
-            fxml_Car_Insert.t.editable.set(false);
-            fxml_Car_Insert.t.car = cars;
+        fxml_Individual_Insert.t.set_My_Action((Cars t, boolean b) -> {
+            fxml_Car_Insert.t.editable.set(b);
+            fxml_Car_Insert.t.car = t;
             fxml_Car_Insert.t.loadCars();
             fxml_Car_Insert.t.show_Front_Or_Wait();
         });
 
         fxml_Get_Report_Individual_List = new UtilsStage(Fxml_Get_Report_Individual_List.class, true, "لیست افراد", Modality.NONE, thisStage.getOwner());
-        fxml_Get_Report_Individual_List.t.set_On_Get_Individual((Individuals individuals, boolean is_edit_mode) -> {
-            fxml_Individual_Insert.t.editable.set(is_edit_mode);
-            fxml_Individual_Insert.t.individual = individuals;
+        fxml_Get_Report_Individual_List.t.set_My_Action((Individuals t, boolean b) -> {
+            fxml_Individual_Insert.t.editable.set(b);
+            fxml_Individual_Insert.t.individual = t;
             fxml_Individual_Insert.t.loadIndividual();
             fxml_Individual_Insert.t.show_Front_Or_Wait();
         });
 
         fxml_Get_Report_Car_List = new UtilsStage(Fxml_Get_Report_Car_List.class, true, "لیست خودروها", Modality.NONE, thisStage.getOwner());
-        fxml_Get_Report_Car_List.t.set_On_Get_Car((Cars car, boolean is_edit_mode) -> {
-            fxml_Car_Insert.t.editable.set(is_edit_mode);
-            fxml_Car_Insert.t.car = car;
+        fxml_Get_Report_Car_List.t.set_My_Action((Cars t, boolean b) -> {
+            fxml_Car_Insert.t.editable.set(b);
+            fxml_Car_Insert.t.car = t;
             fxml_Car_Insert.t.loadCars();
             fxml_Car_Insert.t.show_Front_Or_Wait();
         });
 
         fxml_Car_Insert = new UtilsStage(Fxml_Car_Insert.class, "سیستم اطلاعات خودرویی", Modality.NONE, thisStage);
-        fxml_Car_Insert.t.set_ON_INDIVIDUAL((Individuals individuals) -> {
-            fxml_Individual_Insert.t.editable.set(false);
-            fxml_Individual_Insert.t.individual = individuals;
+        fxml_Car_Insert.t.set_My_Action((Individuals t, boolean b) -> {
+            fxml_Individual_Insert.t.editable.set(b);
+            fxml_Individual_Insert.t.individual = t;
             fxml_Individual_Insert.t.loadIndividual();
             fxml_Individual_Insert.t.show_Front_Or_Wait();
         });
@@ -240,8 +243,6 @@ public class Fxml_Main extends ParentControl {
     }
 
     public static void show_print_preView(List<WorkHistory> work_list) {
-//        fxml_Print_PreView.set_value(work_list);
-//        fxml_Print_PreView.thisStage.showAndWait();
         fxml_Print_PreView.t.set_value(work_list);
         fxml_Print_PreView.t.show_Front_Or_Wait();
     }

@@ -2,7 +2,6 @@ package gatebass.fxml.car_insert;
 
 import static gatebass.GateBass.databaseHelper;
 import gatebass.dataBase.tables.Cars;
-import gatebass.dataBase.tables.Individuals;
 import gatebass.myControl.MyButtonFont;
 import gatebass.utils.MyTime;
 import gatebass.utils.TextFiledLimited;
@@ -99,9 +98,29 @@ public class Simple_Search {
                 UtilsMsg.show("موردی جهت جست و جو وجود ندارد", "هشدار", false, thisStage);
                 return;
             }
-            String query = "SELECT cars.* FROM cars\n"
-                    + "WHERE sub_query ".replace("sub_query", sub_query.substring(0, sub_query.length() - 4))
+
+            String query
+                    = "SELECT cars.* FROM cars\n"
+                    + "LEFT OUTER JOIN\n"
+                    + "(SELECT individualReplica.* FROM individualReplica\n"
+                    + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id\n"
+                    + ") individualReplica_J ON individualReplica_J.car_id = cars.id\n"
+                    + "LEFT OUTER JOIN\n"
+                    + "(SELECT carHistory.* , history_j1.date bimeh_date, history_j2.date card_expiration_date , history_j3.date card_issued_date , history_j4.date card_delivery_date , history_j5.date certificate_date , companies_j.company_fa , driver_info.first_name || ' ' || driver_info.last_name driver_name FROM carHistory\n"
+                    + " LEFT OUTER JOIN history history_j1 ON history_j1.id = carHistory.bimeh_date_id\n"
+                    + " LEFT OUTER JOIN history history_j2 ON history_j2.id = carHistory.card_expiration_date_id\n"
+                    + " LEFT OUTER JOIN history history_j3 ON history_j3.id = carHistory.card_issued_date_id\n"
+                    + " LEFT OUTER JOIN history history_j4 ON history_j4.id = carHistory.card_delivery_date_id\n"
+                    + " LEFT OUTER JOIN history history_j5 ON history_j5.id = carHistory.certificate_date_id\n"
+                    + " LEFT OUTER JOIN companies companies_j ON companies_j.id = carHistory.companies_id\n"
+                    + " LEFT OUTER JOIN\n"
+                    + " (SELECT workhistory.* , individuals_j1.first_name , individuals_j1.last_name FROM workhistory\n"
+                    + "  LEFT OUTER JOIN individuals individuals_j1 ON workhistory.individuals_id = individuals_j1.id \n"
+                    + "  ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
+                    + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
+                    + "WHERE sub_query \n".replace("sub_query", sub_query.substring(0, sub_query.length() - 4))
                     + "GROUP BY cars.id ORDER BY cars.card_id ASC";
+
             ObservableList<Cars> observableList = null;
             observableList = FXCollections.observableArrayList(databaseHelper.carDao.rawResults(query));
             searchList = new SimpleListProperty<>(observableList);
@@ -128,24 +147,8 @@ public class Simple_Search {
         String sub_query = "";
         for (TextInputControl tf : textFields) {
             if (!tf.getText().isEmpty()) {
-                sub_query = sub_query + tf.getId() + " LIKE '%" + tf.getText() + "%' AND ";
+                sub_query = sub_query + tf.getId().replace("_search", "") + " LIKE '%" + tf.getText() + "%' AND ";
             }
-        }
-        return sub_query;
-    }
-
-    private String create_sub_query(String[][] fields, MyTime... myTimes) {
-        String sub_query = "";
-        int i = 0;
-        for (MyTime mt : myTimes) {
-            if (!mt.isDamage(fields[i][1] + " به درستی پر نشده.", thisStage)) {
-                if (mt.isFull()) {
-                    sub_query = sub_query + fields[i][0] + " = '" + mt.getDate() + "' AND ";
-                }
-            } else {
-                return "error";
-            }
-            i++;
         }
         return sub_query;
     }
@@ -161,7 +164,7 @@ public class Simple_Search {
 
     public void clear() {
         TextFiledLimited.set_empty_textField(
-                shasi_number_search, car_name_search,color_search,model_search, pellak_search,
+                shasi_number_search, car_name_search, color_search, model_search, pellak_search,
                 comments_search);
     }
 }

@@ -64,7 +64,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 
@@ -75,19 +74,11 @@ import org.apache.commons.io.FileUtils;
  */
 public class Fxml_Individual_Insert extends ParentControl {
 
-    public interface ON_CAR {
-
-        void car(Cars cars);
-    }
-
-    private ON_CAR on_car;
-
-    public void set_on_car(ON_CAR on_car) {
-        this.on_car = on_car;
-    }
-
+    @FXML
+    private Label print_count;
     @FXML
     private MyButtonFont print_view;
+
     @FXML
     private TextField job_title;
     @FXML
@@ -305,6 +296,8 @@ public class Fxml_Individual_Insert extends ParentControl {
     @FXML
     private Button insert_individual;
     @FXML
+    private Button exit;
+    @FXML
     private Button new_individual;
     @FXML
     private MyButtonFont search;
@@ -494,7 +487,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 case F7:
                     if (work_page.isVisible()) {
                         clear_work();
-                    } else {
+                    } else if (editable.get()) {
                         clear();
                     }
                     break;
@@ -511,7 +504,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                         if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.S) && !event.isShiftDown())) {
                             clear_work();
                         }
-                    } else {
+                    } else if (editable.get()) {
                         insert_individual.getOnAction().handle(null);
                         if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.S) && !event.isShiftDown())) {
                             clear();
@@ -551,6 +544,11 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         print_view.init("print", 15);
         print_view.visibleProperty().bind(searchPane.visibleProperty().not().and(work_page.visibleProperty().not()));
+        print_count.visibleProperty().bind(print_view.visibleProperty().and(work_list.sizeProperty().greaterThan(0)));
+        print_count.textProperty().bind(work_list.sizeProperty().asString());
+        insert_individual.visibleProperty().bind(editable);
+        new_individual.visibleProperty().bind(editable);
+        exit.visibleProperty().bind(editable.not());
 
         print_view.setOnAction((ActionEvent event) -> {
             if (work_list.isEmpty()) {
@@ -734,6 +732,10 @@ public class Fxml_Individual_Insert extends ParentControl {
                 Logger.getLogger(Fxml_Individual_Insert.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+
+        exit.setOnAction((ActionEvent event) -> {
+            thisStage.close();
+        });
         new_individual.setOnAction((ActionEvent event) -> {
             clear();
         });
@@ -763,21 +765,21 @@ public class Fxml_Individual_Insert extends ParentControl {
         work_insert.init("plus", 15);
         work_edit.init("pencil", 15);
         work_view.init("eye", 15);
-        temporary_print.init("newspaper", "عبور موقت", 15);
-        staff_print.init("credit_card", "گیت باس ستادی", 15);
-        contractor_print.init("vcard", "گیت باس پیمانکاری", 15);
+        temporary_print.init("temporary_gate", "عبور موقت", 16);
+        staff_print.init("staf_gate", "گیت باس ستادی", 16);
+        contractor_print.init("contractor_gate", "گیت باس پیمانکاری", 17);
 
         TextFiledLimited.set_Number_Limit(car_info);
         car_info.editableProperty().bind(editable.and(car_info_text_clear.visibleProperty().not()));
 
         car_info_button.visibleProperty().bind(editable);
         work_view.disableProperty().bind(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
-        work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_INSERT) || !editable.get());
+        work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_WORK_INSERT) || !editable.get());
         work_edit.disableProperty().bind(work_view.disableProperty().or(editable.not()).or(work_insert.disableProperty()));
 
-        temporary_print.disableProperty().bind(work_edit.disableProperty());
-        staff_print.disableProperty().bind(work_edit.disableProperty());
-        contractor_print.disableProperty().bind(work_edit.disableProperty());
+        temporary_print.disableProperty().bind(work_view.disableProperty());
+        staff_print.disableProperty().bind(work_view.disableProperty());
+        contractor_print.disableProperty().bind(work_view.disableProperty());
         work_button_page.visibleProperty().bind(work_page.visibleProperty());
 
         card_issued_date = new MyTime(card_issued_year, card_issued_month, card_issued_day);
@@ -832,13 +834,17 @@ public class Fxml_Individual_Insert extends ParentControl {
                 car_history_table.getItems().setAll(databaseHelper.carsHistoryDao.getAll("car_id", cars_temp));
                 car_page.setVisible(true);
             } else {
-                on_car.car(workHistory_iw.getCar_history_id().getCar_id());
+                my_action.get(workHistory_iw.getCar_history_id().getCar_id(), false);
             }
         });
 
         work_insert.setOnAction((ActionEvent event) -> {
             work_page.setVisible(true);
             workHistory_iw = new WorkHistory();
+        });
+
+        work_view.setOnAction((ActionEvent event) -> {
+            work_edit.getOnAction().handle(event);
         });
 
         work_edit.setOnAction((ActionEvent event) -> {
@@ -852,7 +858,6 @@ public class Fxml_Individual_Insert extends ParentControl {
         });
 
         work_submit.setOnAction((ActionEvent event) -> {
-            boolean b = false;
             if (comppany.getText().trim().isEmpty()) {
                 UtilsMsg.show("فیلد شرکت را باید پر کنید.", "اخطار", false, thisStage);
                 comppany.requestFocus();
@@ -953,15 +958,11 @@ public class Fxml_Individual_Insert extends ParentControl {
         warning_insert.init("plus", 15);
         warning_edit.init("pencil", 15);
 
-        warning_insert.disableProperty().bind(work_insert.disableProperty());
-        if (warning_insert.isDisable()) {
-            warning_edit.setDisable(true);
-        } else {
-            warning_edit.disableProperty().bind(warning_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1).and(warning_page.visibleProperty().not()));
-        }
-
+        warning_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not()));
+        warning_edit.disableProperty().bind(warning_insert.disableProperty().or(warning_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1).and(warning_page.visibleProperty().not())));
         warning_date = new MyTime(warning_year, warning_month, warning_day);
         TextFiledLimited.setEnterFocuse(
+                warning_day, warning_month, warning_year,
                 warning_sharh, warning_insert, warning_edit, warning_insert
         );
         warning_insert.setOnAction((ActionEvent event) -> {
@@ -1002,6 +1003,8 @@ public class Fxml_Individual_Insert extends ParentControl {
             warning_sharh.setText("");
             if (newValue) {
                 warning_day.requestFocus();
+            } else {
+                individualWarning_iw = null;
             }
         });
     }
@@ -1010,12 +1013,8 @@ public class Fxml_Individual_Insert extends ParentControl {
         replica_insert.init("plus", 15);
         replica_edit.init("pencil", 15);
 
-        replica_insert.disableProperty().bind(work_insert.disableProperty());
-        if (replica_insert.isDisable()) {
-            replica_edit.setDisable(true);
-        } else {
-            replica_edit.disableProperty().bind(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1).and(replica_page.visibleProperty().not()));
-        }
+        replica_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not()));
+        replica_edit.disableProperty().bind(replica_insert.disableProperty().or(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1).and(replica_page.visibleProperty().not())));
 
         replica_date = new MyTime(replica_year, replica_month, replica_day);
         TextFiledLimited.setEnterFocuse(
@@ -1041,7 +1040,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 }
             } else {
                 replica_page.setVisible(true);
-                replica_year.requestFocus();
+                replica_day.requestFocus();
             }
         });
         replica_edit.setOnAction((ActionEvent event) -> {
@@ -1063,6 +1062,8 @@ public class Fxml_Individual_Insert extends ParentControl {
             replica_sharh.setText("");
             if (newValue) {
                 replica_day.requestFocus();
+            } else {
+                individualReplica_iw = null;
             }
         });
     }
@@ -1082,7 +1083,7 @@ public class Fxml_Individual_Insert extends ParentControl {
             searchPane.setVisible(false);
         });
 
-        simpleSearchController = new UtilsStage(Fxml_Individual_Search.class); 
+        simpleSearchController = new UtilsStage(Fxml_Individual_Search.class);
         simpleSearchController.t.setControls(search_Resault, search_Next, search_Back, search_first, search_end, search_submit, searchPane);
         searchPane.getChildren().add(simpleSearchController.t.root);
         simpleSearchController.t.setOnAction((Individuals l) -> {

@@ -1,13 +1,13 @@
 package gatebass.dataBase.tables;
 
-import com.almasb.java.ui.fx.FXDialog;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import static gatebass.GateBass.databaseHelper;
 import static gatebass.GateBass.users;
 import gatebass.utils.UtilsMsg;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.stage.Stage;
-import javax.rmi.CORBA.Util;
 
 /**
  *
@@ -95,6 +95,14 @@ public class Permission {
         ).isEmpty() || users.getAdmin();
     }
 
+    public static BooleanProperty isAccesProperty(int permissionId) {
+
+        boolean b = !databaseHelper.userPermissionDao.rawResults(
+                "SELECT * FROM userPermission WHERE user_id = " + users.getId() + " AND state = 1 AND permission_id = " + permissionId
+        ).isEmpty() || users.getAdmin();
+        return new SimpleBooleanProperty(b);
+    }
+
     public static boolean isAcces_WithMSG(int permissionId) {
         boolean b = !databaseHelper.userPermissionDao.rawResults(
                 "SELECT * FROM userPermission WHERE user_id = " + users.getId() + " AND state = 1 AND permission_id = " + permissionId
@@ -104,6 +112,7 @@ public class Permission {
         }
         return b;
     }
+
     /*
      ***************************************************************************
      ***************************************************************************

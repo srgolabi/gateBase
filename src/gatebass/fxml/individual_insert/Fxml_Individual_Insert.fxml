@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -28,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.individual_insert.Fxml_Individual_Insert">
+<StackPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.individual_insert.Fxml_Individual_Insert">
     <children>
         <VBox nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 13.5; -fx-background-color: #BBDEFB;">
             <children>
@@ -690,8 +683,8 @@
                                                                 </VBox>
                                                             </children>
                                                         </HBox>
-                                                        <gatebass.myControl.MyButtonFont fx:id="warning_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" text="جدید" />
-                                                        <gatebass.myControl.MyButtonFont fx:id="warning_edit" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" text="تغییر" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="warning_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="warning_edit" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                     </children>
                                                     <VBox.margin>
                                                         <Insets />
@@ -792,8 +785,8 @@
                                                                 </VBox>
                                                             </children>
                                                         </HBox>
-                                                        <gatebass.myControl.MyButtonFont fx:id="replica_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" text="جدید" />
-                                                        <gatebass.myControl.MyButtonFont fx:id="replica_edit" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" text="تغییر" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="replica_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="replica_edit" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                     </children>
                                                     <VBox.margin>
                                                         <Insets />
@@ -1176,10 +1169,10 @@
                                                             <children>
                                                                 <TextField fx:id="car_info" minHeight="28.0" promptText="شماره شاسی را وارد نمایید" style="-fx-font-size: 11.5;">
                                                                     <padding>
-                                                                        <Insets left="3.0" right="25.0" />
+                                                                        <Insets left="22.0" right="25.0" />
                                                                     </padding>
                                                                 </TextField>
-                                                                <gatebass.myControl.MyButtonFont fx:id="car_info_text_clear" visible="false"  focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_LEFT" />
+                                                                <gatebass.myControl.MyButtonFont fx:id="car_info_text_clear" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" visible="false" StackPane.alignment="CENTER_LEFT" />
                                                                 <gatebass.myControl.MyButtonFont fx:id="car_info_button" focusTraversable="false" mnemonicParsing="false" styleClass="button-text-field" textFill="#2e7a8c" StackPane.alignment="CENTER_RIGHT" />
                                                             </children>
                                                         </StackPane>
@@ -1199,6 +1192,11 @@
                         </HBox>
                         <VBox fx:id="searchPane" prefHeight="200.0" prefWidth="100.0" visible="false" />
                         <gatebass.myControl.MyButtonFont fx:id="print_view" blendMode="MULTIPLY" mnemonicParsing="false" style="-fx-translate-x: -5; -fx-translate-y: 2.5;" textFill="#2e7a8c" StackPane.alignment="TOP_RIGHT" />
+                        <Label fx:id="print_count" alignment="TOP_CENTER" maxHeight="19.0" maxWidth="19.0" minHeight="19.0" minWidth="19.0" style="-fx-background-color: #304FFE; -fx-background-radius: 180;" text="0" textFill="WHITE" StackPane.alignment="TOP_RIGHT">
+                            <StackPane.margin>
+                                <Insets right="27.0" top="21.0" />
+                            </StackPane.margin>
+                        </Label>
                     </children>
                 </StackPane>
                 <HBox alignment="CENTER_RIGHT" spacing="30.0" style="-fx-background-color: #003366;">
@@ -1247,21 +1245,40 @@
                                                 </Label>
                                             </graphic>
                                         </Button>
-                                        <Button fx:id="new_individual" alignment="CENTER" blendMode="HARD_LIGHT" cache="true" contentDisplay="RIGHT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" text="جدید" textFill="#2e7a8c">
-                                            <font>
-                                                <Font name="B Yekan" size="16.0" />
-                                            </font>
-                                            <effect>
-                                                <DropShadow />
-                                            </effect>
-                                            <graphic>
-                                                <Label text="(F7)" textFill="#607d8b">
+                                        <StackPane>
+                                            <children>
+                                                <Button fx:id="new_individual" alignment="CENTER" blendMode="HARD_LIGHT" cache="true" contentDisplay="RIGHT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" text="جدید" textFill="#2e7a8c">
                                                     <font>
-                                                        <Font name="Arial Bold" size="10.0" />
+                                                        <Font name="B Yekan" size="16.0" />
                                                     </font>
-                                                </Label>
-                                            </graphic>
-                                        </Button>
+                                                    <effect>
+                                                        <DropShadow />
+                                                    </effect>
+                                                    <graphic>
+                                                        <Label text="(F7)" textFill="#607d8b">
+                                                            <font>
+                                                                <Font name="Arial Bold" size="10.0" />
+                                                            </font>
+                                                        </Label>
+                                                    </graphic>
+                                                </Button>
+                                                <Button fx:id="exit" alignment="CENTER" blendMode="HARD_LIGHT" cache="true" contentDisplay="RIGHT" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" text="بازگشت" textFill="#2e7a8c" visible="false">
+                                                    <font>
+                                                        <Font name="B Yekan" size="15.0" />
+                                                    </font>
+                                                    <effect>
+                                                        <DropShadow />
+                                                    </effect>
+                                                    <graphic>
+                                                        <Label text="(Ctrl+Q)" textFill="#607d8b">
+                                                            <font>
+                                                                <Font name="Arial Bold" size="10.0" />
+                                                            </font>
+                                                        </Label>
+                                                    </graphic>
+                                                </Button>
+                                            </children>
+                                        </StackPane>
                                     </children>
                                     <StackPane.margin>
                                         <Insets bottom="20.0" right="30.0" top="20.0" />

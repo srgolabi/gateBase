@@ -14,7 +14,6 @@ import gatebass.utils.MenuTableInit;
 import gatebass.myControl.tableView.MyColumnTable;
 import gatebass.utils.MyTime;
 import gatebass.utils.ParentControl;
-import gatebass.utils.PersianCalendar;
 import gatebass.utils.TextFiledLimited;
 import gatebass.utils.UtilsMsg;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
@@ -236,16 +234,19 @@ public class Fxml_Get_Report extends ParentControl {
                 + "HAVING_SEARCH_QUERY\n"
                 + "ORDER BY card_id desc";
 
+        {
+
+        }
         String query_car
                 = "SELECT cars.id , cars.card_id , cars.car_name , cars.shasi_number , cars.model , cars.comments , cars.logs , carhistory_j.driver_name ,\n"
-                + "count(individualReplica_J.Individual_id)  replica_count , GROUP_CONCAT(DISTINCT carhistory_j.company_fa) company_info ,\n"
+                + "count(individualReplica_J.car_id)  replica_count , GROUP_CONCAT(DISTINCT carhistory_j.company_fa) company_info ,\n"
                 + "carhistory_j.bimeh_date , carhistory_j.card_expiration_date , carhistory_j.card_issued_date , carhistory_j.card_delivery_date , carhistory_j.certificate_date ,\n"
                 + "carhistory_j.workHistory_id\n"
                 + "FROM cars\n"
                 + "LEFT OUTER JOIN\n"
                 + "(SELECT individualReplica.* FROM individualReplica\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id\n"
-                + ") individualReplica_J ON individualReplica_J.Individual_id =  cars.id\n"
+                + ") individualReplica_J ON individualReplica_J.car_id =  cars.id\n"
                 + "LEFT OUTER JOIN\n"
                 + "(SELECT carHistory.* , history_j1.date bimeh_date, history_j2.date card_expiration_date , history_j3.date card_issued_date , history_j4.date card_delivery_date , history_j5.date certificate_date , companies_j.company_fa , driver_info.first_name || ' ' || driver_info.last_name driver_name FROM carHistory\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = carHistory.bimeh_date_id\n"
@@ -260,7 +261,6 @@ public class Fxml_Get_Report extends ParentControl {
                 + "  ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
                 + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
                 + "WHERE_SEARCH_QUERY\n"
-                //                + "GROUP BY cars.id"
                 + "GROUP BY GROUP_BY_QUERY"
                 + "HAVING_SEARCH_QUERY\n"
                 + "ORDER BY card_id desc";

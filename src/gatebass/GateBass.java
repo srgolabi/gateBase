@@ -19,6 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -36,7 +39,8 @@ public class GateBass extends Application {
     public static String version = "1.0.0";
 //    public static String server = "\\\\DANESHJOO\\$Latter$\\";
     public static String server = "";
-    public static List<WorkHistory> work_list = new ArrayList<>();
+    
+    public static ListProperty<WorkHistory> work_list = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     private void importFromExcel() {
 //        POIExcelReader poiExample = new POIExcelReader();
@@ -147,6 +151,7 @@ public class GateBass extends Application {
     public static void onCloseApp() {
         Platform.exit();
         System.exit(0);
+        Runtime.getRuntime().exit(0);
     }
 
     /**

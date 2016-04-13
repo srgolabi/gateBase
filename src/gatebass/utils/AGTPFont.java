@@ -48,13 +48,10 @@ public class AGTPFont {
         left_open("\uE830"),
         right_open("\uE831"),
         up_open("\uE832"),
-        credit_card("\uE836"),
         picture("\uE83B"),
         cancel("\uE83D"),
         download("\uE83E"),
-        vcard("\uE83F"),
         trash("\uE840"),
-        newspaper("\uE841"),
         down_dir("\uE844"),
         left_dir("\uE845"),
         right_dir("\uE846"),
@@ -67,7 +64,10 @@ public class AGTPFont {
         circle_thin("\uE802"),
         flag_circled("\uE803"),
         user("\uE800"),
-        truck("\uE804");
+        truck("\uE804"),
+        temporary_gate("\uE805"),
+        contractor_gate("\uE806"),
+        staf_gate("\uE807");
 
         String icon;
 

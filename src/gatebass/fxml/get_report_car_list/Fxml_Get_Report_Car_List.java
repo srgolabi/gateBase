@@ -61,17 +61,6 @@ import org.google.jhsheets.filtered.tablecolumn.FilterableStringTableColumn;
  */
 public class Fxml_Get_Report_Car_List extends ParentControl {
 
-    public interface Get_Car {
-
-        void get(Cars car, boolean is_edit_mode);
-    }
-
-    private Get_Car get_Car;
-
-    public void set_On_Get_Car(Get_Car gc) {
-        this.get_Car = gc;
-    }
-
     @FXML
     private MyButtonFont edit;
     @FXML
@@ -124,11 +113,11 @@ public class Fxml_Get_Report_Car_List extends ParentControl {
         export_to_excel.init("export", 15);
 
         edit.setOnAction((ActionEvent event) -> {
-            get_Car.get(databaseHelper.carDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), true);
+            my_action.get(databaseHelper.carDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), true);
         });
 
         review.setOnAction((ActionEvent event) -> {
-            get_Car.get(databaseHelper.carDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), false);
+            my_action.get(databaseHelper.carDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), false);
         });
 
         download_file.setOnAction((ActionEvent event) -> {

@@ -64,17 +64,6 @@ import org.google.jhsheets.filtered.tablecolumn.FilterableStringTableColumn;
  */
 public class Fxml_Get_Report_Individual_List extends ParentControl {
 
-    public interface Get_Individual {
-
-        void get(Individuals individuals, boolean is_edit_mode);
-    }
-
-    private Get_Individual get_Individual;
-
-    public void set_On_Get_Individual(Get_Individual gi) {
-        this.get_Individual = gi;
-    }
-
     @FXML
     private MyButtonFont edit;
     @FXML
@@ -129,11 +118,11 @@ public class Fxml_Get_Report_Individual_List extends ParentControl {
         export_to_excel.init("export", 15);
 
         edit.setOnAction((ActionEvent event) -> {
-            get_Individual.get(databaseHelper.individualsDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), true);
+            my_action.get(databaseHelper.individualsDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), true);
         });
 
         review.setOnAction((ActionEvent event) -> {
-            get_Individual.get(databaseHelper.individualsDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), false);
+            my_action.get(databaseHelper.individualsDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), false);
         });
 
         download_file.setOnAction((ActionEvent event) -> {
@@ -227,7 +216,7 @@ public class Fxml_Get_Report_Individual_List extends ParentControl {
                 warning_Table.getItems().clear();
             }
         });
-        
+
         thisStage.setOnCloseRequest((WindowEvent event) -> {
             thisStage.setMaximized(false);
         });
