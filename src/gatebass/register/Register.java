@@ -76,7 +76,7 @@ public class Register {
             String dayRemember = line.substring(22, 24);
 
             userID = Integer.parseInt(line.substring(24));
-            System.out.println("userID == " + userID);
+//            System.out.println("userID == " + userID);
 //            System.out.println("yearRemember == " + yearRemember);
 //            System.out.println("monthRemember == " + monthRemember);
 //            System.out.println("dayRemember == " + dayRemember);

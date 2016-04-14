@@ -7,6 +7,7 @@ import gatebass.dataBase.tables.Users;
 import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.login.Fxml_Login;
 import gatebass.fxml.main.Fxml_Main;
+import gatebass.fxml.splash_screen.Fxml_Splash_Screen;
 import gatebass.register.InitActUser;
 import gatebass.register.Register;
 import gatebass.utils.UtilsMsg;
@@ -24,6 +25,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 /**
@@ -34,13 +36,13 @@ public class GateBass extends Application {
 
     public static DatabaseHelper databaseHelper;
     public static Users users;
-    public static Register register;
-    public static InitActUser actUser;
+//    public static InitActUser actUser;
     public static String version = "1.0.0";
-//    public static String server = "\\\\DANESHJOO\\$Latter$\\";
+//    public static String server = "\\\\DANESHJOO\\$GateBass$\\";
     public static String server = "";
-    
+
     public static ListProperty<WorkHistory> work_list = new SimpleListProperty<>(FXCollections.observableArrayList());
+    UtilsStage<Fxml_Splash_Screen> fxml_Splash_Screen;
 
     private void importFromExcel() {
 //        POIExcelReader poiExample = new POIExcelReader();
@@ -58,11 +60,47 @@ public class GateBass extends Application {
 //        poiExample.historyFromExcel3(xlsPath);
 //        poiExample.displayFromExcel3(xlsPath);
 //        poiExample.displayFromExcel35(xlsPath);
+////        xlsPath = "";
+////        poiExample.history_replica(xlsPath);
+////        poiExample.replica_FromExcel(xlsPath);
+//
+//        Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count");
+//        manage.setValue((Long.parseLong(manage.getValue()) + 1) + "");
+//        databaseHelper.manageDao.createOrUpdate(manage);
+//        manage = databaseHelper.manageDao.getFirst("key", "card_id_count_car");
+//        manage.setValue((Long.parseLong(manage.getValue()) + 1) + "");
+//        databaseHelper.manageDao.createOrUpdate(manage);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        actUser = new InitActUser();
+//        actUser = new InitActUser();
+        fxml_Splash_Screen = new UtilsStage(Fxml_Splash_Screen.class, "", Modality.WINDOW_MODAL, new Stage());
+        fxml_Splash_Screen.t.set_My_Action((Users t, boolean b) -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GateBass.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Register register = new Register();
+//            register.writeEncrype("piamoit", "2015111820160220111111110");
+//            onCloseApp();
+            if (register.checkRegister()) {
+                if (register.showLoginStage) {
+                    showLoginStage(stage);
+                } else {
+                    users = databaseHelper.usersDao.queryForId(register.userID);
+                    showMainStage(stage);
+                }
+            } else {
+                register.writeEncrype("piamoit", "asdfghjklkiuytre");
+                UtilsMsg.show("نرم افزار غیرفعال شده است.\nبا پشتیبان نرم افزار تماس حاصل نمایید.", "هشدار", false, stage);
+                onCloseApp();
+            }
+        });
+//                fxml_Splash_Screen.t.thisStage.initStyle(StageStyle.UNDECORATED);
+        fxml_Splash_Screen.t.thisStage.show();
+
         databaseHelper = new DatabaseHelper();
         if (databaseHelper.usersDao.getAll().isEmpty()) {
 //            Users user_temp = new Users("adminGolabi", "@dm!ng00l@b!", "", "مدیر سیستم");
@@ -111,33 +149,20 @@ public class GateBass extends Application {
         }
 
         importFromExcel();
-        register = new Register();
-//        register.writeEncrype("piamoit", "2015111820160220111111110");
-//        onCloseApp();
-        if (register.checkRegister()) {
-            if (register.showLoginStage) {
-                showLoginStage(stage);
-            } else {
-                users = databaseHelper.usersDao.queryForId(register.userID);
-                showMainStage(stage);
-            }
-
-        } else {
-            register.writeEncrype("piamoit", "asdfghjklkiuytre");
-            UtilsMsg.show("نرم افزار غیرفعال شده است.\nبا پشتیبان نرم افزار تماس حاصل نمایید.", "هشدار", false, stage);
-            onCloseApp();
-        }
+        fxml_Splash_Screen.t.my_action.get(null, true);
     }
 
     public void showLoginStage(Stage stage) {
         UtilsStage<Fxml_Login> fXML_Login = new UtilsStage(Fxml_Login.class, "", Modality.APPLICATION_MODAL, stage);
-        fXML_Login.t.show_And_Wait();
-        if (fXML_Login.t.isAccess) {
-            this.users = fXML_Login.t.usersTemp;
+        fXML_Login.t.set_My_Action((Users t, boolean b) -> {
+            Register register = new Register();
+            register.userID = t.getId();
+            register.checkLogin(b);
+            this.users = t;
             showMainStage(stage);
-        } else {
-            onCloseApp();
-        }
+        });
+        fxml_Splash_Screen.t.thisStage.close();
+        fXML_Login.t.show_And_Wait();
     }
 
     public void showMainStage(Stage stage) {
@@ -146,6 +171,7 @@ public class GateBass extends Application {
         fXML_Main.t.thisStage.setOnCloseRequest((WindowEvent event) -> {
             onCloseApp();
         });
+        fxml_Splash_Screen.t.thisStage.close();
     }
 
     public static void onCloseApp() {

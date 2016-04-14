@@ -24,9 +24,6 @@ public class ErrorCheck {
         textFieldmsg = Arrays.asList(str);
     }
 
-    public void setTextFieldMsg(String... str) {
-    }
-
     public void addOtherMsg(String str) {
         errors.add(str);
     }

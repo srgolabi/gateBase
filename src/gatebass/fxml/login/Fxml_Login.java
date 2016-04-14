@@ -1,7 +1,6 @@
 package gatebass.fxml.login;
 
 import static gatebass.GateBass.databaseHelper;
-import static gatebass.GateBass.register;
 import gatebass.dataBase.tables.Users;
 import gatebass.utils.ParentControl;
 import gatebass.utils.UtilsMsg;
@@ -20,9 +19,6 @@ import javafx.stage.Stage;
  * @author reza
  */
 public class Fxml_Login extends ParentControl {
-
-    public boolean isAccess = false;
-    public Users usersTemp;
 
     @FXML
     private TextField userName;
@@ -75,11 +71,9 @@ public class Fxml_Login extends ParentControl {
             UtilsMsg.show("این نام کاربری غیرفعال شده است.", "اخطار", false, thisStage);
             return;
         }
-        register.userID = userses.get(0).getId();
-        usersTemp = userses.get(0);
-        register.checkLogin(remember.isSelected());
-        isAccess = true;
+        
         thisStage.close();
+        my_action.get(userses.get(0), remember.isSelected());
     }
 
     @FXML

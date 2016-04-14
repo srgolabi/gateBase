@@ -1,9 +1,7 @@
 package gatebass.utils;
 
-import gatebass.utils.*;
 import gatebass.GateBass;
 import java.io.IOException;
-import java.security.acl.Owner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;

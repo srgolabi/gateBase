@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class ParentControl implements Initializable {
 
-    protected My_Action my_action;
+    public My_Action my_action;
 
     public void set_My_Action(My_Action<?> my_action) {
         this.my_action = my_action;

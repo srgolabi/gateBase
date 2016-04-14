@@ -6,6 +6,7 @@ import static gatebass.GateBass.work_list;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Permission;
+import gatebass.dataBase.tables.Users;
 import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.alarm_list.Fxml_Alarm_List;
 import gatebass.fxml.car_insert.Fxml_Car_Insert;
@@ -212,13 +213,13 @@ public class Fxml_Main extends ParentControl {
             Register register = new Register();
             register.exitUser();
             UtilsStage<Fxml_Login> utilsStage = new UtilsStage(Fxml_Login.class, "ورود", Modality.APPLICATION_MODAL, thisStage);
-            utilsStage.t.show_And_Wait();
-            if (utilsStage.t.isAccess) {
-                users = utilsStage.t.usersTemp;
+            utilsStage.t.set_My_Action((Users t, boolean b) -> {
+                register.userID = t.getId();
+                register.checkLogin(b);
+                users = t;
                 showMainStage(thisStage);
-            } else {
-                onCloseApp();
-            }
+            });
+            utilsStage.t.show_And_Wait();
         });
 
         changeUserPass.setOnAction((ActionEvent event) -> {

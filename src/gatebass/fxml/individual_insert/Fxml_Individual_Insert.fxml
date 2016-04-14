@@ -27,7 +27,7 @@
             <children>
                 <StackPane>
                     <children>
-                        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+                        <TabPane fx:id="tabPane" focusTraversable="false" tabClosingPolicy="UNAVAILABLE">
                             <tabs>
                                 <Tab closable="false" text="مشخصات">
                                     <content>
@@ -35,8 +35,8 @@
                                             <children>
                                                 <VBox>
                                                     <children>
-                                                        <Label text="نام" textFill="#2e7a8c" />
-                                                        <TextField fx:id="first_name" prefWidth="202.0" />
+                                                        <Label text="کد ملی" textFill="#2e7a8c" />
+                                                        <TextField fx:id="national_id" prefWidth="202.0" />
                                                         <Label text="First Name" textFill="#2e7a8c">
                                                             <VBox.margin>
                                                                 <Insets top="14.0" />
@@ -114,8 +114,8 @@
                                                 </VBox>
                                                 <VBox>
                                                     <children>
-                                                        <Label text="نام خانوادگی" textFill="#2e7a8c" />
-                                                        <TextField fx:id="last_name" prefWidth="202.0" />
+                                                        <Label text="نام" textFill="#2e7a8c" />
+                                                        <TextField fx:id="first_name" prefWidth="202.0" />
                                                         <Label text="Last Name" textFill="#2e7a8c">
                                                             <VBox.margin>
                                                                 <Insets top="14.0" />
@@ -150,8 +150,8 @@
                                                 </VBox>
                                                 <VBox prefWidth="170.0">
                                                     <children>
-                                                        <Label text="کد ملی" textFill="#2e7a8c" />
-                                                        <TextField fx:id="national_id" prefWidth="150.0" />
+                                                        <Label text="نام خانوادگی" textFill="#2e7a8c" />
+                                                        <TextField fx:id="last_name" prefWidth="150.0" />
                                                         <Label text="شماره شناسنامه" textFill="#2e7a8c">
                                                             <VBox.margin>
                                                                 <Insets top="14.0" />

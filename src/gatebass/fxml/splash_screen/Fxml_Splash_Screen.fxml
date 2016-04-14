@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane prefHeight="400.0" prefWidth="600.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-background-color: #0277BD;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.splash_screen.Fxml_Splash_Screen">
+   <children>
+      <Label style="-fx-font-size: 86;" text="دادبان" textFill="#4fc3f7" />
+      <Label style="-fx-font-size: 84;" text="دادبان" textFill="WHITE" />
+      <Label text="برنامه نویس : سید رضا گلابی" textFill="WHITE" StackPane.alignment="BOTTOM_RIGHT">
+         <padding>
+            <Insets bottom="2.0" right="3.0" />
+         </padding>
+      </Label>
+   </children>
+</StackPane>

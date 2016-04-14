@@ -6,9 +6,8 @@ import gatebass.myControl.MyButtonFont;
 import gatebass.myControl.tableView.PrepareTable;
 import gatebass.utils.ErrorCheck;
 import gatebass.utils.ParentControl;
+import gatebass.utils.TextFiledLimited;
 import gatebass.utils.UtilsMsg;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -20,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -71,10 +71,10 @@ public class Fxml_Manage_Company extends ParentControl {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        super.initialize(url, rb);
+    public void setStage(Stage s) {
+        super.setStage(s);
         step_1.setVisible(true);
-        step_2.setVisible(false);
+        step_2.visibleProperty().bind(step_1.visibleProperty().not());
         step_1_init();
         step_2_init();
     }
@@ -89,7 +89,6 @@ public class Fxml_Manage_Company extends ParentControl {
 
         add.setOnAction((ActionEvent event) -> {
             step_1.setVisible(false);
-            step_2.setVisible(true);
             editCompanies = new Companies();
 
         });
@@ -128,10 +127,7 @@ public class Fxml_Manage_Company extends ParentControl {
     private void step_2_init() {
         back_2.setOnAction((ActionEvent event) -> {
             step_1.setVisible(true);
-            step_2.setVisible(false);
-            company_name_fa.setText("");
-            company_name_en.setText("");
-            summary.setText("");
+            TextFiledLimited.set_empty_textField(company_name_fa, company_name_en, summary);
             is_deactive.setSelected(false);
             user_table_init();
         });

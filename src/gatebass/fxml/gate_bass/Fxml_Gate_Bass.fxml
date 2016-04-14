@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
@@ -15,8 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<HBox fx:id="root" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 8; -fx-background-color: #ffffff;" stylesheets="@../../resourse/css/FileIcon.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass.Fxml_Gate_Bass">
+<HBox fx:id="root" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 8; -fx-background-color: #ffffff;" stylesheets="@../../resourse/css/FileIcon.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass.Fxml_Gate_Bass">
    <children>
       <HBox alignment="BOTTOM_LEFT" style="-fx-border-color: #aaaaaa; -fx-border-width: 0 1 1 0;">
          <children>

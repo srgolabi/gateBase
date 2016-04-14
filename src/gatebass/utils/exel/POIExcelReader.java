@@ -10,6 +10,7 @@ import gatebass.dataBase.tables.CarHistory;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.Companies;
 import gatebass.dataBase.tables.History;
+import gatebass.dataBase.tables.IndividualReplica;
 import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Manage;
 import gatebass.dataBase.tables.WorkHistory;
@@ -1613,6 +1614,150 @@ public class POIExcelReader {
             }
         }
         return wh;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void history_replica(String xlsPath) {
+        InputStream inputStream = null;
+
+        try {
+            inputStream = new FileInputStream(xlsPath);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found in the specified path.");
+            e.printStackTrace();
+        }
+
+        POIFSFileSystem fileSystem = null;
+
+        try {
+            fileSystem = new POIFSFileSystem(inputStream);
+
+            HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
+            HSSFSheet sheet = workBook.getSheetAt(0);
+            Iterator rows = sheet.rowIterator();
+            boolean check;
+            List<History> historys = new ArrayList<>();
+            while (rows.hasNext()) {
+                check = false;
+                HSSFRow row = (HSSFRow) rows.next();
+
+                History historyH = null;
+                String history = "";
+//                System.out.println("Row No.: " + row.getRowNum());
+
+                try {
+                    history = row.getCell(1).getRichStringCellValue().getString();
+                    if (!history.isEmpty()) {
+                        history = history.substring(2);
+                        History HistoryTEMP = databaseHelper.historyDao.getFirst("date", history);
+                        if (HistoryTEMP == null) {
+                            check = true;
+                            historyH = new History(
+                                    history.substring(0, history.indexOf("/")),
+                                    history.substring(history.indexOf("/") + 1, history.lastIndexOf("/")),
+                                    history.substring(history.lastIndexOf("/") + 1));
+                        }
+                    }
+                    if (check) {
+                        historys.add(historyH);
+//                        databaseHelper.historyDao.createOrUpdate(historyH);
+                    }
+                } catch (Exception e) {
+                }
+            }
+            databaseHelper.historyDao.insertList(historys);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public void replica_FromExcel(String xlsPath) {
+        InputStream inputStream = null;
+
+        try {
+            inputStream = new FileInputStream(xlsPath);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found in the specified path.");
+            e.printStackTrace();
+        }
+
+        POIFSFileSystem fileSystem = null;
+
+        try {
+            fileSystem = new POIFSFileSystem(inputStream);
+
+            HSSFWorkbook workBook = new HSSFWorkbook(fileSystem);
+            HSSFSheet sheet = workBook.getSheetAt(0);
+            Iterator rows = sheet.rowIterator();
+            List<IndividualReplica> individualReplicas = new ArrayList<>();
+
+            while (rows.hasNext()) {
+                HSSFRow row = (HSSFRow) rows.next();
+//                if (row.getRowNum() >= end_row) {
+//                    break;
+//                }
+
+                if (row.getRowNum() <= start_row) {
+                    continue;
+                }
+
+//                if (row.getRowNum() == 0
+//                        || row.getRowNum() < 195 || row.getRowNum() > 250
+//                        ) {
+//                    continue;
+//                }
+                IndividualReplica individualReplica = new IndividualReplica();
+
+// display row number in the console.
+//                System.out.println("Row No.: " + row.getRowNum());
+// once get a row its time to iterate through cells.
+                String meli = "";
+                try {
+                    meli = (((long) row.getCell(6).getNumericCellValue()) + "");
+                } catch (Exception e) {
+                }
+                try {
+                    meli = (row.getCell(6).getRichStringCellValue().getString());
+                } catch (Exception e) {
+                }
+                Individuals individuals = databaseHelper.individualsDao.getFirst("national_id", meli);
+                if (individuals != null) {
+                    individualReplica.setIndividual_id(individuals);
+
+                    try {
+                        if (!row.getCell(1).getRichStringCellValue().getString().isEmpty()) {
+                            individualReplica.setHistory_id(databaseHelper.historyDao.getFirst("date", row.getCell(1).getRichStringCellValue().getString().substring(2)));
+                        }
+                    } catch (Exception e) {
+                    }
+
+                    try {
+                        individualReplica.setMablagh(((long) row.getCell(5).getNumericCellValue()) + "");
+                    } catch (Exception e) {
+                    }
+                    try {
+                        individualReplica.setMablagh(row.getCell(5).getRichStringCellValue().getString());
+                    } catch (Exception e) {
+                    }
+
+                    try {
+                        individualReplica.setDescription(((long) row.getCell(6).getNumericCellValue()) + "");
+                    } catch (Exception e) {
+                    }
+                    try {
+                        individualReplica.setDescription(row.getCell(6).getRichStringCellValue().getString());
+                    } catch (Exception e) {
+                    }
+                    individualReplicas.add(individualReplica);
+                }
+            }
+            databaseHelper.individualReplicaDao.insertList(individualReplicas);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

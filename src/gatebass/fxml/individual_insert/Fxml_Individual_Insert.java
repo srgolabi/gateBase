@@ -363,7 +363,6 @@ public class Fxml_Individual_Insert extends ParentControl {
 
     public BooleanProperty editable = new SimpleBooleanProperty(false);
 
-//    private Fxml_Individual_Search simpleSearchController;
     private UtilsStage<Fxml_Individual_Search> simpleSearchController;
 
     public static int PAYAN_KHEDMAT = 0;
@@ -574,7 +573,6 @@ public class Fxml_Individual_Insert extends ParentControl {
         setUp_Replica_Page();
         setUp_Warning_Page();
         setUp_Search_Page();
-        Platform.runLater(first_name::requestFocus);
 
         persianCalendar = new PersianCalendar();
 
@@ -657,7 +655,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         });
 
         TextFiledLimited.setEnterFocuse(
-                first_name, last_name, national_id, father_first_name, first_name_ENG,
+                national_id, first_name, last_name, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, birth_day, birth_month, birth_year,
                 issued, birth_state, series_id_2, series_id_1, field_of_study,
                 academic_degree, mobile, criminal_records, nationality, dependants,
@@ -696,8 +694,6 @@ public class Fxml_Individual_Insert extends ParentControl {
         payan_khedmat.disableProperty().bind(editable.not());
         bedon_kart.disableProperty().bind(editable.not());
         moaf.disableProperty().bind(editable.not());
-
-        first_name.requestFocus();
 
         national_id.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (national_id.getText().isEmpty() || !thisStage.isFocused() || newValue) {
@@ -744,6 +740,7 @@ public class Fxml_Individual_Insert extends ParentControl {
             work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_WORK_INSERT) || !newValue);
         });
 
+        Platform.runLater(national_id::requestFocus);
     }
 
     private void set_editable_textField(TextField... textFields) {
@@ -1177,7 +1174,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         individual = new Individuals();
         editMode = false;
         TextFiledLimited.set_empty_textField(
-                first_name, last_name, national_id, father_first_name, first_name_ENG,
+                national_id, first_name, last_name, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, issued, birth_state, series_id_1,
                 series_id_2, field_of_study, academic_degree, mobile, criminal_records,
                 soldiery_id, soldiery_unit, soldiery_location, soldiery_exempt,
