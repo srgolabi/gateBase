@@ -2,6 +2,7 @@ package gatebass.dataBase.tables;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import static gatebass.GateBass.databaseHelper;
 
 /**
  *
@@ -9,6 +10,13 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "manage")
 public class Manage {
+
+    public static String VERSION_NUMBER = "VERSION_NUMBER";
+    public static String SHOULD_UPDATE = "SHOULD_UPDATE";
+
+    public static String get_value(String key) {
+        return databaseHelper.manageDao.getFirst("key", key).getValue();
+    }
 
     @DatabaseField(generatedId = true, allowGeneratedIdInsert = true)
     private Integer id;
@@ -24,6 +32,11 @@ public class Manage {
 
     public Manage(Integer id, String key, String value) {
         this.id = id;
+        this.key = key;
+        this.value = value;
+    }
+
+    public Manage(String key, String value) {
         this.key = key;
         this.value = value;
     }

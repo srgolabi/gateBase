@@ -4,7 +4,6 @@ import gatebass.dataBase.DatabaseHelper;
 import gatebass.dataBase.tables.Manage;
 import gatebass.dataBase.tables.Permission;
 import gatebass.dataBase.tables.Users;
-import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.login.Fxml_Login;
 import gatebass.fxml.main.Fxml_Main;
 import gatebass.fxml.splash_screen.Fxml_Splash_Screen;
@@ -20,9 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -41,8 +37,8 @@ public class GateBass extends Application {
 //    public static String server = "\\\\DANESHJOO\\$GateBass$\\";
     public static String server = "";
 
-    public static ListProperty<WorkHistory> work_list = new SimpleListProperty<>(FXCollections.observableArrayList());
     UtilsStage<Fxml_Splash_Screen> fxml_Splash_Screen;
+//    public static ListProperty<WorkHistory> work_list = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     private void importFromExcel() {
 //        POIExcelReader poiExample = new POIExcelReader();
@@ -76,15 +72,31 @@ public class GateBass extends Application {
     public void start(Stage stage) throws Exception {
 //        actUser = new InitActUser();
         fxml_Splash_Screen = new UtilsStage(Fxml_Splash_Screen.class, "", Modality.WINDOW_MODAL, new Stage());
-        fxml_Splash_Screen.t.set_My_Action((Users t, boolean b) -> {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GateBass.class.getName()).log(Level.SEVERE, null, ex);
+        fxml_Splash_Screen.t.thisStage.initStyle(StageStyle.UNDECORATED);
+        fxml_Splash_Screen.t.thisStage.setOnCloseRequest((WindowEvent event) -> {
+            if (fxml_Splash_Screen.t.exit_app) {
+                onCloseApp();
+            }
+        });
+        fxml_Splash_Screen.t.thisStage.show();
+
+        Platform.runLater(() -> {
+            databaseHelper = new DatabaseHelper();
+            
+            init_first_run();
+            
+            if (!Manage.get_value(Manage.VERSION_NUMBER).equals(version)) {
+                if (Manage.get_value(Manage.SHOULD_UPDATE).contains("true")) {
+                    UtilsMsg.show("نرم افزار بروزرسانی شده است.\nنسخه جدید آن را نصب کنید.", "هشدار", false, stage);
+                    onCloseApp();
+                } else {
+                    UtilsMsg.show("نسخه جدید نرم افزار آماده می باشد", "هشدار", false, stage);
+                }
             }
             Register register = new Register();
 //            register.writeEncrype("piamoit", "2015111820160220111111110");
 //            onCloseApp();
+            fxml_Splash_Screen.t.exit_app = false;
             if (register.checkRegister()) {
                 if (register.showLoginStage) {
                     showLoginStage(stage);
@@ -98,10 +110,9 @@ public class GateBass extends Application {
                 onCloseApp();
             }
         });
-//                fxml_Splash_Screen.t.thisStage.initStyle(StageStyle.UNDECORATED);
-        fxml_Splash_Screen.t.thisStage.show();
+    }
 
-        databaseHelper = new DatabaseHelper();
+    private void init_first_run() {
         if (databaseHelper.usersDao.getAll().isEmpty()) {
 //            Users user_temp = new Users("adminGolabi", "@dm!ng00l@b!", "", "مدیر سیستم");
             Users user_temp = new Users("adminGolabi", "123", "", "مدیر سیستم");
@@ -110,6 +121,9 @@ public class GateBass extends Application {
             databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count", "932349"));
             databaseHelper.manageDao.createOrUpdate(new Manage(2, "card_id_count_car", "50"));
             databaseHelper.manageDao.createOrUpdate(new Manage(3, "company_folder_count", "1"));
+            databaseHelper.manageDao.createOrUpdate(new Manage(Manage.VERSION_NUMBER, "1.0.0"));
+            databaseHelper.manageDao.createOrUpdate(new Manage(Manage.SHOULD_UPDATE, "false"));
+            
 
             List<Permission> permissions = new ArrayList<>();
             Permission pLetter = new Permission(Permission.INDIVIDUAL, "INDIVIDUAL", "سیستم اطلاعات فردی", 50, null);
@@ -147,9 +161,7 @@ public class GateBass extends Application {
                 Logger.getLogger(GateBass.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
         importFromExcel();
-        fxml_Splash_Screen.t.my_action.get(null, true);
     }
 
     public void showLoginStage(Stage stage) {
@@ -166,7 +178,7 @@ public class GateBass extends Application {
     }
 
     public void showMainStage(Stage stage) {
-        UtilsStage<Fxml_Main> fXML_Main = new UtilsStage(Fxml_Main.class, "", Modality.NONE, stage);
+        UtilsStage<Fxml_Main> fXML_Main = new UtilsStage(Fxml_Main.class, "دادبان", Modality.NONE, stage);
         fXML_Main.t.thisStage.show();
         fXML_Main.t.thisStage.setOnCloseRequest((WindowEvent event) -> {
             onCloseApp();

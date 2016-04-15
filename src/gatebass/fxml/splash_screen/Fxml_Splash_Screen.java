@@ -6,6 +6,8 @@
 package gatebass.fxml.splash_screen;
 
 import gatebass.utils.ParentControl;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -14,6 +16,5 @@ import gatebass.utils.ParentControl;
  */
 public class Fxml_Splash_Screen extends ParentControl {
 
-    
-    
+    public boolean exit_app = true;
 }

@@ -2,7 +2,6 @@ package gatebass.fxml.main;
 
 import static gatebass.GateBass.onCloseApp;
 import static gatebass.GateBass.users;
-import static gatebass.GateBass.work_list;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Permission;
@@ -30,6 +29,9 @@ import java.util.List;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -86,6 +88,7 @@ public class Fxml_Main extends ParentControl {
     UtilsStage<Fxml_Car_Insert> fxml_Car_Insert;
     UtilsStage<Fxml_Alarm_List> fxml_Alarm_List;
     private static UtilsStage<Fxml_Print_PreView> fxml_Print_PreView;
+    public static ListProperty<WorkHistory> work_list = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     @Override
     public void setStage(Stage s) {
@@ -280,7 +283,7 @@ public class Fxml_Main extends ParentControl {
     }
 
     public void showMainStage(Stage stage) {
-        UtilsStage<Fxml_Main> fXML_Main = new UtilsStage(Fxml_Main.class, "", Modality.NONE, stage);
+        UtilsStage<Fxml_Main> fXML_Main = new UtilsStage(Fxml_Main.class, "دادبان", Modality.NONE, stage);
         fXML_Main.t.thisStage.show();
         fXML_Main.t.thisStage.setOnCloseRequest((WindowEvent event) -> {
             onCloseApp();

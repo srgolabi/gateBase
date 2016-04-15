@@ -204,7 +204,7 @@ public class Fxml_Print_PreView extends ParentControl {
 
         delete_all.setOnAction((ActionEvent event) -> {
             work_list.clear();
-            gatebass.GateBass.work_list.clear();
+            gatebass.fxml.main.Fxml_Main.work_list.clear();
             thisStage.close();
         });
 

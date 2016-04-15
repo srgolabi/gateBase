@@ -2,7 +2,6 @@ package gatebass.fxml.individual_insert;
 
 import static gatebass.GateBass.databaseHelper;
 import static gatebass.GateBass.server;
-import static gatebass.GateBass.work_list;
 import gatebass.dataBase.tables.CarHistory;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.Companies;
@@ -16,6 +15,7 @@ import gatebass.dataBase.tables.Permission;
 import gatebass.dataBase.tables.WorkHistory;
 import static gatebass.fxml.main.Fxml_Main.show_print_preView;
 import gatebass.fxml.individual_search.Fxml_Individual_Search;
+import static gatebass.fxml.main.Fxml_Main.work_list;
 import gatebass.myControl.MyButtonFont;
 import gatebass.myControl.tableView.FileColumnTable;
 import gatebass.utils.ErrorCheck;

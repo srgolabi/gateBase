@@ -2,6 +2,7 @@ package gatebass.dataBase;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
+import static gatebass.GateBass.server;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.CarHistory;
 import gatebass.dataBase.tables.Cars_j;
@@ -19,7 +20,6 @@ import gatebass.dataBase.tables.UserPermission;
 import gatebass.dataBase.tables.Users;
 import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.alarm_list.Gate_Alarm;
-import java.sql.DriverManager;
 
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -55,7 +55,8 @@ public class DatabaseHelper {
 
     public DatabaseHelper() {
         try {
-            String gateBassDBurl = "jdbc:sqlite:gatebass.db";
+            String gateBassDBurl = "jdbc:sqlite:" + server + "gatebass.db";
+//            String gateBassDBurl = "jdbc:sqlite:gatebass.db";
             connectionDb = new JdbcConnectionSource(gateBassDBurl);
             individuals_jDao = new BaseRepo<>(connectionDb, Individuals_j.class, false);
             cars_jDao = new BaseRepo<>(connectionDb, Cars_j.class, false);
