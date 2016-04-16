@@ -252,7 +252,6 @@ public class Fxml_Car_Insert extends ParentControl {
 
     private List<IndividualFile> deleteFiles;
     public boolean editMode = false;
-    public BooleanProperty history_editMode = new SimpleBooleanProperty(false);
 
     public BooleanProperty editable = new SimpleBooleanProperty(false);
 
@@ -296,13 +295,14 @@ public class Fxml_Car_Insert extends ParentControl {
                     if (!event.isControlDown()) {
                         break;
                     }
+                case D:
+                    if (!event.isControlDown()) {
+                        break;
+                    }
                 case F9:
                 case F8:
                     if (searchPane.isVisible()) {
                         search_submit.getOnAction().handle(null);
-                        if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.S) && event.isShiftDown())) {
-                            simple_Search.clear();
-                        }
                     } else if (driver_page.isVisible()) {
                         if (!event.getCode().equals(KeyCode.F9)) {
                             driver_submit.getOnAction().handle(null);
@@ -310,12 +310,12 @@ public class Fxml_Car_Insert extends ParentControl {
                         break;
                     } else if (work_page.isVisible()) {
                         work_submit.getOnAction().handle(null);
-                        if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.S) && event.isShiftDown())) {
+                        if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.D) && event.isShiftDown())) {
                             clear_work();
                         }
                     } else if (editable.get()) {
                         insert_individual.getOnAction().handle(null);
-                        if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.S) && event.isShiftDown())) {
+                        if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.D) && event.isShiftDown())) {
                             clear();
                         }
                     }
@@ -406,9 +406,12 @@ public class Fxml_Car_Insert extends ParentControl {
             }
         });
         add_to_print.setOnAction((ActionEvent event) -> {
-
             WorkHistory wh = new WorkHistory();
             wh.setCar_history_id(work_table.getSelectionModel().getSelectedItem());
+            if (wh.getCar_history_id().getId() == null) {
+                UtilsMsg.show("ابتدا باید تغییرات را ذخیره نمایید.", "اخطار", false, thisStage);
+                return;
+            }
             wh.set_TYPE(WorkHistory.CAR);
             work_list.add(wh);
         });
@@ -618,6 +621,13 @@ public class Fxml_Car_Insert extends ParentControl {
 
         for (CarHistory wh : work_table.getItems()) {
             wh.setCar_id(car);
+            if (wh.getWorkHistory_id() != null && !driver_info_text_clear.isVisible()) {
+                WorkHistory workHistory_temp = wh.getWorkHistory_id();
+                workHistory_temp.setCar_history_id(null);
+                wh.setWorkHistory_id(null);
+                databaseHelper.workHistoryDao.createOrUpdate(workHistory_temp);
+            }
+
             databaseHelper.carsHistoryDao.createOrUpdate(wh);
             if (wh.getWorkHistory_id() != null) {
                 WorkHistory workHistory_temp = wh.getWorkHistory_id();
@@ -625,6 +635,7 @@ public class Fxml_Car_Insert extends ParentControl {
                 databaseHelper.workHistoryDao.createOrUpdate(workHistory_temp);
             }
         }
+
         for (IndividualReplica ir : replica_Table.getItems()) {
             ir.setCar_id(car);
         }
@@ -667,7 +678,7 @@ public class Fxml_Car_Insert extends ParentControl {
         add_to_print.disableProperty().bind(work_edit.disableProperty());
         work_view.disableProperty().bind(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         work_insert.setDisable(!Permission.isAcces(Permission.CAR_WORK_INSERT) || !editable.get());
-        work_submit.visibleProperty().bind(history_editMode);
+        work_submit.visibleProperty().bind(editable);
         driver_info_button.visibleProperty().bind(editable);
         work_button_page.visibleProperty().bind(work_page.visibleProperty());
 
@@ -685,6 +696,12 @@ public class Fxml_Car_Insert extends ParentControl {
                 issued_year, expire_day, expire_month, expire_year, void_day,
                 void_month, void_year, work_submit, work_back
         );
+
+        work_page.visibleProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue && work_view.getUserData() != null) {
+                editable.set((boolean) work_view.getUserData());
+            }
+        });
 
         work_table.setRowFactory((TableView<CarHistory> tableView) -> {
             final TableRow<CarHistory> row = new TableRow<>();
@@ -706,48 +723,31 @@ public class Fxml_Car_Insert extends ParentControl {
         String query = "SELECT * FROM companies WHERE active = 1 AND is_deleted = 0 ORDER BY company_fa ASC";
         MenuTableInit.companiesInit(query, comppany, companiesMenu);
 
-        driver_info_text_clear.setOnAction((ActionEvent event) -> {
-            driver_info.setText("");
-            driver_info_button.changeText("search");
-            carsHistory_iw.setWorkHistory_id(null);
-            driver_info_text_clear.setVisible(false);
-        });
-
-        driver_info_button.setOnAction((ActionEvent event) -> {
-            if (driver_info.isEditable()) {
-                if (driver_info.getText().isEmpty()) {
-                    return;
-                }
-                Individuals idl = databaseHelper.individualsDao.getFirst("national_id", driver_info.getText());
-                if (idl == null) {
-                    UtilsMsg.show("فردی با این شماره ملی ثبت نگردیده است.", "هشدار", false, thisStage);
-                    return;
-                }
-                driver_history_table.getItems().setAll(databaseHelper.workHistoryDao.getAll("individuals_id", idl));
-                driver_page.setVisible(true);
-            } else {
-                my_action.get(carsHistory_iw.getWorkHistory_id().getIndividual(), false);
-            }
-        });
-
         work_insert.setOnAction((ActionEvent event) -> {
-            history_editMode.set(false);
             carsHistory_iw = new CarHistory();
-            work_page.setVisible(true);
-        });
-
-        work_edit.setOnAction((ActionEvent event) -> {
-            history_editMode.set(true);
-            carsHistory_iw = work_table.getSelectionModel().getSelectedItem();
-            load_work();
             work_page.setVisible(true);
         });
 
         work_view.setOnAction((ActionEvent event) -> {
             work_view.setUserData(editable.get());
-            work_edit.getOnAction().handle(event);
-            history_editMode.set(false);
             editable.set(false);
+            work_edit.getOnAction().handle(event);
+        });
+
+        work_edit.setOnAction((ActionEvent event) -> {
+            work_page.setVisible(true);
+            carsHistory_iw = work_table.getSelectionModel().getSelectedItem();
+            pellak.setText(carsHistory_iw.getPellak());
+            color.setText(carsHistory_iw.getColor());
+            comppany.setText(carsHistory_iw.getCompanies().getCompany_fa());
+            bimeh_date.setText(carsHistory_iw.getBimehDateId());
+            certificate_date.setText(carsHistory_iw.getCertificateDateId());
+            card_issued_date.setText(carsHistory_iw.getCardIssuedDateId());
+            card_expiration_date.setText(carsHistory_iw.getCardExpirationDateId());
+            card_void_date.setText(carsHistory_iw.getCardDeliveryDateId());
+            if (carsHistory_iw.getWorkHistory_id() != null) {
+                prepare_driver_submit();
+            }
         });
 
         work_submit.setOnAction((ActionEvent event) -> {
@@ -802,45 +802,27 @@ public class Fxml_Car_Insert extends ParentControl {
             carsHistory_iw.setPellak(pellak.getText());
             carsHistory_iw.setColor(color.getText());
 
-            if (history_editMode.get()) {
-                work_table.refresh();
-            } else {
+            if (carsHistory_iw.getId() == null) {
                 work_table.getItems().add(carsHistory_iw);
+            } else {
+                work_table.refresh();
             }
+
             work_back.getOnAction().handle(event);
         });
 
         work_back.setOnAction((ActionEvent event) -> {
-            history_editMode.set(false);
             work_page.setVisible(false);
             if (work_view.getUserData() != null) {
                 editable.setValue((boolean) work_view.getUserData());
             }
             clear_work();
         });
-
-        add_to_print.setOnAction((ActionEvent event) -> {
-
-        });
     }
 
     private void clear_work() {
         MyTime.set_empty_myTime(bimeh_date, certificate_date, card_void_date, card_expiration_date, card_issued_date);
         TextFiledLimited.set_empty_textField(pellak, color, driver_info, comppany);
-    }
-
-    private void load_work() {
-        pellak.setText(carsHistory_iw.getPellak());
-        color.setText(carsHistory_iw.getColor());
-        if (carsHistory_iw.getWorkHistory_id() != null) {
-            driver_info.setText(carsHistory_iw.getWorkHistory_id().getIndividual().getFirst_name() + " " + carsHistory_iw.getWorkHistory_id().getIndividual().getLast_name());
-        }
-        comppany.setText(carsHistory_iw.getCompanies().getCompany_fa());
-        bimeh_date.setText(carsHistory_iw.getBimehDateId());
-        certificate_date.setText(carsHistory_iw.getCertificateDateId());
-        card_issued_date.setText(carsHistory_iw.getCardIssuedDateId());
-        card_expiration_date.setText(carsHistory_iw.getCardExpirationDateId());
-        card_void_date.setText(carsHistory_iw.getCardDeliveryDateId());
     }
 
     private void setUp_Replica_Page() {
@@ -947,17 +929,47 @@ public class Fxml_Car_Insert extends ParentControl {
         dark_background.visibleProperty().bind(driver_page.visibleProperty());
         driver_submit.disableProperty().bind(driver_history_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
 
+        driver_info_text_clear.setOnAction((ActionEvent event) -> {
+            if (editable.get()) {
+                driver_info.setText("");
+                driver_info_button.changeText("search");
+                carsHistory_iw.setWorkHistory_id(null);
+                driver_info_text_clear.setVisible(false);
+            }
+        });
+
+        driver_info_button.setOnAction((ActionEvent event) -> {
+            if (driver_info.isEditable()) {
+                if (driver_info.getText().isEmpty()) {
+                    return;
+                }
+                Individuals idl = databaseHelper.individualsDao.getFirst("national_id", driver_info.getText());
+                if (idl == null) {
+                    UtilsMsg.show("فردی با این شماره ملی ثبت نگردیده است.", "هشدار", false, thisStage);
+                    return;
+                }
+                driver_history_table.getItems().setAll(databaseHelper.workHistoryDao.getAll("individuals_id", idl));
+                driver_page.setVisible(true);
+            } else {
+                my_action.get(carsHistory_iw.getWorkHistory_id().getIndividual(), false);
+            }
+        });
+
         driver_back.setOnAction((ActionEvent event) -> {
             driver_page.setVisible(false);
         });
 
         driver_submit.setOnAction((ActionEvent event) -> {
             carsHistory_iw.setWorkHistory_id(driver_history_table.getSelectionModel().getSelectedItem());
-            driver_page.setVisible(false);
-            String str = carsHistory_iw.getWorkHistory_id().getIndividual().getFirst_name() + " " + carsHistory_iw.getWorkHistory_id().getIndividual().getLast_name();
-            driver_info.setText(str);
-            driver_info_text_clear.setVisible(true);
-            driver_info_button.changeText("user");
+            prepare_driver_submit();
         });
+    }
+
+    private void prepare_driver_submit() {
+        driver_page.setVisible(false);
+        String str = carsHistory_iw.getWorkHistory_id().getIndividual().getFirst_name() + " " + carsHistory_iw.getWorkHistory_id().getIndividual().getLast_name();
+        driver_info.setText(str);
+        driver_info_text_clear.setVisible(true);
+        driver_info_button.changeText("user");
     }
 }

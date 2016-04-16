@@ -1446,4 +1446,20 @@ is divided into following sections:
         <delete file="${store.dir}/temp_final.jar"/>
 
     </target>
+    
+    <target name="package-bundle">
+        <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+         uri="javafx:com.sun.javafx.tools.ant"
+         classpath=".:path/to/sdk/lib/ant-javafx.jar"/>
+        <deploy width="${javafx.run.width}" height="${javafx.run.height}"
+                   nativeBundles="all"
+                   outdir="${basedir}/${dist.dir}" outfile="${application.title}">
+            <application name="${application.title}" mainClass="${javafx.main.class}"/>
+            <resources>
+                <fileset dir="${basedir}/${dist.dir}" includes="*.jar"/>
+            </resources>
+            <info title="${application.title}" vendor="${application.vendor}"/>
+        </deploy>
+    </target>
+
 </project>

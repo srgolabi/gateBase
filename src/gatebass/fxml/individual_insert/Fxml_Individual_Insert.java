@@ -39,6 +39,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -486,6 +487,8 @@ public class Fxml_Individual_Insert extends ParentControl {
                 case F7:
                     if (work_page.isVisible()) {
                         clear_work();
+                    } else if (searchPane.isVisible()) {
+                        simpleSearchController.t.clear();
                     } else if (editable.get()) {
                         clear();
                     }
@@ -494,18 +497,27 @@ public class Fxml_Individual_Insert extends ParentControl {
                     if (!event.isControlDown()) {
                         break;
                     }
+                case D:
+                    if (!event.isControlDown()) {
+                        break;
+                    }
                 case F9:
                 case F8:
                     if (searchPane.isVisible()) {
                         search_submit.getOnAction().handle(null);
+                    } else if (car_page.isVisible()) {
+                        if (!event.getCode().equals(KeyCode.F9)) {
+                            car_submit.getOnAction().handle(null);
+                        }
+                        break;
                     } else if (work_page.isVisible()) {
                         work_submit.getOnAction().handle(null);
-                        if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.S) && !event.isShiftDown())) {
+                        if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.D) && !event.isShiftDown())) {
                             clear_work();
                         }
                     } else if (editable.get()) {
                         insert_individual.getOnAction().handle(null);
-                        if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.S) && !event.isShiftDown())) {
+                        if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.D) && !event.isShiftDown())) {
                             clear();
                         }
                     }
@@ -596,6 +608,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 event.consume();
             }
         });
+
         soldiery_start_day.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
             if (event.isShiftDown() && event.getCode() == TAB) {
                 tabPane.getSelectionModel().select(0);
@@ -610,6 +623,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 event.consume();
             }
         });
+
         soldiery_exempt.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
             if (event.isShiftDown() && event.getCode() == TAB) {
                 tabPane.getSelectionModel().select(0);
@@ -625,6 +639,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 event.consume();
             }
         });
+
         state_address.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
             if (event.isShiftDown() && event.getCode() == TAB) {
                 tabPane.getSelectionModel().select(bedon_kart.isSelected() ? 0 : 1);
@@ -639,6 +654,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 event.consume();
             }
         });
+
         soldiery_location.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
             if (event.isShiftDown() && event.getCode() == TAB) {
                 soldiery_unit.requestFocus();
@@ -681,16 +697,17 @@ public class Fxml_Individual_Insert extends ParentControl {
                 warning_date, replica_date, employment_date, card_issued_date, card_expiration_date,
                 card_delivery_date, birth_date, soldiery_start_date, soldiery_end_date
         );
-        set_editable_textField(
+
+        TextFiledLimited.set_editable_textField(editable,
                 first_name, last_name, national_id, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, issued, birth_state, series_id_1,
                 series_id_2, field_of_study, academic_degree, mobile, criminal_records,
                 nationality, din, religion, dependants, soldiery_id, soldiery_unit,
-                soldiery_location, soldiery_exempt, state_address, city_address,
-                street_address, postal_code, phone_number
+                soldiery_location, individualComments, soldiery_exempt, state_address,
+                city_address, street_address, postal_code, phone_number, comppany,
+                job_phone_number, job_title, job_title_ENG, work_comments
         );
-        work_comments.editableProperty().bind(editable);
-        individualComments.editableProperty().bind(editable);
+
         payan_khedmat.disableProperty().bind(editable.not());
         bedon_kart.disableProperty().bind(editable.not());
         moaf.disableProperty().bind(editable.not());
@@ -743,12 +760,6 @@ public class Fxml_Individual_Insert extends ParentControl {
         Platform.runLater(national_id::requestFocus);
     }
 
-    private void set_editable_textField(TextField... textFields) {
-        for (TextField tf : textFields) {
-            tf.editableProperty().bind(editable);
-        }
-    }
-
     private void set_editable_myTime(MyTime... myTimes) {
         for (MyTime mt : myTimes) {
             mt.set_Editable(editable);
@@ -773,6 +784,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         work_view.disableProperty().bind(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
         work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_WORK_INSERT) || !editable.get());
         work_edit.disableProperty().bind(work_view.disableProperty().or(editable.not()).or(work_insert.disableProperty()));
+        work_submit.visibleProperty().bind(editable);
 
         temporary_print.disableProperty().bind(work_view.disableProperty());
         staff_print.disableProperty().bind(work_view.disableProperty());
@@ -790,6 +802,12 @@ public class Fxml_Individual_Insert extends ParentControl {
                 card_issued_year, card_expiration_day, card_expiration_month, card_expiration_year,
                 card_delivery_day, card_delivery_month, card_delivery_year
         );
+
+        work_page.visibleProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue && work_view.getUserData() != null) {
+                editable.set((boolean) work_view.getUserData());
+            }
+        });
 
         work_table.setRowFactory((TableView<WorkHistory> tableView) -> {
             final TableRow<WorkHistory> row = new TableRow<>();
@@ -811,37 +829,16 @@ public class Fxml_Individual_Insert extends ParentControl {
         String query = "SELECT * FROM companies WHERE active = 1 AND is_deleted = 0 ORDER BY company_fa ASC";
         MenuTableInit.companiesInit(query, comppany, companiesMenu);
 
-        car_info_text_clear.setOnAction((ActionEvent event) -> {
-            car_info.setText("");
-            car_info_button.changeText("search");
-            workHistory_iw.setCar_history_id(null);
-            car_info_text_clear.setVisible(false);
-        });
-
-        car_info_button.setOnAction((ActionEvent event) -> {
-            if (car_info.isEditable()) {
-                if (car_info.getText().isEmpty()) {
-                    return;
-                }
-                Cars cars_temp = databaseHelper.carDao.getFirst("shasi_number", car_info.getText());
-                if (cars_temp == null) {
-                    UtilsMsg.show("خودرویی با این شماره شاسی ثبت نگردیده است.", "هشدار", false, thisStage);
-                    return;
-                }
-                car_history_table.getItems().setAll(databaseHelper.carsHistoryDao.getAll("car_id", cars_temp));
-                car_page.setVisible(true);
-            } else {
-                my_action.get(workHistory_iw.getCar_history_id().getCar_id(), false);
-            }
-        });
-
         work_insert.setOnAction((ActionEvent event) -> {
             work_page.setVisible(true);
             workHistory_iw = new WorkHistory();
         });
 
         work_view.setOnAction((ActionEvent event) -> {
+            work_view.setUserData(editable.get());
+            editable.set(false);
             work_edit.getOnAction().handle(event);
+            job_title.requestFocus();
         });
 
         work_edit.setOnAction((ActionEvent event) -> {
@@ -852,6 +849,13 @@ public class Fxml_Individual_Insert extends ParentControl {
             job_title_ENG.setText(workHistory_iw.getJobTitleENG());
             job_phone_number.setText(workHistory_iw.getJobPhoneNumber());
             work_comments.setText(workHistory_iw.getComments());
+            employment_date.setText(workHistory_iw.getEmploymentDateId());
+            card_delivery_date.setText(workHistory_iw.getCardDeliveryDate());
+            card_expiration_date.setText(workHistory_iw.getCardExpirationDateId());
+            card_issued_date.setText(workHistory_iw.getCardIssuedDateId());
+            if (workHistory_iw.getCar_history_id() != null) {
+                prepare_car_submit();
+            }
         });
 
         work_submit.setOnAction((ActionEvent event) -> {
@@ -931,22 +935,55 @@ public class Fxml_Individual_Insert extends ParentControl {
         dark_background.visibleProperty().bind(car_page.visibleProperty());
         car_submit.disableProperty().bind(car_history_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
 
+        car_info_text_clear.setOnAction((ActionEvent event) -> {
+            if (editable.get()) {
+                car_info.setText("");
+                car_info_button.changeText("search");
+                car_info_text_clear.setVisible(false);
+            }
+        });
+
+        car_info_button.setOnAction((ActionEvent event) -> {
+            if (car_info.isEditable()) {
+                if (car_info.getText().isEmpty()) {
+                    return;
+                }
+                Cars cars_temp = databaseHelper.carDao.getFirst("shasi_number", car_info.getText());
+                if (cars_temp == null) {
+                    UtilsMsg.show("خودرویی با این شماره شاسی ثبت نگردیده است.", "هشدار", false, thisStage);
+                    return;
+                }
+                car_history_table.getItems().setAll(databaseHelper.carsHistoryDao.getAll("car_id", cars_temp));
+                car_page.setVisible(true);
+            } else {
+                my_action.get(workHistory_iw.getCar_history_id().getCar_id(), false);
+            }
+        });
+
         car_back.setOnAction((ActionEvent event) -> {
             car_page.setVisible(false);
         });
 
         car_submit.setOnAction((ActionEvent event) -> {
             workHistory_iw.setCar_history_id(car_history_table.getSelectionModel().getSelectedItem());
-            car_page.setVisible(false);
-            String str = workHistory_iw.getCar_history_id().getCar_id().getCar_name();
-            car_info.setText(str);
-            car_info_text_clear.setVisible(true);
-            car_info_button.changeText("truck");
+            prepare_car_submit();
         });
+    }
+
+    private void prepare_car_submit() {
+        car_page.setVisible(false);
+        String str = workHistory_iw.getCar_history_id().getCar_id().getCar_name();
+        car_info.setText(str);
+        car_info_text_clear.setVisible(true);
+        car_info_button.changeText("truck");
     }
 
     private void add_to_print(String type) {
         WorkHistory wh = new WorkHistory(work_table.getSelectionModel().getSelectedItem());
+        if (wh.getId() == null){
+            UtilsMsg.show("ابتدا باید تغییرات را ذخیره نمایید.", "اخطار", false, thisStage);
+            return;
+        }
         wh.set_TYPE(type);
         work_list.add(wh);
     }
@@ -1125,7 +1162,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         religion.setText(individual.getReligion());
         dependants.setText(individual.getDependants() != null ? individual.getDependants() + "" : "0");
 
-        payan_khedmat.getToggleGroup().selectToggle(individual.getVeteran_status() == null ? payan_khedmat : individual.getVeteran_status() == 1 ? bedon_kart : moaf);
+        payan_khedmat.getToggleGroup().selectToggle(individual.getVeteran_status() == 0 ? payan_khedmat : individual.getVeteran_status() == 1 ? bedon_kart : moaf);
 
         PersianCalendar.load(individual.getSoldiery_start_date(), soldiery_start_year, soldiery_start_month, soldiery_start_day);
         PersianCalendar.load(individual.getSoldiery_end_date(), soldiery_end_year, soldiery_end_month, soldiery_end_day);
@@ -1140,9 +1177,12 @@ public class Fxml_Individual_Insert extends ParentControl {
         phone_number.setText(individual.getPhone_number());
         individualComments.setText(individual.getComments());
 
+        is_soe_pishine.setSelected(individual.isHave_soe_pishine());
+
         if (individual.getPicture_address() != null) {
             imageFile = new File(server + individual.getFilesPatch() + individual.getPicture_address());
             indivisual_pic.setStyle("-fx-background-image: url('" + server + imageFile.toURI().toString() + "'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center; -fx-border-color:  #2e7a8c;");
+            System.out.println("aa = " + imageFile);
         }
 
         fileSelected.getItems().clear();
@@ -1202,10 +1242,8 @@ public class Fxml_Individual_Insert extends ParentControl {
     }
 
     private void clear_work() {
-        TextFiledLimited.set_empty_textField(job_title, comppany, job_title_ENG, job_phone_number);
-        work_comments.setText("");
+        TextFiledLimited.set_empty_textField(job_title, comppany, job_title_ENG, job_phone_number, work_comments);
         MyTime.set_empty_myTime(employment_date, card_delivery_date, card_expiration_date, card_issued_date);
-
     }
 
     private boolean insert() throws SQLException {
@@ -1234,7 +1272,6 @@ public class Fxml_Individual_Insert extends ParentControl {
         individual.setLast_name_ENG(last_name_ENG.getText());
         individual.setId_number(id_number.getText());
         individual.setSerial_number(serial_number.getText());
-
         if (birth_date.isDamage("تاریخ تولد به درستی پر نشده.", thisStage)) {
             return false;
         } else if (birth_date.isFull()) {
@@ -1296,7 +1333,7 @@ public class Fxml_Individual_Insert extends ParentControl {
             new File(individual.getFilesPatch() + individual.getPicture_address()).delete();
             individual.setPicture_address(null);
         }
-
+        individual.setHave_soe_pishine(is_soe_pishine.isSelected());
         databaseHelper.individualsDao.createOrUpdate(individual);
 
         for (IndividualFile f : deleteFiles) {
@@ -1331,12 +1368,17 @@ public class Fxml_Individual_Insert extends ParentControl {
             }
             f.setIndividual_id(individual);
         }
-        individual.setCard_id(server);
         fileSelected.refresh();
         databaseHelper.individualFileDao.insertList(fileSelected.getItems());
 
         for (WorkHistory wh : work_table.getItems()) {
             wh.setIndividualsId(individual);
+            if (wh.getCar_history_id() != null && !car_info_text_clear.isVisible()) {
+                CarHistory carHistory_temp = wh.getCar_history_id();
+                carHistory_temp.setWorkHistory_id(null);
+                wh.setCar_history_id(null);
+                databaseHelper.carsHistoryDao.createOrUpdate(carHistory_temp);
+            }
             databaseHelper.workHistoryDao.createOrUpdate(wh);
             if (wh.getCar_history_id() != null) {
                 CarHistory carHistory_temp = wh.getCar_history_id();

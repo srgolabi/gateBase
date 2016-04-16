@@ -38,7 +38,6 @@ public class GateBass extends Application {
     public static String server = "";
 
     UtilsStage<Fxml_Splash_Screen> fxml_Splash_Screen;
-//    public static ListProperty<WorkHistory> work_list = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     private void importFromExcel() {
 //        POIExcelReader poiExample = new POIExcelReader();
@@ -59,13 +58,6 @@ public class GateBass extends Application {
 ////        xlsPath = "";
 ////        poiExample.history_replica(xlsPath);
 ////        poiExample.replica_FromExcel(xlsPath);
-//
-//        Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count");
-//        manage.setValue((Long.parseLong(manage.getValue()) + 1) + "");
-//        databaseHelper.manageDao.createOrUpdate(manage);
-//        manage = databaseHelper.manageDao.getFirst("key", "card_id_count_car");
-//        manage.setValue((Long.parseLong(manage.getValue()) + 1) + "");
-//        databaseHelper.manageDao.createOrUpdate(manage);
     }
 
     @Override
