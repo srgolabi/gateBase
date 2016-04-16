@@ -1574,6 +1574,7 @@ public class POIExcelReader {
                         meli = (row.getCell(6).getRichStringCellValue().getString());
                     } catch (Exception e) {
                     }
+
 //                    System.out.println("meli = " + meli);
                     individuals = databaseHelper.individualsDao.getFirst("national_id", meli);
                 }
