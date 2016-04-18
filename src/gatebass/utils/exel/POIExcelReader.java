@@ -1716,14 +1716,14 @@ public class POIExcelReader {
 // once get a row its time to iterate through cells.
                 String meli = "";
                 try {
-                    meli = (((long) row.getCell(6).getNumericCellValue()) + "");
+                    meli = (((long) row.getCell(3).getNumericCellValue()) + "");
                 } catch (Exception e) {
                 }
                 try {
-                    meli = (row.getCell(6).getRichStringCellValue().getString());
+                    meli = (row.getCell(3).getRichStringCellValue().getString());
                 } catch (Exception e) {
                 }
-                Individuals individuals = databaseHelper.individualsDao.getFirst("national_id", meli);
+                Individuals individuals = databaseHelper.individualsDao.getFirst("card_id", meli);
                 if (individuals != null) {
                     individualReplica.setIndividual_id(individuals);
 

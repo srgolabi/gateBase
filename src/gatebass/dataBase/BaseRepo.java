@@ -84,7 +84,7 @@ public class BaseRepo<T, ID> {
                     card_sequential++;
                 } catch (SQLException e) {
                     if (t instanceof Individuals) {
-                        System.out.println("national = " + ((Individuals) t).getNational_id() + "  -  name = " + ((Individuals) t).getLast_name() + " " + ((Individuals) t).getId_number());
+                        System.out.println("national temp = " + ((Individuals) t).getNational_id() + "  -  name = " + ((Individuals) t).getLast_name() + " " + ((Individuals) t).getId_number());
                     }
                 }
             }
