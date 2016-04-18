@@ -106,8 +106,8 @@ public class GateBass extends Application {
 
     private void init_first_run() {
         if (databaseHelper.usersDao.getAll().isEmpty()) {
-//            Users user_temp = new Users("adminGolabi", "@dm!ng00l@b!", "", "مدیر سیستم");
-            Users user_temp = new Users("adminGolabi", "123", "", "مدیر سیستم");
+            Users user_temp = new Users("adminGolabiRazavi", "@dm!ng00l@b!r@z@v!", "", "مدیر سیستم");
+//            Users user_temp = new Users("adminGolabi", "123", "", "مدیر سیستم");
             user_temp.setAdmin(true);
             databaseHelper.usersDao.createOrUpdate(user_temp);
             databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count", "932349"));
