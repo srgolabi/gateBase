@@ -230,7 +230,7 @@ public class Fxml_Get_Report extends ParentControl {
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
                 + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n"
                 + "WHERE_SEARCH_QUERY\n"
-                + "GROUP BY GROUP_BY_QUERY"
+                + "GROUP BY GROUP_BY_QUERY\n"
                 + "HAVING_SEARCH_QUERY\n"
                 + "ORDER BY card_id desc";
 
@@ -261,7 +261,7 @@ public class Fxml_Get_Report extends ParentControl {
                 + "  ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
                 + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
                 + "WHERE_SEARCH_QUERY\n"
-                + "GROUP BY GROUP_BY_QUERY"
+                + "GROUP BY GROUP_BY_QUERY\n"
                 + "HAVING_SEARCH_QUERY\n"
                 + "ORDER BY card_id desc";
 
@@ -430,14 +430,14 @@ public class Fxml_Get_Report extends ParentControl {
                     }
                 } else if (!valid_card.isSelected()) {
                     if (!where_q.isEmpty()) {
-                        where_q = "WHERE " + where_q;
+                        where_q = " WHERE " + where_q;
                     } else {
                         where_q = "";
                     }
                 }
 
                 if (!having_q.isEmpty()) {
-                    having_q = "HAVING " + having_q;
+                    having_q = " HAVING " + having_q;
                 }
                 query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", where_q).replace("HAVING_SEARCH_QUERY", having_q);
             }
@@ -696,13 +696,6 @@ public class Fxml_Get_Report extends ParentControl {
             this(field_name, field_type, culomn_query);
         }
 
-//        public Query_Base(String field_name, String field_type, String other_operator_first, String other_operator_second) {
-//            this();
-//            this.field_name = field_name;
-//            this.field_type.set(field_type);
-//            this.other_operator_first.set(other_operator_first);
-//            this.other_operator_second.set(other_operator_second);
-//        }
         public String getField_name() {
             return field_name;
         }

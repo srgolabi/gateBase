@@ -1752,6 +1752,8 @@ public class POIExcelReader {
                     } catch (Exception e) {
                     }
                     individualReplicas.add(individualReplica);
+                } else {
+                    System.out.println("replica ID : " + meli);
                 }
             }
             databaseHelper.individualReplicaDao.insertList(individualReplicas);

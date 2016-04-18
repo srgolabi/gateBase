@@ -10,10 +10,10 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "individuals")
 public class Individuals {
 
-    public static short ALARM_STATE_NORMAL = 0;
-    public static short ALARM_STATE_KEEP = 1;
-    public static short ALARM_STATE_CHEKED = 2;
-    
+    public static short ALARM_STATE_NORMAL = 0, TEMP_TYPE = 0;
+    public static short ALARM_STATE_KEEP = 1, STAF_TYPE = 1;
+    public static short ALARM_STATE_CHEKED = 2, CONTRACTOR_TYPE = 2;
+
     @DatabaseField(generatedId = true)
     private Integer id;
 
@@ -127,9 +127,12 @@ public class Individuals {
 
     @DatabaseField(defaultValue = "") //year + week of the year + national id
     private String filesPatch;
-    
+
     @DatabaseField(defaultValue = "0")
     private Short alarm_state;
+
+    @DatabaseField(defaultValue = "0")
+    private Short gate_type;
 
     @DatabaseField(defaultValue = "")
     private String logs;
@@ -146,6 +149,14 @@ public class Individuals {
 // ------------------------------------------------------------------------------------------------------------------
     public Integer getId() {
         return id;
+    }
+
+    public Short getGate_type() {
+        return gate_type;
+    }
+
+    public void setGate_type(Short gate_type) {
+        this.gate_type = gate_type;
     }
 
     public String getFirst_name() {
