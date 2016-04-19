@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -21,7 +29,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.individual_insert.Fxml_Individual_Insert">
+<StackPane xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.individual_insert.Fxml_Individual_Insert">
     <children>
         <VBox nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Yekan&quot;; -fx-font-size: 13.5; -fx-background-color: #BBDEFB;">
             <children>
@@ -205,9 +213,9 @@
                                                         </HBox>
                                                         <HBox alignment="CENTER">
                                                             <children>
-                                                                <TextField fx:id="series_id_2" prefWidth="40.0" />
-                                                                <Label text="/" textFill="#2e7a8c" />
                                                                 <TextField fx:id="series_id_1" prefWidth="60.0" />
+                                                                <Label text="/" textFill="#2e7a8c" />
+                                                                <TextField fx:id="series_id_2" prefWidth="40.0" />
                                                             </children>
                                                         </HBox>
                                                         <Label text="تلفن همراه" textFill="#2e7a8c">
@@ -231,7 +239,7 @@
                                                                         <Insets />
                                                                     </VBox.margin>
                                                                     <children>
-                                                                        <RadioButton fx:id="payan_khedmat" mnemonicParsing="false" selected="true" style="-fx-opacity: 1;" text="پایان خدمت" textFill="#2e7a8c">
+                                                                        <RadioButton fx:id="payan_khedmat" disable="true" mnemonicParsing="false" selected="true" style="-fx-opacity: 1;" text="پایان خدمت" textFill="#2e7a8c">
                                                                             <toggleGroup>
                                                                                 <ToggleGroup fx:id="vaziat_khedmat" />
                                                                             </toggleGroup>
@@ -573,9 +581,7 @@
                                             <children>
                                                 <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-background-color: #BBDEFB;">
                                                     <children>
-                                                        <gatebass.myControl.MyButtonFont fx:id="temporary_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
-                                                        <gatebass.myControl.MyButtonFont fx:id="staff_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
-                                                        <gatebass.myControl.MyButtonFont fx:id="contractor_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="add_to_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <VBox HBox.hgrow="ALWAYS" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_view" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
@@ -841,23 +847,41 @@
                                     <children>
                                         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
-                                                <Label text="شرکت" textFill="#2e7a8c" />
+                                                <HBox alignment="CENTER" spacing="50.0" style="-fx-border-color: #2e7a8c;">
+                                                    <children>
+                                                        <RadioButton fx:id="temporary_gate" mnemonicParsing="false" selected="true" text="موقت" textFill="#2e7a8c">
+                                                            <toggleGroup>
+                                                                <ToggleGroup fx:id="gate_type_group" />
+                                                            </toggleGroup>
+                                                        </RadioButton>
+                                                        <RadioButton fx:id="contractor_gate" mnemonicParsing="false" text="پیمانکار" textFill="#2e7a8c" toggleGroup="$gate_type_group" />
+                                                        <RadioButton fx:id="employer_gate" mnemonicParsing="false" text="کارفرما" textFill="#2e7a8c" toggleGroup="$gate_type_group" />
+                                                    </children>
+                                                    <padding>
+                                                        <Insets bottom="4.0" top="4.0" />
+                                                    </padding>
+                                                </HBox>
+                                                <Label text="شرکت" textFill="#2e7a8c">
+                                                    <VBox.margin>
+                                                        <Insets top="12.0" />
+                                                    </VBox.margin>
+                                                </Label>
                                                 <TextField fx:id="comppany" />
                                                 <Label maxWidth="1.7976931348623157E308" prefWidth="10.0" text="عنوان شغلی" textFill="#2e7a8c">
                                                     <VBox.margin>
-                                                        <Insets top="29.0" />
+                                                        <Insets top="12.0" />
                                                     </VBox.margin>
                                                 </Label>
                                                 <TextField fx:id="job_title" />
                                                 <Label maxWidth="1.7976931348623157E308" prefWidth="10.0" text="Job Title" textFill="#2e7a8c">
                                                     <VBox.margin>
-                                                        <Insets top="29.0" />
+                                                        <Insets top="12.0" />
                                                     </VBox.margin>
                                                 </Label>
                                                 <TextField fx:id="job_title_ENG" />
                                                 <HBox alignment="BOTTOM_CENTER" spacing="20.0">
                                                     <VBox.margin>
-                                                        <Insets top="33.0" />
+                                                        <Insets top="24.0" />
                                                     </VBox.margin>
                                                     <children>
                                                         <VBox minWidth="180.0" style="-fx-background-color: #39AFD0; -fx-font-size: 14;">
@@ -980,7 +1004,7 @@
                                                 </HBox>
                                             </children>
                                         </VBox>
-                                        <TableView fx:id="companiesMenu" fixedCellSize="25.0" prefHeight="130.0" styleClass="hide-column-header" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
+                                        <TableView fx:id="companiesMenu" fixedCellSize="25.0" prefHeight="140.0" styleClass="hide-column-header" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
                                             <placeholder>
                                                 <Label style="-fx-font-size: 14;" text="موردی یافت نشد" textFill="#308096">
                                                     <padding>
@@ -1008,7 +1032,11 @@
                                     <children>
                                         <VBox>
                                             <children>
-                                                <Label text="تلفن محل کار" textFill="#2e7a8c" />
+                                                <Label text="تلفن محل کار" textFill="#2e7a8c">
+                                                    <VBox.margin>
+                                                        <Insets top="42.0" />
+                                                    </VBox.margin>
+                                                </Label>
                                                 <TextField fx:id="job_phone_number" />
                                             </children>
                                         </VBox>
@@ -1070,7 +1098,7 @@
                                                 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                             </padding>
                                             <VBox.margin>
-                                                <Insets top="64.0" />
+                                                <Insets top="29.0" />
                                             </VBox.margin>
                                         </VBox>
                                         <VBox style="-fx-background-color: #39AFD0; -fx-font-size: 14;">
@@ -1131,12 +1159,12 @@
                                                 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                             </padding>
                                             <VBox.margin>
-                                                <Insets top="32.0" />
+                                                <Insets top="23.0" />
                                             </VBox.margin>
                                         </VBox>
                                     </children>
                                 </VBox>
-                                <VBox spacing="31.0" HBox.hgrow="ALWAYS">
+                                <VBox spacing="27.0" HBox.hgrow="ALWAYS">
                                     <children>
                                         <VBox>
                                             <children>
@@ -1145,7 +1173,7 @@
                                                         <Insets />
                                                     </VBox.margin>
                                                 </Label>
-                                                <TextArea fx:id="work_comments" maxHeight="185.0" prefHeight="185.0" prefWidth="10.0" VBox.vgrow="ALWAYS" />
+                                                <TextArea fx:id="work_comments" maxHeight="187.0" prefHeight="187.0" prefWidth="10.0" VBox.vgrow="ALWAYS" />
                                             </children>
                                         </VBox>
                                         <VBox prefHeight="91.0" prefWidth="10.0" style="-fx-background-color: #39AFD0;">
@@ -1201,7 +1229,7 @@
                 </StackPane>
                 <HBox alignment="CENTER_RIGHT" spacing="30.0" style="-fx-background-color: #003366;">
                     <children>
-                        <HBox style="-fx-border-color: #ffffff;">
+                        <HBox style="-fx-border-color: #ffffff; -fx-font-size: 17;">
                             <children>
                                 <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="شماره کارت :" textFill="WHITE">
                                     <HBox.margin>
@@ -1218,7 +1246,7 @@
                                 </Label>
                             </children>
                             <HBox.margin>
-                                <Insets bottom="20.0" left="30.0" top="20.0" />
+                                <Insets bottom="18.0" left="30.0" top="18.0" />
                             </HBox.margin>
                         </HBox>
                         <StackPane HBox.hgrow="ALWAYS">

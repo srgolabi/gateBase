@@ -61,6 +61,7 @@ import javafx.scene.input.KeyCode;
 import static javafx.scene.input.KeyCode.ENTER;
 import static javafx.scene.input.KeyCode.TAB;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -139,6 +140,7 @@ public class Fxml_Car_Insert extends ParentControl {
     private MyButtonFont driver_info_text_clear;
     @FXML
     private MyButtonFont driver_info_button;
+
     @FXML
     private TextField comppany;
     @FXML
@@ -262,6 +264,19 @@ public class Fxml_Car_Insert extends ParentControl {
         super.setStage(s);
         thisStage.getScene().addEventFilter(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
             switch (event.getCode()) {
+                case TAB:
+                    if (event.isControlDown()) {
+                        event.consume();
+                        if (!tabPane.getSelectionModel().getSelectedItem().getTabPane().isFocused()) {
+                            tabPane.getSelectionModel().select((tabPane.getSelectionModel().getSelectedIndex() + 1) % 6);
+                        }
+                        switch (tabPane.getSelectionModel().getSelectedIndex()) {
+                            case 0:
+                                shasi_number.requestFocus();
+                                break;
+                        }
+                        break;
+                    }
                 case ESCAPE:
                     if (searchPane.isVisible()) {
                         searchPane.setVisible(false);
@@ -289,6 +304,8 @@ public class Fxml_Car_Insert extends ParentControl {
                         simple_Search.clear();
                     } else if (editable.get()) {
                         clear();
+                        tabPane.getSelectionModel().select(0);
+                        shasi_number.requestFocus();
                     }
                     break;
                 case S:
@@ -412,7 +429,7 @@ public class Fxml_Car_Insert extends ParentControl {
                 UtilsMsg.show("ابتدا باید تغییرات را ذخیره نمایید.", "اخطار", false, thisStage);
                 return;
             }
-            wh.set_TYPE(WorkHistory.CAR);
+            wh.setGate_type(WorkHistory.CAR);
             work_list.add(wh);
         });
         work_insert.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
@@ -627,7 +644,6 @@ public class Fxml_Car_Insert extends ParentControl {
                 wh.setWorkHistory_id(null);
                 databaseHelper.workHistoryDao.createOrUpdate(workHistory_temp);
             }
-
             databaseHelper.carsHistoryDao.createOrUpdate(wh);
             if (wh.getWorkHistory_id() != null) {
                 WorkHistory workHistory_temp = wh.getWorkHistory_id();
@@ -701,17 +717,37 @@ public class Fxml_Car_Insert extends ParentControl {
             if (!newValue && work_view.getUserData() != null) {
                 editable.set((boolean) work_view.getUserData());
             }
+
         });
 
         work_table.setRowFactory((TableView<CarHistory> tableView) -> {
             final TableRow<CarHistory> row = new TableRow<>();
-            final ContextMenu contextMenu = new ContextMenu();
-            final MenuItem gateMenuItem = new MenuItem("گیت باس");
-            final MenuItem editMenuItem = new MenuItem("تغییر");
-            final MenuItem printMenuItem = new MenuItem("پرینت");
-            gateMenuItem.setOnAction((ActionEvent event) -> {
+            row.setOnMouseClicked((MouseEvent event) -> {
+                if (event.getClickCount() >= 2) {
+                    if (!work_edit.isDisabled()) {
+                        work_edit.getOnAction().handle(null);
+                    } else {
+                        work_view.getOnAction().handle(null);
+                    }
+                }
             });
-            contextMenu.getItems().addAll(gateMenuItem, editMenuItem, printMenuItem);
+            final ContextMenu contextMenu = new ContextMenu();
+            final MenuItem add_to_prnit_menu = new MenuItem("افزودن جهت چاپ");
+            final MenuItem eidt_menu = new MenuItem("اصلاح");
+            final MenuItem view_menu = new MenuItem("مشاهده");
+            eidt_menu.visibleProperty().bind(work_edit.disableProperty());
+            view_menu.visibleProperty().bind(work_view.disableProperty());
+
+            add_to_prnit_menu.setOnAction((ActionEvent event) -> {
+                add_to_print.getOnAction().handle(event);
+            });
+            eidt_menu.setOnAction((ActionEvent event) -> {
+                work_edit.getOnAction().handle(event);
+            });
+            view_menu.setOnAction((ActionEvent event) -> {
+                work_view.getOnAction().handle(event);
+            });
+            contextMenu.getItems().addAll(add_to_prnit_menu);
             row.contextMenuProperty().bind(
                     Bindings.when(row.emptyProperty())
                     .then((ContextMenu) null)

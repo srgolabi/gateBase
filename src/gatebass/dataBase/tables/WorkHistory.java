@@ -15,14 +15,17 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "workhistory")
 public class WorkHistory {
 
-    private String GATEBASS_TYPE = "";
-    public static String STAF = "STAF";
-    public static String CONTRACTOR = "CONTRACTOR";
-    public static String TEMPORARY = "TEMPORARY";
-    public static String CAR = "CAR";
+//    private String GATEBASS_TYPE = "";
+    public static Short TEMPORARY = 0;
+    public static Short CONTRACTOR = 1;
+    public static Short EMPLOYER = 2;
+    public static Short CAR = 3;
 
     @DatabaseField(generatedId = true)
     private Integer id;
+
+    @DatabaseField(defaultValue = "0")
+    private Short gate_type;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "individuals_id")
     private Individuals individualsId;
@@ -77,6 +80,7 @@ public class WorkHistory {
         this.car_history_id = wh.getCar_history_id();
         this.comments = wh.getComments();
         this.logs = wh.getLogs();
+        this.gate_type = wh.getGate_type();
 
     }
 // ------------------------------------------------------------------------------------------------------------------
@@ -91,6 +95,14 @@ public class WorkHistory {
 
     public String getLogs() {
         return logs;
+    }
+
+    public void setGate_type(Short gate_type) {
+        this.gate_type = gate_type;
+    }
+
+    public Short getGate_type() {
+        return gate_type;
     }
 
     public Companies getCompanies() {
@@ -229,20 +241,19 @@ public class WorkHistory {
         return individualsId;
     }
 
-    public void set_TYPE(String TYPE) {
-        this.GATEBASS_TYPE = TYPE;
-    }
-
+//    public void set_TYPE(String TYPE) {
+//        this.GATEBASS_TYPE = TYPE;
+//    }
     public boolean is_TEMPORARY_TYPE() {
-        return this.GATEBASS_TYPE.equals(TEMPORARY);
+        return this.gate_type.equals(TEMPORARY);
     }
 
     public boolean is_CAR_TYPE() {
-        return this.GATEBASS_TYPE.equals(CAR);
+        return this.gate_type.equals(CAR);
     }
 
-    public boolean is_STAF_TYPE() {
-        return this.GATEBASS_TYPE.equals(STAF);
+    public boolean is_EMPLOYER_TYPE() {
+        return this.gate_type.equals(EMPLOYER);
     }
 
 }

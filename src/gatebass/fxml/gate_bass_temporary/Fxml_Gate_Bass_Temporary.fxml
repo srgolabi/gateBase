@@ -32,30 +32,33 @@
                                 </Label>
                             </children>
                             <VBox.margin>
-                                <Insets top="10.0" />
+                                <Insets bottom="8.0" top="2.0" />
                             </VBox.margin>
                         </HBox>
                         <VBox spacing="15.0">
                             <children>
                                 <HBox>
                                     <children>
-                                        <Label text="شماره :">
+                                        <Label minWidth="86.0" text="شماره کارت :">
                                             <font>
-                                                <Font name="B Yekan" size="12.1" />
+                                                <Font name="B Yekan" size="11.0" />
                                             </font>
                                         </Label>
                                         <Label fx:id="id">
                                             <font>
                                                 <Font name="B Yekan" size="12.0" />
                                             </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
                                         </Label>
                                     </children>
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label text="نام ونام خانوادگی :">
+                                        <Label minWidth="86.0" text="نام ونام خانوادگی :">
                                             <font>
-                                                <Font name="B Yekan" size="12.1" />
+                                                <Font name="B Yekan" size="11.0" />
                                             </font>
                                         </Label>
                                         <Label fx:id="name">
@@ -67,9 +70,9 @@
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label text="شماره ملی :">
+                                        <Label minWidth="86.0" text="شماره ملی :">
                                             <font>
-                                                <Font name="B Yekan" size="12.1" />
+                                                <Font name="B Yekan" size="11.0" />
                                             </font>
                                         </Label>
                                         <Label fx:id="national_number">
@@ -81,9 +84,9 @@
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label text="عنوان شغلی :">
+                                        <Label minWidth="86.0" text="عنوان شغلی :">
                                             <font>
-                                                <Font name="B Yekan" size="12.1" />
+                                                <Font name="B Yekan" size="11.0" />
                                             </font>
                                         </Label>
                                         <Label fx:id="job_tittle">
@@ -95,9 +98,9 @@
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label text="شرکت :">
+                                        <Label minWidth="86.0" text="شرکت :">
                                             <font>
-                                                <Font name="B Yekan" size="12.1" />
+                                                <Font name="B Yekan" size="11.0" />
                                             </font>
                                         </Label>
                                         <Label fx:id="contractor">
@@ -109,9 +112,9 @@
                                 </HBox>
                                 <HBox>
                                     <children>
-                                        <Label text="تاریخ انقضاء :">
+                                        <Label minWidth="86.0" text="تاریخ انقضاء :">
                                             <font>
-                                                <Font name="B Yekan" size="12.1" />
+                                                <Font name="B Yekan" size="11.0" />
                                             </font>
                                         </Label>
                                         <Label fx:id="expire">
@@ -131,33 +134,33 @@
                                 <Font name="B Yekan" size="14.0" />
                             </font>
                             <VBox.margin>
-                                <Insets top="22.0" />
+                                <Insets left="7.0" top="30.0" />
                             </VBox.margin>
                         </Label>
-                        <Label lineSpacing="5.0" text="در هنگام ورود به سایت ارائه کارت شناسایی معتبر الزامیست و این برگه به صورت موقت بوده وجهت صدور کارت باید تا قبل از تاریخ انقضاء مدارک مربوطه به واحد صدور کارت تحویل ،در غیر اینصورت از تردد به داخل سایت جلوگیری به عمل می آید." textAlignment="JUSTIFY" wrapText="true">
+                        <Label lineSpacing="7.0" text="در هنگام ورود به سایت ارائه کارت شناسایی معتبر الزامیست و این برگه به صورت موقت بوده وجهت صدور کارت باید تا قبل از تاریخ انقضاء مدارک مربوطه به واحد صدور کارت تحویل ،در غیر اینصورت از تردد به داخل سایت جلوگیری به عمل می آید." textAlignment="JUSTIFY" wrapText="true">
                             <font>
-                                <Font name="B Yekan" size="12.1" />
+                                <Font name="B Yekan" size="11.0" />
                             </font>
                             <VBox.margin>
-                                <Insets top="2.0" />
+                                <Insets left="7.0" top="5.0" />
                             </VBox.margin>
                         </Label>
                         <Label text="حراست پتروشیمی مخازن سبزعسلویه">
                             <font>
-                                <Font name="B Yekan" size="14.0" />
+                                <Font name="B Yekan" size="11.0" />
                             </font>
                             <VBox.margin>
-                                <Insets left="110.0" top="50.0" />
+                                <Insets left="130.0" top="50.0" />
                             </VBox.margin>
                         </Label>
                     </children>
                     <padding>
-                        <Insets left="35.0" right="35.0" />
+                        <Insets left="25.0" right="35.0" />
                     </padding>
                 </VBox>
                 <HBox fx:id="pic" maxHeight="100.0" maxWidth="82.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="82.0" style="-fx-border-color: #000000;" StackPane.alignment="TOP_LEFT">
                     <StackPane.margin>
-                        <Insets left="45.0" top="105.0" />
+                        <Insets left="30.0" top="105.0" />
                     </StackPane.margin>
                 </HBox>
                 <HBox id="agtp-image-full" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="55.0" prefWidth="150.0" StackPane.alignment="TOP_CENTER">

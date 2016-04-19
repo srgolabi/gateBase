@@ -6,6 +6,7 @@
 package gatebass.utils.exel;
 
 import static gatebass.GateBass.databaseHelper;
+import static gatebass.GateBass.server;
 import gatebass.dataBase.tables.CarHistory;
 import gatebass.dataBase.tables.Cars;
 import gatebass.dataBase.tables.Companies;
@@ -14,11 +15,14 @@ import gatebass.dataBase.tables.IndividualReplica;
 import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Manage;
 import gatebass.dataBase.tables.WorkHistory;
+import gatebass.fxml.individual_insert.Fxml_Individual_Insert;
 import static gatebass.fxml.individual_insert.Fxml_Individual_Insert.BEDONE_KART;
 import static gatebass.fxml.individual_insert.Fxml_Individual_Insert.MOAF;
 import static gatebass.fxml.individual_insert.Fxml_Individual_Insert.PAYAN_KHEDMAT;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -269,6 +274,13 @@ public class POIExcelReader {
                 String split = FileSystems.getDefault().getSeparator();
 
                 individuals.setFilesPatch("data" + split + "1394" + split + dd / 50 + split + individuals.getNational_id() + split);
+                File imageFile = new File("d://test//Images-Personal-Gatepass//" + individuals.getCard_id() + ".jpg");
+
+                if (imageFile.exists()) {
+                        individuals.setPicture_address(individuals.getNational_id() + "-pic");
+                        copyImageFile(imageFile.getAbsolutePath(), server + individuals.getFilesPatch(), individuals.getPicture_address());
+                        individuals.setPicture_address(individuals.getPicture_address() + getFileExtension(imageFile.getAbsolutePath()));
+                }
                 individualses.add(individuals);
 //                databaseHelper.individualsDao.createOrUpdate(individuals, dd);
             }
@@ -616,6 +628,13 @@ public class POIExcelReader {
                 String row_value = row.getCell(2).getRichStringCellValue().getString();
                 if (!row_value.isEmpty()) {
                     Companies companiesTEMP = databaseHelper.companiesDao.getFirst("company_fa", row_value);
+                    String ss1 = companiesTEMP.getCompany_fa();
+                    if (ss1.equals("پتروشیمی مخازن سبز عسلویه") || ss1.equals("بازرسی مهندسی و صنعتی ایران") || ss1.equals("تلاش کاران ماهر") || ss1.equals("سمت وسوی توسعه ایرانیان") || ss1.equals("کنکاوان معدن شیراز")) {
+                        workHistory.setGate_type(WorkHistory.EMPLOYER);
+                    } else {
+                        workHistory.setGate_type(WorkHistory.CONTRACTOR);
+                    }
+
                     workHistory.setCompanies(companiesTEMP);
                 }
 
@@ -720,6 +739,25 @@ public class POIExcelReader {
             Logger.getLogger(POIExcelReader.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
 
+    }
+
+    public void copyImageFile(String fileaddress, String dir, String name) {
+        File srcFile = new File(fileaddress);
+        File destFile = new File(dir + name + getFileExtension(fileaddress));
+        try {
+            FileUtils.copyFile(srcFile, destFile);
+        } catch (IOException ex) {
+            System.out.println("MY ERROR :: " + ex.getMessage());
+            Logger.getLogger(Fxml_Individual_Insert.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private String getFileExtension(String fileaddress) {
+        try {
+            return fileaddress.substring(fileaddress.lastIndexOf("."));
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     @SuppressWarnings("unchecked")

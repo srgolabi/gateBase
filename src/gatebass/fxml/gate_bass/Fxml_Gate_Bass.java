@@ -64,7 +64,7 @@ public class Fxml_Gate_Bass extends ParentControl {
     public void set_value(WorkHistory wh) {
         Individuals iv = wh.getIndividual();
         String[] colors;
-        if (wh.is_STAF_TYPE()) {
+        if (wh.is_EMPLOYER_TYPE()) {
             colors = new String[]{"#77933c", "#d7e4bd", "#77933c", "#ffff00"};
         } else {
             date_issude.setVisible(false);
@@ -88,7 +88,7 @@ public class Fxml_Gate_Bass extends ParentControl {
         postal_code.setText(iv.getPostal_code());
         if (iv.getPicture_address() != null) {
             File imageFile = new File(server + iv.getFilesPatch() + iv.getPicture_address());
-            pic.setStyle("-fx-background-image: url('" + server + imageFile.toURI().toString() + "'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center; -fx-border-color:  #2e7a8c;");
+            pic.setStyle("-fx-background-image: url('" + imageFile.toURI().toString() + "'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center; -fx-border-color:  #2e7a8c;");
         }
     }
 }

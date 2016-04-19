@@ -38,7 +38,7 @@ public class TextFiledLimited {
                 event.consume();
                 return;
             }
-            if (event.isAltDown() && event.getCode() == TAB) {
+            if ((event.isAltDown() || event.isControlDown()) && event.getCode() == TAB) {
                 event.consume();
             } else if (event.getCode() == ENTER || event.getCode() == TAB) {
                 ((Control[]) textField.getUserData())[1].requestFocus();
@@ -61,6 +61,12 @@ public class TextFiledLimited {
         set_Number_Limit(textField);
     }
 
+    
+    public static void set_Number_Limit(TextField... textField) {
+        for (TextField tf : textField){
+            set_Number_Limit(tf);
+        }
+    }
     public static void set_Number_Limit(TextField textField) {
         textField.addEventHandler(KeyEvent.KEY_TYPED, (KeyEvent event) -> {
             try {

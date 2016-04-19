@@ -39,7 +39,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,6 +60,7 @@ import javafx.scene.input.KeyCode;
 import static javafx.scene.input.KeyCode.ENTER;
 import static javafx.scene.input.KeyCode.TAB;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -82,6 +82,12 @@ public class Fxml_Individual_Insert extends ParentControl {
 
     @FXML
     private TextField job_title;
+    @FXML
+    private RadioButton temporary_gate;
+    @FXML
+    private RadioButton contractor_gate;
+    @FXML
+    private RadioButton employer_gate;
     @FXML
     private TextField comppany;
     @FXML
@@ -240,11 +246,7 @@ public class Fxml_Individual_Insert extends ParentControl {
     @FXML
     private MyButtonFont work_edit;
     @FXML
-    private MyButtonFont temporary_print;
-    @FXML
-    private MyButtonFont staff_print;
-    @FXML
-    private MyButtonFont contractor_print;
+    private MyButtonFont add_to_print;
     @FXML
     private TableView<WorkHistory> work_table;
 
@@ -450,7 +452,7 @@ public class Fxml_Individual_Insert extends ParentControl {
             boolean success = false;
             if (db.hasFiles()) {
                 success = true;
-                imageFile = db.getFiles().get(0);
+                imageFile = new File(db.getFiles().get(0).getAbsolutePath());
                 indivisual_pic.setStyle("-fx-background-image: url('" + imageFile.toURI().toString() + "'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center; -fx-border-color:  #2e7a8c;");
             }
             event1.setDropCompleted(success);
@@ -464,6 +466,34 @@ public class Fxml_Individual_Insert extends ParentControl {
         super.setStage(s);
         thisStage.getScene().addEventFilter(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
             switch (event.getCode()) {
+                case TAB:
+                    if (event.isControlDown()) {
+                        event.consume();
+                        if (!tabPane.getSelectionModel().getSelectedItem().getTabPane().isFocused()) {
+                            if (tabPane.getTabs().get((tabPane.getSelectionModel().getSelectedIndex() + 1) % 6).isDisable()) {
+                                tabPane.getSelectionModel().select((tabPane.getSelectionModel().getSelectedIndex() + 2) % 6);
+                            } else {
+                                tabPane.getSelectionModel().select((tabPane.getSelectionModel().getSelectedIndex() + 1) % 6);
+                            }
+                        }
+                        switch (tabPane.getSelectionModel().getSelectedIndex()) {
+                            case 0:
+                                national_id.requestFocus();
+                                break;
+                            case 1:
+                                if (vBox_soldiery.isDisable()) {
+                                    soldiery_exempt.requestFocus();
+                                } else {
+                                    soldiery_start_day.requestFocus();
+                                }
+                                national_id.requestFocus();
+                                break;
+                            case 2:
+                                state_address.requestFocus();
+                                break;
+                        }
+                        break;
+                    }
                 case ESCAPE:
                     if (searchPane.isVisible()) {
                         searchPane.setVisible(false);
@@ -491,6 +521,8 @@ public class Fxml_Individual_Insert extends ParentControl {
                         simpleSearchController.t.clear();
                     } else if (editable.get()) {
                         clear();
+                        tabPane.getSelectionModel().select(0);
+                        national_id.requestFocus();
                     }
                     break;
                 case S:
@@ -686,12 +718,9 @@ public class Fxml_Individual_Insert extends ParentControl {
                 individualComments, work_insert, insert_individual
         );
 
-        TextFiledLimited.set_Number_Limit(national_id);
-        TextFiledLimited.set_Number_Length_Limit(serial_number, 6);
-        TextFiledLimited.set_Number_Length_Limit(series_id_2, 2);
-        TextFiledLimited.set_Number_Length_Limit(series_id_1, 3);
-        TextFiledLimited.set_Number_Length_Limit(mobile, 11);
-        TextFiledLimited.set_Number_Limit(dependants);
+        TextFiledLimited.set_Number_Limit(
+                national_id, serial_number, series_id_1, mobile, dependants
+        );
 
         set_editable_myTime(
                 warning_date, replica_date, employment_date, card_issued_date, card_expiration_date,
@@ -727,6 +756,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 Individuals temp = databaseHelper.individualsDao.getFirst("national_id", national_id.getText());
                 if (temp != null) {
                     if (UtilsMsg.show("فردی با این شماره ملی قبلا ثبت شده. اکنون اطلاعات آن بارگذاری شود؟", "هشدار", true, thisStage)) {
+                        clear();
                         individual = temp;
                         loadIndividual();
                     } else {
@@ -766,6 +796,19 @@ public class Fxml_Individual_Insert extends ParentControl {
         }
     }
 
+    private void set_editable_radio_button(RadioButton... controls) {
+        for (RadioButton c : controls) {
+            c.disableProperty().bind(editable.not());
+            c.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                if (newValue && c.isSelected()) {
+                    c.setStyle("-fx-opacity : 1;");
+                } else {
+                    c.setStyle("");
+                }
+            });
+        }
+    }
+
     private void setUp_Work_Page() {
 
         car_info_text_clear.init("cancel", 15);
@@ -773,11 +816,14 @@ public class Fxml_Individual_Insert extends ParentControl {
         work_insert.init("plus", 15);
         work_edit.init("pencil", 15);
         work_view.init("eye", 15);
-        temporary_print.init("temporary_gate", "عبور موقت", 16);
-        staff_print.init("staf_gate", "گیت باس ستادی", 16);
-        contractor_print.init("contractor_gate", "گیت باس پیمانکاری", 17);
+        add_to_print.init("temporary_gate", "عبور موقت", 16);
+//        staff_print.init("staf_gate", "گیت باس ستادی", 16);
+//        contractor_print.init("contractor_gate", "گیت باس پیمانکاری", 17);
 
         TextFiledLimited.set_Number_Limit(car_info);
+//        temporary_gate.disableProperty().bind(editable.not());
+//        contractor_gate.disableProperty().bind(editable.not());
+//        employer_gate.disableProperty().bind(editable.not());
         car_info.editableProperty().bind(editable.and(car_info_text_clear.visibleProperty().not()));
 
         car_info_button.visibleProperty().bind(editable);
@@ -786,15 +832,15 @@ public class Fxml_Individual_Insert extends ParentControl {
         work_edit.disableProperty().bind(work_view.disableProperty().or(editable.not()).or(work_insert.disableProperty()));
         work_submit.visibleProperty().bind(editable);
 
-        temporary_print.disableProperty().bind(work_view.disableProperty());
-        staff_print.disableProperty().bind(work_view.disableProperty());
-        contractor_print.disableProperty().bind(work_view.disableProperty());
+        add_to_print.disableProperty().bind(work_view.disableProperty());
         work_button_page.visibleProperty().bind(work_page.visibleProperty());
 
         card_issued_date = new MyTime(card_issued_year, card_issued_month, card_issued_day);
         employment_date = new MyTime(employment_year, employment_month, employment_day);
         card_delivery_date = new MyTime(card_delivery_year, card_delivery_month, card_delivery_day);
         card_expiration_date = new MyTime(card_expiration_year, card_expiration_month, card_expiration_day);
+
+        set_editable_radio_button(temporary_gate, contractor_gate, employer_gate);
 
         TextFiledLimited.setEnterFocuse(
                 comppany, job_phone_number, work_comments, job_title, job_title_ENG, employment_day,
@@ -811,13 +857,32 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         work_table.setRowFactory((TableView<WorkHistory> tableView) -> {
             final TableRow<WorkHistory> row = new TableRow<>();
-            final ContextMenu contextMenu = new ContextMenu();
-            final MenuItem staffMenuItem = new MenuItem("گیت باس ستادی");
-            final MenuItem contractorMenuItem = new MenuItem("گیت باس پیمانکاری");
-            staffMenuItem.setOnAction((ActionEvent event) -> {
-                work_table.getItems().remove(row.getItem());
+            row.setOnMouseClicked((MouseEvent event) -> {
+                if (event.getClickCount() >= 2) {
+                    if (!work_edit.isDisabled()) {
+                        work_edit.getOnAction().handle(null);
+                    } else {
+                        work_view.getOnAction().handle(null);
+                    }
+                }
             });
-            contextMenu.getItems().addAll(staffMenuItem, contractorMenuItem);
+            final ContextMenu contextMenu = new ContextMenu();
+            final MenuItem add_to_prnit_menu = new MenuItem("افزودن جهت چاپ");
+            final MenuItem eidt_menu = new MenuItem("اصلاح");
+            final MenuItem view_menu = new MenuItem("مشاهده");
+            eidt_menu.visibleProperty().bind(work_edit.disableProperty());
+            view_menu.visibleProperty().bind(work_view.disableProperty());
+
+            add_to_prnit_menu.setOnAction((ActionEvent event) -> {
+                add_to_print.getOnAction().handle(event);
+            });
+            eidt_menu.setOnAction((ActionEvent event) -> {
+                work_edit.getOnAction().handle(event);
+            });
+            view_menu.setOnAction((ActionEvent event) -> {
+                work_view.getOnAction().handle(event);
+            });
+            contextMenu.getItems().addAll(add_to_prnit_menu, eidt_menu, view_menu);
             row.contextMenuProperty().bind(
                     Bindings.when(row.emptyProperty())
                     .then((ContextMenu) null)
@@ -853,6 +918,15 @@ public class Fxml_Individual_Insert extends ParentControl {
             card_delivery_date.setText(workHistory_iw.getCardDeliveryDate());
             card_expiration_date.setText(workHistory_iw.getCardExpirationDateId());
             card_issued_date.setText(workHistory_iw.getCardIssuedDateId());
+            if (workHistory_iw.is_TEMPORARY_TYPE()) {
+                temporary_gate.setSelected(true);
+            } else if (workHistory_iw.is_EMPLOYER_TYPE()) {
+                employer_gate.setSelected(true);
+
+            } else {
+                contractor_gate.setSelected(true);
+            }
+
             if (workHistory_iw.getCar_history_id() != null) {
                 prepare_car_submit();
             }
@@ -884,7 +958,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 card_expiration_year.requestFocus();
                 return;
             }
-
+            workHistory_iw.setGate_type(temporary_gate.isSelected() ? WorkHistory.TEMPORARY : contractor_gate.isSelected() ? WorkHistory.CONTRACTOR : WorkHistory.EMPLOYER);
             workHistory_iw.setCompanies(databaseHelper.companiesDao.getFirst("company_fa", comppany.getText()));
             workHistory_iw.setJobPhoneNumber(job_phone_number.getText());
             workHistory_iw.setJobTitle(job_title.getText());
@@ -918,16 +992,13 @@ public class Fxml_Individual_Insert extends ParentControl {
             TextFiledLimited.set_empty_textField(job_title, comppany, job_title_ENG, job_phone_number, work_comments);
         });
 
-        contractor_print.setOnAction((ActionEvent event) -> {
-            add_to_print(WorkHistory.CONTRACTOR);
-        });
-
-        staff_print.setOnAction((ActionEvent event) -> {
-            add_to_print(WorkHistory.STAF);
-        });
-
-        temporary_print.setOnAction((ActionEvent event) -> {
-            add_to_print(WorkHistory.TEMPORARY);
+        add_to_print.setOnAction((ActionEvent event) -> {
+            WorkHistory wh = new WorkHistory(work_table.getSelectionModel().getSelectedItem());
+            if (wh.getId() == null) {
+                UtilsMsg.show("ابتدا باید تغییرات را ذخیره نمایید.", "اخطار", false, thisStage);
+                return;
+            }
+            work_list.add(wh);
         });
     }
 
@@ -976,16 +1047,6 @@ public class Fxml_Individual_Insert extends ParentControl {
         car_info.setText(str);
         car_info_text_clear.setVisible(true);
         car_info_button.changeText("truck");
-    }
-
-    private void add_to_print(String type) {
-        WorkHistory wh = new WorkHistory(work_table.getSelectionModel().getSelectedItem());
-        if (wh.getId() == null){
-            UtilsMsg.show("ابتدا باید تغییرات را ذخیره نمایید.", "اخطار", false, thisStage);
-            return;
-        }
-        wh.set_TYPE(type);
-        work_list.add(wh);
     }
 
     private void setUp_Warning_Page() {
@@ -1122,11 +1183,10 @@ public class Fxml_Individual_Insert extends ParentControl {
         searchPane.getChildren().add(simpleSearchController.t.root);
         simpleSearchController.t.setOnAction((Individuals l) -> {
             search_page_controls.setVisible(true);
+            clear();
             if (l != null) {
                 individual = l;
                 loadIndividual();
-            } else {
-                clear();
             }
         });
 
@@ -1135,6 +1195,10 @@ public class Fxml_Individual_Insert extends ParentControl {
     public void loadIndividual() {
 
         editMode = true;
+        work_page.setVisible(false);
+        searchPane.setVisible(false);
+        replica_page.setVisible(false);
+        warning_page.setVisible(false);
         first_name.setText(individual.getFirst_name());
         last_name.setText(individual.getLast_name());
         national_id.setText(individual.getNational_id());
@@ -1181,8 +1245,8 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         if (individual.getPicture_address() != null) {
             imageFile = new File(server + individual.getFilesPatch() + individual.getPicture_address());
-            indivisual_pic.setStyle("-fx-background-image: url('" + server + imageFile.toURI().toString() + "'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center; -fx-border-color:  #2e7a8c;");
-            System.out.println("aa = " + imageFile);
+            System.out.println("a = " + imageFile.getAbsolutePath());
+            indivisual_pic.setStyle("-fx-background-image: url('" + imageFile.toURI().toString() + "'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center; -fx-border-color:  #2e7a8c;");
         }
 
         fileSelected.getItems().clear();
@@ -1324,8 +1388,13 @@ public class Fxml_Individual_Insert extends ParentControl {
         }
         if (imageFile != null) {
             if (!imageFile.getAbsolutePath().endsWith(server + individual.getFilesPatch() + individual.getPicture_address())) {
+                String s = "";
+                try {
+                    s = individual.getPicture_address().startsWith(individual.getNational_id() + "-pic") ? "-1" : "";
+                } catch (Exception e) {
+                }
                 new File(server + individual.getFilesPatch() + individual.getPicture_address()).delete();
-                individual.setPicture_address(individual.getNational_id() + "-pic");
+                individual.setPicture_address(individual.getNational_id() + s + "-pic");
                 copyImageFile(imageFile.getAbsolutePath(), server + individual.getFilesPatch(), individual.getPicture_address());
                 individual.setPicture_address(individual.getPicture_address() + getFileExtension(imageFile.getAbsolutePath()));
             }
@@ -1398,6 +1467,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         databaseHelper.individualWarningDao.insertList(warning_Table.getItems());
 
         editMode = true;
+        card_number.setText(individual.getCard_id());
         return true;
     }
 

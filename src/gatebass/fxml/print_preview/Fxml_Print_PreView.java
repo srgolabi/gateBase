@@ -47,6 +47,12 @@ import javafx.stage.Stage;
 public class Fxml_Print_PreView extends ParentControl {
 
     @FXML
+    private VBox print_status_page;
+    @FXML
+    private Label title_status;
+    @FXML
+    private Label title_status_1;
+    @FXML
     private VBox container;
     @FXML
     private MyButtonFont print;
@@ -59,6 +65,9 @@ public class Fxml_Print_PreView extends ParentControl {
     private TextField print_count;
     @FXML
     private Button printer_selecter;
+    @FXML
+    private Label print_properties;
+
     @FXML
     private MyButtonFont printer_selecter_down_icon;
     @FXML
@@ -182,12 +191,22 @@ public class Fxml_Print_PreView extends ParentControl {
         print.setOnAction((ActionEvent event) -> {
             if (print_all.isSelected() && !print_all.isDisable()) {
                 page_number.setText("0");
+                title_status.setText("از " + page_total.getText() + " صفحه");
+                print_status_page.setVisible(true);
                 for (int i = 0; i < getINT(page_total); i++) {
+                    title_status_1.setText(i + 1 + "");
                     set_page_number(1);
                     print_page();
+                    print_status_page.setVisible(false);
+
                 }
+
             } else if (print_current.isSelected() && !print_current.isDisable()) {
+                title_status.setText("از 1 صفحه");
+                title_status_1.setText("1");
+                print_status_page.setVisible(true);
                 print_page();
+                print_status_page.setVisible(false);
             } else if (!print_selecttion_page.getText().isEmpty()) {
                 if (getINT(print_selecttion_page) <= getINT(page_total)) {
                     page_number.setText((getINT(print_selecttion_page) - 1) + "");
@@ -200,6 +219,11 @@ public class Fxml_Print_PreView extends ParentControl {
 
             }
 
+        });
+
+        print_properties.setOnMouseClicked((MouseEvent event) -> {
+            PrinterJob printerJob = PrinterJob.createPrinterJob(active_printer);
+            printerJob.showPrintDialog(s);
         });
 
         delete_all.setOnAction((ActionEvent event) -> {

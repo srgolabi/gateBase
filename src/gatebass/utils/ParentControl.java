@@ -43,7 +43,7 @@ public class ParentControl implements Initializable {
     public void show_And_Wait() {
         thisStage.showAndWait();
     }
-
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }

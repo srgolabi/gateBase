@@ -749,7 +749,7 @@
                 </StackPane>
                 <HBox alignment="CENTER_RIGHT" prefHeight="77.0" spacing="18.0" style="-fx-background-color: #003366;">
                     <children>
-                        <HBox style="-fx-border-color: #ffffff; -fx-font-size: 13.5;">
+                        <HBox style="-fx-border-color: #ffffff; -fx-font-size: 17;">
                             <children>
                                 <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="شماره کارت :" textFill="WHITE">
                                     <HBox.margin>
@@ -766,7 +766,7 @@
                                 </Label>
                             </children>
                             <HBox.margin>
-                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                <Insets bottom="18.0" left="20.0" right="20.0" top="18.0" />
                             </HBox.margin>
                         </HBox>
                         <StackPane HBox.hgrow="ALWAYS">

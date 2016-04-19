@@ -40,24 +40,24 @@ public class GateBass extends Application {
     UtilsStage<Fxml_Splash_Screen> fxml_Splash_Screen;
 
     private void importFromExcel() {
-//        POIExcelReader poiExample = new POIExcelReader();
-//        String xlsPath = "d://test//Gatepass.xls";
-//        poiExample.compnaiesFromExcel(xlsPath);
-//        poiExample.historyFromExcel(xlsPath);
-//        poiExample.displayFromExcel(xlsPath);
-//        poiExample.worksFromExcel(xlsPath);
-//        xlsPath = "d://test//Gatepass-Cars.xls";
-//        poiExample.compnaiesFromExcel2(xlsPath);
-//        poiExample.historyFromExcel2(xlsPath);
-//        poiExample.displayFromExcel2(xlsPath);
-//        poiExample.worksFromExcel2(xlsPath);
-//        xlsPath = "d://test//temporary.xls";
-//        poiExample.historyFromExcel3(xlsPath);
-//        poiExample.displayFromExcel3(xlsPath);
-//        poiExample.displayFromExcel35(xlsPath);
-//        xlsPath = "d://test//replica.xls";
-//        poiExample.history_replica(xlsPath);
-//        poiExample.replica_FromExcel(xlsPath);
+        POIExcelReader poiExample = new POIExcelReader();
+        String xlsPath = "d://test//Gatepass.xls";
+        poiExample.compnaiesFromExcel(xlsPath);
+        poiExample.historyFromExcel(xlsPath);
+        poiExample.displayFromExcel(xlsPath);
+        poiExample.worksFromExcel(xlsPath);
+        xlsPath = "d://test//Gatepass-Cars.xls";
+        poiExample.compnaiesFromExcel2(xlsPath);
+        poiExample.historyFromExcel2(xlsPath);
+        poiExample.displayFromExcel2(xlsPath);
+        poiExample.worksFromExcel2(xlsPath);
+        xlsPath = "d://test//temporary.xls";
+        poiExample.historyFromExcel3(xlsPath);
+        poiExample.displayFromExcel3(xlsPath);
+        poiExample.displayFromExcel35(xlsPath);
+        xlsPath = "d://test//replica.xls";
+        poiExample.history_replica(xlsPath);
+        poiExample.replica_FromExcel(xlsPath);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class GateBass extends Application {
                 Logger.getLogger(GateBass.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        importFromExcel();
+//        importFromExcel();
     }
 
     public void showLoginStage(Stage stage) {
