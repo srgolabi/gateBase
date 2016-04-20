@@ -51,6 +51,19 @@ public class Fxml_Gate_Bass_Temporary extends ParentControl {
         name.setText(iv.getFirst_name() + " " + iv.getLast_name());
         national_number.setText(iv.getNational_id());
         job_tittle.setText(wh.getJobTitle());
+
+        if (wh.getCar_history_id() != null) {
+            String st = "";
+            if (wh.getCar_history_id().getCar_id().getCar_name() != null) {
+                st = wh.getCar_history_id().getCar_id().getCar_name() + " - ";
+            }
+            if (wh.getCar_history_id().getPellak() != null) {
+                st = st + wh.getCar_history_id().getPellak();
+            } else {
+                st = st + wh.getCar_history_id().getCar_id().getShasi_number();
+            }
+            job_tittle.setText(job_tittle.getText() + "(" + st + ")");
+        }
         contractor.setText(wh.getSherkat());
         expire.setText(wh.getEngheza());
         if (iv.getPicture_address() != null) {

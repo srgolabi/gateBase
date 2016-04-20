@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
@@ -9,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox fx:id="root" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 8; -fx-background-color: #ffffff;" stylesheets="@../../resourse/css/FileIcon.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass.Fxml_Gate_Bass">
+<HBox fx:id="root" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 8; -fx-background-color: #ffffff;" stylesheets="@../../resourse/css/FileIcon.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.gate_bass.Fxml_Gate_Bass">
    <children>
       <HBox alignment="BOTTOM_LEFT" style="-fx-border-color: #aaaaaa; -fx-border-width: 0 1 1 0;">
          <children>
@@ -19,150 +25,165 @@
             <Insets bottom="4.0" right="4.0" />
          </padding>
       </HBox>
-      <HBox prefHeight="178.0" prefWidth="554.0" spacing="4.0">
-         <children>
-            <StackPane alignment="TOP_RIGHT">
-               <children>
-                  <VBox prefWidth="275.0" style="-fx-border-color: #000000; -fx-border-width: 1.5;">
-                     <children>
-                        <VBox style="-fx-border-color: #000000; -fx-border-width: 0 0 1 0;">
-                           <children>
-                              <HBox id="agtp-image" maxWidth="85.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="50.0">
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" minHeight="10.0" text="Assalouye Green Tank  Farm Petrochimical Co.">
-                                 <font>
-                                    <Font name="Georgia Bold" size="8.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <VBox.margin>
-                              <Insets left="4.0" right="30.0" />
-                           </VBox.margin>
-                        </VBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <VBox prefWidth="55.0" style="-fx-font-size: 8;">
-                                 <children>
-                                    <Label maxHeight="1.7976931348623157E308" text="نام : " VBox.vgrow="ALWAYS" />
-                                    <Label maxHeight="1.7976931348623157E308" text="نام خانوادگی : " VBox.vgrow="ALWAYS" />
-                                    <Label maxHeight="1.7976931348623157E308" text="سمت : " VBox.vgrow="ALWAYS" />
-                                    <Label maxHeight="1.7976931348623157E308" text="شرکت : " VBox.vgrow="ALWAYS" />
-                                    <Label maxHeight="1.7976931348623157E308" text="شماره کارت : " VBox.vgrow="ALWAYS" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="15.0" right="1.0" />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets bottom="1.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox style="-fx-font-size: 9.5;" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label fx:id="first_name" maxHeight="1.7976931348623157E308" text="محمدعلی" VBox.vgrow="ALWAYS" />
-                                    <Label fx:id="last_name" maxHeight="1.7976931348623157E308" text="جوادی" VBox.vgrow="ALWAYS" />
-                                    <Label fx:id="job_title" maxHeight="1.7976931348623157E308" text="سرپرست کارگاه" VBox.vgrow="ALWAYS" />
-                                    <Label fx:id="company" maxHeight="1.7976931348623157E308" text="اکسیر صنعت باختری" VBox.vgrow="ALWAYS" />
-                                    <Label fx:id="card_id" maxHeight="1.7976931348623157E308" text="325566" VBox.vgrow="ALWAYS" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="1.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox fx:id="pic" maxHeight="72.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="65.0">
-                                 <HBox.margin>
-                                    <Insets right="20.0" top="15.0" />
-                                 </HBox.margin>
-                              </VBox>
-                           </children>
-                        </HBox>
-                        <HBox fx:id="down_card" alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label fx:id="date_issude_title" maxHeight="1.7976931348623157E308" text="تاریخ صدور : " />
-                              <Label fx:id="date_issude" maxHeight="1.7976931348623157E308" style="-fx-font-size: 12;" text="94/08/25" textFill="YELLOW">
-                                 <HBox.margin>
-                                    <Insets right="35.0" />
-                                 </HBox.margin></Label>
-                              <Label fx:id="tarikh_engheza" maxHeight="1.7976931348623157E308" text="تاریخ انقضا : " />
-                              <Label fx:id="date_expire" maxHeight="1.7976931348623157E308" style="-fx-font-size: 12;" text="94/08/25" textFill="YELLOW" />
-                           </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <padding>
-                              <Insets right="30.0" />
-                           </padding>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <Arc fx:id="circle_down" fill="#d7e4bd" length="180.0" radiusX="30.0" radiusY="36.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND">
-                     <StackPane.margin>
-                        <Insets right="2.0" top="25.0" />
-                     </StackPane.margin>
-                  </Arc>
-                  <Arc fx:id="circle_up" fill="#77933c" length="180.0" radiusX="25.0" radiusY="35.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND">
-                     <StackPane.margin>
-                        <Insets right="2.0" top="15.0" />
-                     </StackPane.margin>
-                  </Arc>
-                  <Text strokeWidth="0.0" style="-fx-font-family: &quot;IranNastaliq&quot;; -fx-font-size: 21;" text="شرکت پتروشیمی مخازن سبز عسلویه" textAlignment="JUSTIFY">
-                     <StackPane.margin>
-                        <Insets right="60.0" top="4.0" />
-                     </StackPane.margin>
-                  </Text>
-               </children>
-            </StackPane>
-            <VBox prefWidth="275.0" style="-fx-border-color: #000000; -fx-border-width: 1.5; -fx-font-size: 8;">
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="39.0" style="-fx-border-color: #000000; -fx-border-width: 0 0 1 0;">
-                     <children>
-                        <Label text="  کد ملی :  " />
-                        <Label fx:id="national_id" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="5.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 0 0;" text="1064052368" HBox.hgrow="ALWAYS" />
-                        <Label text="  کد پستی :  " />
-                        <Label fx:id="postal_code" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="5.0" text="9988776655" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <VBox spacing="4.0" style="-fx-font-size: 7;">
-                     <children>
-                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-size: 10; -fx-font-weight: bold;" text="تذکر:">
-                           <VBox.margin>
-                              <Insets bottom="5.0" top="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label maxWidth="1.7976931348623157E308" text="1- استفاده از کارت تردد در محدوده پتروشیمی مخازن سبز عسلویه الزامی است." />
-                        <Label maxWidth="1.7976931348623157E308" text="2- عکسبرداری یا کپی از کارت شناسایی ممنوع است." />
-                        <Label lineSpacing="4.0" maxWidth="1.7976931348623157E308" text="3- در صورت مفقود شدن کارت تردد مبلغ 300/000 ریال به عنوان جریمه صدور کارت به حساب شرکت  پتروشیمی مخازن سبز واریز گردد." textAlignment="JUSTIFY" wrapText="true" />
-                        <Label maxWidth="1.7976931348623157E308" text="4- پس از اتمام قراداد این کارت بایستس به حراست پتروشیمی مخازن سبز عودت داده شود." textAlignment="JUSTIFY" wrapText="true" />
-                        <HBox alignment="CENTER_LEFT" spacing="25.0">
-                           <VBox.margin>
-                              <Insets top="4.0" />
-                           </VBox.margin>
-                           <children>
-                              <VBox style="-fx-font-size: 8;">
-                                 <children>
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" text="تلفن : 45-07737325226" textAlignment="JUSTIFY" textFill="#ff0808" wrapText="true" />
-                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" text="تلفن ایمنی : 09174484837" textAlignment="JUSTIFY" textFill="RED" wrapText="true" />
-                                 </children>
-                              </VBox>
-                              <Label maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold; -fx-font-size: 9.5;" text="حراست پتروشمی مخازن سبز عسلویه" textAlignment="JUSTIFY" wrapText="true" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" />
-                           </padding>
-                        </HBox>
-                     </children>
-                     <VBox.margin>
-                        <Insets left="1.0" right="3.0" />
-                     </VBox.margin>
-                  </VBox>
-               </children>
-            </VBox>
-         </children>
+      <StackPane alignment="BOTTOM_RIGHT">
          <HBox.margin>
             <Insets left="10.0" />
          </HBox.margin>
-      </HBox>
+         <children>
+            <HBox prefHeight="178.0" prefWidth="554.0" spacing="4.0">
+               <children>
+                  <StackPane alignment="TOP_RIGHT">
+                     <children>
+                        <VBox prefWidth="275.0" style="-fx-border-color: #000000; -fx-border-width: 1.5;">
+                           <children>
+                              <VBox style="-fx-border-color: #000000; -fx-border-width: 0 0 1 0;">
+                                 <children>
+                                    <HBox id="agtp-image" maxWidth="85.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="50.0">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" minHeight="10.0" text="Assalouye Green Tank  Farm Petrochemical Co.">
+                                       <font>
+                                          <Font name="Georgia Bold" size="8.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="4.0" right="30.0" />
+                                 </VBox.margin>
+                              </VBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox prefWidth="55.0" style="-fx-font-size: 8;">
+                                       <children>
+                                          <Label maxHeight="1.7976931348623157E308" text="نام : " VBox.vgrow="ALWAYS" />
+                                          <Label maxHeight="1.7976931348623157E308" text="نام خانوادگی : " VBox.vgrow="ALWAYS" />
+                                          <Label maxHeight="1.7976931348623157E308" text="سمت : " VBox.vgrow="ALWAYS" />
+                                          <Label maxHeight="1.7976931348623157E308" text="شرکت : " VBox.vgrow="ALWAYS" />
+                                          <Label maxHeight="1.7976931348623157E308" text="شماره کارت : " VBox.vgrow="ALWAYS" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="15.0" right="1.0" />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets bottom="1.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox style="-fx-font-size: 9.5;" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label fx:id="first_name" maxHeight="1.7976931348623157E308" text="محمدعلی" VBox.vgrow="ALWAYS" />
+                                          <Label fx:id="last_name" maxHeight="1.7976931348623157E308" text="جوادی" VBox.vgrow="ALWAYS" />
+                                          <Label fx:id="job_title" maxHeight="1.7976931348623157E308" text="سرپرست کارگاه" VBox.vgrow="ALWAYS" />
+                                          <Label fx:id="company" maxHeight="1.7976931348623157E308" text="اکسیر صنعت باختری" VBox.vgrow="ALWAYS" />
+                                          <Label fx:id="card_id" maxHeight="1.7976931348623157E308" text="325566" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="1.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox fx:id="pic" maxHeight="72.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="65.0">
+                                       <HBox.margin>
+                                          <Insets right="20.0" top="15.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="down_card" alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="date_issude_title" maxHeight="1.7976931348623157E308" text="تاریخ صدور : " />
+                                    <Label fx:id="date_issude" maxHeight="1.7976931348623157E308" style="-fx-font-size: 12;" text="94/08/25" textFill="YELLOW">
+                                       <HBox.margin>
+                                          <Insets right="35.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="tarikh_engheza" maxHeight="1.7976931348623157E308" text="تاریخ انقضا : " />
+                                    <Label fx:id="date_expire" maxHeight="1.7976931348623157E308" style="-fx-font-size: 12;" text="94/08/25" textFill="YELLOW" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets right="30.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Arc fx:id="circle_down" fill="#d7e4bd" length="180.0" radiusX="30.0" radiusY="36.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND">
+                           <StackPane.margin>
+                              <Insets right="2.0" top="25.0" />
+                           </StackPane.margin>
+                        </Arc>
+                        <Arc fx:id="circle_up" fill="#77933c" length="180.0" radiusX="25.0" radiusY="35.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND">
+                           <StackPane.margin>
+                              <Insets right="2.0" top="15.0" />
+                           </StackPane.margin>
+                        </Arc>
+                        <Text strokeWidth="0.0" style="-fx-font-family: &quot;IranNastaliq&quot;; -fx-font-size: 21;" text="شرکت پتروشیمی مخازن سبز عسلویه" textAlignment="JUSTIFY">
+                           <StackPane.margin>
+                              <Insets right="60.0" top="4.0" />
+                           </StackPane.margin>
+                        </Text>
+                     </children>
+                  </StackPane>
+                  <VBox prefWidth="275.0" style="-fx-border-color: #000000; -fx-border-width: 1.5; -fx-font-size: 8;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="39.0" style="-fx-border-color: #000000; -fx-border-width: 0 0 1 0;">
+                           <children>
+                              <Label text="  کد ملی :  " />
+                              <Label fx:id="national_id" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="5.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 0 0;" text="1064052368" HBox.hgrow="ALWAYS" />
+                              <Label text="  کد پستی :  " />
+                              <Label fx:id="postal_code" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="5.0" text="9988776655" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <VBox spacing="4.0" style="-fx-font-size: 7;">
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-size: 10; -fx-font-weight: bold;" text="تذکر:">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label maxWidth="1.7976931348623157E308" text="1- استفاده از کارت تردد در محدوده پتروشیمی مخازن سبز عسلویه الزامی است." />
+                              <Label maxWidth="1.7976931348623157E308" text="2- عکسبرداری یا کپی از کارت شناسایی ممنوع است." />
+                              <Label lineSpacing="4.0" maxWidth="1.7976931348623157E308" text="3- در صورت مفقود شدن کارت تردد مبلغ 300/000 ریال به عنوان جریمه صدور کارت به حساب شرکت  پتروشیمی مخازن سبز واریز گردد." textAlignment="JUSTIFY" wrapText="true" />
+                              <Label maxWidth="1.7976931348623157E308" text="4- پس از اتمام قراداد این کارت بایستس به حراست پتروشیمی مخازن سبز عودت داده شود." textAlignment="JUSTIFY" wrapText="true" />
+                              <HBox alignment="CENTER_LEFT" spacing="25.0">
+                                 <VBox.margin>
+                                    <Insets top="4.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <VBox style="-fx-font-size: 8;">
+                                       <children>
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" text="تلفن : 45-07737325226" textAlignment="JUSTIFY" textFill="#ff0808" wrapText="true" />
+                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" text="تلفن ایمنی : 09174484837" textAlignment="JUSTIFY" textFill="RED" wrapText="true" />
+                                       </children>
+                                    </VBox>
+                                    <Label maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold; -fx-font-size: 9.5;" text="حراست پتروشمی مخازن سبز عسلویه" textAlignment="JUSTIFY" textFill="WHITE" wrapText="true" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="1.0" right="3.0" />
+                           </VBox.margin>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox id="emza-moradi" maxHeight="-Infinity" maxWidth="90.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="32.0" prefWidth="50.0">
+               <StackPane.margin>
+                  <Insets bottom="5.0" right="20.0" />
+               </StackPane.margin>
+            </HBox>
+            <Label style="-fx-font-weight: bold; -fx-font-size: 9.5;" text="حراست پتروشمی مخازن سبز عسلویه" textAlignment="JUSTIFY" wrapText="true">
+               <StackPane.margin>
+                  <Insets bottom="13.0" right="10.0" />
+               </StackPane.margin>
+            </Label>
+         </children>
+      </StackPane>
    </children>
 </HBox>

@@ -467,6 +467,10 @@ public class Fxml_Individual_Insert extends ParentControl {
         thisStage.getScene().addEventFilter(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
             switch (event.getCode()) {
                 case TAB:
+                    if (searchPane.isVisible() || work_page.isVisible()) {
+                        event.consume();
+                        break;
+                    }
                     if (event.isControlDown()) {
                         event.consume();
                         if (!tabPane.getSelectionModel().getSelectedItem().getTabPane().isFocused()) {
@@ -718,8 +722,9 @@ public class Fxml_Individual_Insert extends ParentControl {
                 individualComments, work_insert, insert_individual
         );
 
+        TextFiledLimited.set_Number_Length_Limit_Stop(national_id , 10);
         TextFiledLimited.set_Number_Limit(
-                national_id, serial_number, series_id_1, mobile, dependants
+                serial_number, series_id_1, mobile, dependants
         );
 
         set_editable_myTime(

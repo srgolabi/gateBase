@@ -309,8 +309,36 @@
                                 </Tab>
                             </tabs>
                         </TabPane>
-                        <HBox fx:id="searchPane" alignment="CENTER" spacing="50.0" style="-fx-background-color: #00E5FF;" visible="false">
+                        <HBox fx:id="searchPane" alignment="CENTER" spacing="50.0" style="-fx-background-color: #00E5FF;">
                             <children>
+                                <VBox prefWidth="220.0" spacing="1.0">
+                                    <children>
+                              <Label text="شماره کارت" textFill="#2e7a8c" />
+                              <TextField fx:id="card_id_search" maxHeight="1.7976931348623157E308" />
+                                        <Label text="نام خودرو" textFill="#2e7a8c">
+                                            <VBox.margin>
+                                                <Insets top="15.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <TextField fx:id="car_name_search" maxHeight="1.7976931348623157E308" />
+                                        <Label text="مدل" textFill="#2e7a8c">
+                                            <VBox.margin>
+                                                <Insets top="15.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <TextField fx:id="model_search" maxHeight="1.7976931348623157E308">
+                                            <VBox.margin>
+                                                <Insets />
+                                            </VBox.margin>
+                                        </TextField>
+                                        <Label text="شماره پلاک خودرو" textFill="#2e7a8c">
+                                            <VBox.margin>
+                                                <Insets top="15.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <TextField fx:id="pellak_search" maxHeight="1.7976931348623157E308" />
+                                    </children>
+                                </VBox>
                                 <VBox prefWidth="220.0" spacing="1.0">
                                     <children>
                                         <Label text="شماره شاسی" textFill="#2e7a8c">
@@ -321,36 +349,10 @@
                                         <TextField fx:id="shasi_number_search" maxHeight="1.7976931348623157E308" />
                                         <Label text="رنگ" textFill="#2e7a8c">
                                             <VBox.margin>
-                                                <Insets top="18.0" />
+                                                <Insets top="15.0" />
                                             </VBox.margin>
                                         </Label>
                                         <TextField fx:id="color_search" maxHeight="1.7976931348623157E308" />
-                                        <Label text="مدل" textFill="#2e7a8c">
-                                            <VBox.margin>
-                                                <Insets top="18.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <TextField fx:id="model_search" maxHeight="1.7976931348623157E308">
-                                            <VBox.margin>
-                                                <Insets />
-                                            </VBox.margin>
-                                        </TextField>
-                                        <Label text="شماره پلاک خودرو" textFill="#2e7a8c">
-                                            <VBox.margin>
-                                                <Insets top="18.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <TextField fx:id="pellak_search" maxHeight="1.7976931348623157E308" />
-                                    </children>
-                                </VBox>
-                                <VBox prefWidth="220.0" spacing="1.0">
-                                    <children>
-                                        <Label text="نام خودرو" textFill="#2e7a8c">
-                                            <VBox.margin>
-                                                <Insets />
-                                            </VBox.margin>
-                                        </Label>
-                                        <TextField fx:id="car_name_search" maxHeight="1.7976931348623157E308" />
                                         <Label text="ملاحظات" textFill="#2e7a8c">
                                             <VBox.margin>
                                                 <Insets top="18.0" />

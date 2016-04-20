@@ -168,6 +168,19 @@
                         <Insets top="27.0" />
                     </StackPane.margin>
                 </HBox>
+            <HBox id="emza-moradi" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="55.0" prefWidth="150.0">
+               <StackPane.margin>
+                  <Insets right="70.0" top="400.0" />
+               </StackPane.margin>
+            </HBox>
+            <Label text="حراست پتروشیمی مخازن سبزعسلویه">
+               <font>
+                  <Font name="B Yekan" size="11.0" />
+               </font>
+               <StackPane.margin>
+                  <Insets right="45.0" top="390.0" />
+               </StackPane.margin>
+            </Label>
             </children>
             <HBox.margin>
                 <Insets right="10.0" />

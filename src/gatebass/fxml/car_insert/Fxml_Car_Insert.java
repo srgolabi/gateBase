@@ -202,6 +202,8 @@ public class Fxml_Car_Insert extends ParentControl {
     @FXML
     private VBox search_page_controls;
     @FXML
+    private TextField card_id_search;
+    @FXML
     private TextField shasi_number_search;
     @FXML
     private TextField car_name_search;
@@ -265,6 +267,10 @@ public class Fxml_Car_Insert extends ParentControl {
         thisStage.getScene().addEventFilter(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
             switch (event.getCode()) {
                 case TAB:
+                    if (searchPane.isVisible() || work_page.isVisible()) {
+                        event.consume();
+                        break;
+                    }
                     if (event.isControlDown()) {
                         event.consume();
                         if (!tabPane.getSelectionModel().getSelectedItem().getTabPane().isFocused()) {
@@ -946,7 +952,8 @@ public class Fxml_Car_Insert extends ParentControl {
 
         TextFiledLimited.set_Number_Limit(shasi_number_search);
         TextFiledLimited.set_Number_Length_Limit(model_search, 4);
-        simple_Search = new Simple_Search(thisStage, shasi_number_search, car_name_search, color_search, model_search, pellak_search, comments_search, search_Resault);
+        simple_Search = new Simple_Search(thisStage, card_id_search, shasi_number_search, car_name_search, color_search, model_search, pellak_search, comments_search, search_Resault
+        );
         simple_Search.setControls(search_Next, search_Back, search_first, search_end, search_submit, searchPane);
 
         simple_Search.setOnAction((Cars l) -> {

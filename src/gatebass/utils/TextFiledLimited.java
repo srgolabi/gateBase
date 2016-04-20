@@ -61,12 +61,28 @@ public class TextFiledLimited {
         set_Number_Limit(textField);
     }
 
-    
+    public static void set_Number_Length_Limit_Stop(TextField textField, int size) {
+        textField.addEventHandler(KeyEvent.KEY_TYPED, (KeyEvent event) -> {
+            if (textField.getSelection().getLength() > 0) {
+                return;
+            }
+            if (textField.getText().length() >= size) {
+                event.consume();
+            }
+            try {
+                Integer.parseInt(event.getCharacter());
+            } catch (Exception e) {
+                event.consume();
+            }
+        });
+    }
+
     public static void set_Number_Limit(TextField... textField) {
-        for (TextField tf : textField){
+        for (TextField tf : textField) {
             set_Number_Limit(tf);
         }
     }
+
     public static void set_Number_Limit(TextField textField) {
         textField.addEventHandler(KeyEvent.KEY_TYPED, (KeyEvent event) -> {
             try {
@@ -104,6 +120,17 @@ public class TextFiledLimited {
                 if (textField.getUserData() != null) {
                     ((Control[]) textField.getUserData())[1].requestFocus();
                 }
+                event.consume();
+            }
+        });
+    }
+
+    public static void set_Length_Limit_Stop(TextField textField, int size) {
+        textField.addEventHandler(KeyEvent.KEY_TYPED, (KeyEvent event) -> {
+            if (textField.getSelection().getLength() > 0) {
+                return;
+            }
+            if (textField.getText().length() >= size) {
                 event.consume();
             }
         });

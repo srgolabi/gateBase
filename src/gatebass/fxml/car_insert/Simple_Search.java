@@ -3,7 +3,6 @@ package gatebass.fxml.car_insert;
 import static gatebass.GateBass.databaseHelper;
 import gatebass.dataBase.tables.Cars;
 import gatebass.myControl.MyButtonFont;
-import gatebass.utils.MyTime;
 import gatebass.utils.TextFiledLimited;
 import gatebass.utils.UtilsMsg;
 import javafx.beans.property.IntegerProperty;
@@ -36,6 +35,7 @@ public class Simple_Search {
 
     public Stage thisStage;
 
+    private TextField card_id_search;
     private TextField shasi_number_search;
     private TextField car_name_search;
     private TextField color_search;
@@ -48,8 +48,9 @@ public class Simple_Search {
     private ListProperty<Cars> searchList = new SimpleListProperty<>();
     private IntegerProperty idSearchProperty = new SimpleIntegerProperty(0);
 
-    public Simple_Search(Stage stage, TextField shasi_number_search, TextField car_name_search, TextField color_search, TextField model_search, TextField pellak_search, TextArea comments_search, Label searchResault) {
+    public Simple_Search(Stage stage, TextField card_id_search, TextField shasi_number_search, TextField car_name_search, TextField color_search, TextField model_search, TextField pellak_search, TextArea comments_search, Label searchResault) {
         this.thisStage = stage;
+        this.card_id_search = card_id_search;
         this.shasi_number_search = shasi_number_search;
         this.car_name_search = car_name_search;
         this.color_search = color_search;
@@ -90,7 +91,7 @@ public class Simple_Search {
         submit.setOnAction((ActionEvent event) -> {
             String sub_query = "";
 
-            sub_query = sub_query + create_sub_query(
+            sub_query = sub_query + create_sub_query(card_id_search,
                     shasi_number_search, car_name_search, pellak_search,
                     color_search, model_search, comments_search);
 
@@ -137,7 +138,7 @@ public class Simple_Search {
             searchPane.visibleProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                 if (newValue) {
                     clear();
-                    shasi_number_search.requestFocus();
+                    card_id_search.requestFocus();
                 }
             });
         });
@@ -163,7 +164,7 @@ public class Simple_Search {
     }
 
     public void clear() {
-        TextFiledLimited.set_empty_textField(
+        TextFiledLimited.set_empty_textField(card_id_search,
                 shasi_number_search, car_name_search, color_search, model_search, pellak_search,
                 comments_search);
     }

@@ -82,8 +82,8 @@ public class Fxml_Gate_Bass extends ParentControl {
         job_title.setText(wh.getJobTitle());
         company.setText(wh.getSherkat());
         card_id.setText(iv.getCard_id());
-        date_expire.setText(wh.getEngheza());
-        date_issude.setText(wh.getSodor());
+        date_expire.setText("13" + wh.getEngheza());
+        date_issude.setText("13" + wh.getSodor());
         national_id.setText(iv.getNational_id());
         postal_code.setText(iv.getPostal_code());
         if (iv.getPicture_address() != null) {

@@ -1363,7 +1363,7 @@
                                                 <DropShadow />
                                             </effect>
                                             <graphic>
-                                                <Label text="(F3)" textFill="#607d8b">
+                                                <Label text="(F8)" textFill="#607d8b">
                                                     <font>
                                                         <Font name="Arial Bold" size="10.0" />
                                                     </font>

@@ -43,11 +43,13 @@ public class Fxml_Individual_Search extends ParentControl {
     @FXML
     public ScrollPane root;
     @FXML
+    private TextField card_id;
+    @FXML
+    private TextField national_id;
+    @FXML
     private TextField first_name;
     @FXML
     private TextField last_name;
-    @FXML
-    private TextField national_id;
     @FXML
     private TextField father_first_name;
     @FXML
@@ -158,17 +160,16 @@ public class Fxml_Individual_Search extends ParentControl {
         soldiery_end_date = new MyTime(soldiery_end_year, soldiery_end_month, soldiery_end_day);
 
         TextFiledLimited.setEnterFocuse(
-                first_name, last_name, national_id, father_first_name, first_name_ENG, last_name_ENG,
+                card_id, national_id, first_name, last_name, first_name_ENG, last_name_ENG, father_first_name,
                 id_number, serial_number, birth_dayy, birth_month, birth_year, issued, birth_state,
-                series_id, field_of_study, academic_degree, mobile, criminal_records, nationality,
-                religion, din, payan_khedmat, bedon_kart, moaf, soldiery_start_day,
+                series_id, field_of_study, mobile, criminal_records, nationality,
+                academic_degree, din, religion, payan_khedmat, bedon_kart, moaf, soldiery_start_day,
                 soldiery_start_month, soldiery_start_year, soldiery_end_day, soldiery_end_month,
                 soldiery_end_year, soldiery_id, soldiery_location, soldiery_unit, soldiery_exempt,
                 state_address, city_address, street_address, postal_code, phone_number, individualComments, submit
         );
-        TextFiledLimited.set_Number_Length_Limit(national_id, 10);
-        TextFiledLimited.set_Number_Length_Limit(serial_number, 6);
-        TextFiledLimited.set_Number_Length_Limit(mobile, 11);
+        TextFiledLimited.set_Number_Length_Limit_Stop(national_id, 10);
+        TextFiledLimited.set_Number_Limit(card_id, serial_number, mobile);
 
         this.searchResault = searchResault;
 
@@ -204,7 +205,7 @@ public class Fxml_Individual_Search extends ParentControl {
             if (!individualComments.getText().isEmpty()) {
                 sub_query = sub_query + "comments LIKE '%" + individualComments.getText() + "%' AND ";
             }
-            sub_query = sub_query + create_sub_query(first_name, last_name, national_id, father_first_name,
+            sub_query = sub_query + create_sub_query(card_id, national_id, father_first_name, first_name, last_name,
                     first_name_ENG, last_name_ENG, id_number, serial_number, issued, birth_state,
                     series_id, field_of_study, academic_degree, criminal_records, soldiery_id,
                     soldiery_location, soldiery_unit, soldiery_exempt, state_address, city_address,
@@ -285,7 +286,7 @@ public class Fxml_Individual_Search extends ParentControl {
         bedon_kart.setSelected(false);
         moaf.setSelected(false);
         individualComments.setText("");
-        TextFiledLimited.set_empty_textField(first_name, last_name, national_id, father_first_name,
+        TextFiledLimited.set_empty_textField(card_id, first_name, last_name, national_id, father_first_name,
                 first_name_ENG, last_name_ENG, id_number, serial_number, issued, birth_state,
                 series_id, field_of_study, academic_degree, criminal_records, soldiery_id,
                 soldiery_location, soldiery_unit, soldiery_exempt, state_address, city_address,

@@ -207,7 +207,7 @@ public class Fxml_Get_Report extends ParentControl {
                 + "individuals.id_number , history_J1.date soldiery_start_info , history_J2.date soldiery_end_info , individuals.soldiery_id , individuals.soldiery_location , individuals.soldiery_unit , individuals.soldiery_exempt ,\n"
                 + "history_J3.date birth_day_info , individuals.birth_state , individuals.issued , individuals.serial_number ,individuals.field_of_study || ' - ' || individuals.academic_degree study_info ,\n"
                 + "individuals.mobile || ' - ' || individuals.phone_number phone_info, individuals.dependants , individuals.series_id , individuals.state_address || ' - ' || individuals.city_address || ' - ' || individuals.street_address address ,\n"
-                + "individuals.postal_code , individuals.nationality , individuals.din || ' - ' || individuals.religion religion_info , workhistory_j.employment_date , workhistory_j.card_issued_date , workhistory_j.card_expiration_date , workhistory_j.card_delivery_date , GROUP_CONCAT(DISTINCT workhistory_j.company_fa) company_info ,\n"
+                + "individuals.postal_code , individuals.nationality , individuals.din || ' - ' || individuals.religion religion_info , workhistory_j.employment_date , workhistory_j.card_issued_date , workhistory_j.card_expiration_date , workhistory_j.card_delivery_date , GROUP_CONCAT('  ' || workhistory_j.company_fa || '  ') company_info ,\n"
                 + "individuals.criminal_records , individuals.veteran_status , individuals.comments , individuals.picture_address , individuals.have_soe_pishine , individuals.filesPatch , individuals.logs \n"
                 + "FROM individuals \n"
                 + "LEFT OUTER JOIN history history_J1 ON individuals.soldiery_start_date = history_J1.id\n"
@@ -239,7 +239,7 @@ public class Fxml_Get_Report extends ParentControl {
         }
         String query_car
                 = "SELECT cars.id , cars.card_id , cars.car_name , cars.shasi_number , cars.model , cars.comments , cars.logs , carhistory_j.driver_name ,\n"
-                + "count(individualReplica_J.car_id)  replica_count , GROUP_CONCAT(DISTINCT carhistory_j.company_fa) company_info ,\n"
+                + "count(individualReplica_J.car_id)  replica_count , GROUP_CONCAT('  ' || carhistory_j.company_fa || '  ') company_info ,\n"
                 + "carhistory_j.bimeh_date , carhistory_j.card_expiration_date , carhistory_j.card_issued_date , carhistory_j.card_delivery_date , carhistory_j.certificate_date ,\n"
                 + "carhistory_j.workHistory_id\n"
                 + "FROM cars\n"
@@ -449,6 +449,7 @@ public class Fxml_Get_Report extends ParentControl {
     public void fields_table_individual_init() {
         prefix_type = "افرادی که ";
         List<Query_Base> list_field_individual = new ArrayList<>();
+        list_field_individual.add(new Query_Base("شماره کارت گیت باس", "string", "card_id"));
         list_field_individual.add(new Query_Base("شماره ملی", "string", "national_id"));
         list_field_individual.add(new Query_Base("نام", "string", "first_name"));
         list_field_individual.add(new Query_Base("نام خانوادگی", "string", "last_name"));

@@ -174,6 +174,7 @@ public class Fxml_Print_PreView extends ParentControl {
             set_page_number(-1);
         });
         active_printer = Printer.getDefaultPrinter();
+
         printer_selecter.setText(active_printer.getName());
         tableView_printers.setItems(FXCollections.observableArrayList(Printer.getAllPrinters()));
         layout_gate = active_printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.EQUAL);
@@ -216,16 +217,13 @@ public class Fxml_Print_PreView extends ParentControl {
                 }
             } else {
                 return;
-
             }
-
         });
 
-        print_properties.setOnMouseClicked((MouseEvent event) -> {
-            PrinterJob printerJob = PrinterJob.createPrinterJob(active_printer);
-            printerJob.showPrintDialog(s);
-        });
-
+//        print_properties.setOnMouseClicked((MouseEvent event) -> {
+//            printerJob.setPrinter(active_printer);
+//            printerJob.showPrintDialog(s);
+//        });
         delete_all.setOnAction((ActionEvent event) -> {
             work_list.clear();
             gatebass.fxml.main.Fxml_Main.work_list.clear();
@@ -239,6 +237,7 @@ public class Fxml_Print_PreView extends ParentControl {
         if (printerJob != null) {
             try {
                 printerJob.getJobSettings().setPageLayout(layout_default);
+//                printerJob.getJobSettings().setPageLayout(active_printer.getPrinterAttributes().);
                 Boolean succes = printerJob.printPage(container);
                 if (succes) {
                     printerJob.endJob();

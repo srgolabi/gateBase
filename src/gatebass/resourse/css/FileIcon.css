@@ -37,6 +37,12 @@
     -fx-background-size: stretch;
 }
 
+#emza-moradi {
+    -fx-background-image: url("../../resourse/emza-moradi.jpg");
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+    -fx-background-size: stretch;
+}
 #agtp-image {
     -fx-background-image: url("../../resourse/AGTP2.png");
     -fx-background-position: center center;
