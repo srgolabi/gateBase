@@ -240,6 +240,8 @@ public class Fxml_Individual_Insert extends ParentControl {
     @FXML
     private HBox work_button_page;
     @FXML
+    private MyButtonFont work_remove;
+    @FXML
     private MyButtonFont work_insert;
     @FXML
     private MyButtonFont work_view;
@@ -722,7 +724,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 individualComments, work_insert, insert_individual
         );
 
-        TextFiledLimited.set_Number_Length_Limit_Stop(national_id , 10);
+        TextFiledLimited.set_Number_Length_Limit_Stop(national_id, 10);
         TextFiledLimited.set_Number_Limit(
                 serial_number, series_id_1, mobile, dependants
         );
@@ -818,6 +820,7 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         car_info_text_clear.init("cancel", 15);
         car_info_button.init("search", 15);
+        work_remove.init("minus", 15);
         work_insert.init("plus", 15);
         work_edit.init("pencil", 15);
         work_view.init("eye", 15);
@@ -833,6 +836,7 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         car_info_button.visibleProperty().bind(editable);
         work_view.disableProperty().bind(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
+        work_remove.disableProperty().bind(work_view.disableProperty());
         work_insert.setDisable(!Permission.isAcces(Permission.INDIVIDUAL_WORK_INSERT) || !editable.get());
         work_edit.disableProperty().bind(work_view.disableProperty().or(editable.not()).or(work_insert.disableProperty()));
         work_submit.visibleProperty().bind(editable);
@@ -863,6 +867,11 @@ public class Fxml_Individual_Insert extends ParentControl {
         work_table.setRowFactory((TableView<WorkHistory> tableView) -> {
             final TableRow<WorkHistory> row = new TableRow<>();
             row.setOnMouseClicked((MouseEvent event) -> {
+                try {
+                    work_remove.setVisible(row.getItem().getId() == null && editable.get() && !work_remove.isDisable());
+                } catch (Exception e) {
+                    work_remove.setVisible(false);
+                }
                 if (event.getClickCount() >= 2) {
                     if (!work_edit.isDisabled()) {
                         work_edit.getOnAction().handle(null);
@@ -898,6 +907,10 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         String query = "SELECT * FROM companies WHERE active = 1 AND is_deleted = 0 ORDER BY company_fa ASC";
         MenuTableInit.companiesInit(query, comppany, companiesMenu);
+
+        work_remove.setOnAction((ActionEvent event) -> {
+            work_table.getItems().remove(work_table.getSelectionModel().getSelectedIndex());
+        });
 
         work_insert.setOnAction((ActionEvent event) -> {
             work_page.setVisible(true);

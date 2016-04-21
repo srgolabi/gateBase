@@ -66,10 +66,10 @@ public class Fxml_Gate_Bass_Temporary extends ParentControl {
         }
         contractor.setText(wh.getSherkat());
         expire.setText(wh.getEngheza());
-        if (iv.getPicture_address() != null) {
-            File imageFile = new File(server + iv.getFilesPatch() + iv.getPicture_address());
-            pic.setStyle("-fx-background-image: url('" + imageFile.toURI().toString() + "'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center; -fx-border-color: #000000;");
-        }
+//        if (iv.getPicture_address() != null) {
+//            File imageFile = new File(server + iv.getFilesPatch() + iv.getPicture_address());
+//            pic.setStyle("-fx-background-image: url('" + imageFile.toURI().toString() + "'); -fx-background-repeat: stretch; -fx-background-size: stretch; -fx-background-position: center center; -fx-border-color: #000000;");
+//        }
     }
 
 }

@@ -227,6 +227,12 @@
       "search": [
         "staf_gate"
       ]
+    },
+    {
+      "uid": "861ab06e455e2de3232ebef67d60d708",
+      "css": "minus",
+      "code": 59400,
+      "src": "fontawesome"
     }
   ]
 }

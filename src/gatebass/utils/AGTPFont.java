@@ -67,7 +67,8 @@ public class AGTPFont {
         truck("\uE804"),
         temporary_gate("\uE805"),
         contractor_gate("\uE806"),
-        staf_gate("\uE807");
+        staf_gate("\uE807"),
+        minus("\uE808");
 
         String icon;
 

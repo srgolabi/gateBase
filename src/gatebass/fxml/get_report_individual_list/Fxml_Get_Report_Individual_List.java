@@ -7,7 +7,6 @@ package gatebass.fxml.get_report_individual_list;
 
 import static gatebass.GateBass.databaseHelper;
 import static gatebass.GateBass.users;
-import gatebass.dataBase.tables.IndividualFile;
 import gatebass.dataBase.tables.IndividualReplica;
 import gatebass.dataBase.tables.IndividualWarning;
 import gatebass.dataBase.tables.Individuals;
@@ -18,30 +17,30 @@ import gatebass.myControl.MyButtonFont;
 import gatebass.utils.ParentControl;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -120,26 +119,38 @@ public class Fxml_Get_Report_Individual_List extends ParentControl {
         edit.setOnAction((ActionEvent event) -> {
             my_action.get(databaseHelper.individualsDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), true);
         });
-
+ 
         review.setOnAction((ActionEvent event) -> {
             my_action.get(databaseHelper.individualsDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()), false);
         });
 
         download_file.setOnAction((ActionEvent event) -> {
-            FileChooser fileChooser = new FileChooser();
-            File file = fileChooser.showSaveDialog(thisStage);
-            if (file == null) {
-                return;
+                Printer printer = Printer.getDefaultPrinter();
+    PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.EQUAL);
+
+                double scaleX = pageLayout.getPrintableWidth() / tableView.getBoundsInParent().getWidth();
+    double scaleY = pageLayout.getPrintableHeight() / tableView.getBoundsInParent().getHeight();
+    tableView.getTransforms().add(new Scale(scaleX, scaleY));
+
+            PrinterJob printerJob = PrinterJob.createPrinterJob();
+            if (printerJob.showPrintDialog(s) && printerJob.printPage(pageLayout, tableView)) {
+                printerJob.endJob();
+                System.out.println("printed");
             }
-            try {
-                file.mkdirs();
-                List<IndividualFile> files_list = databaseHelper.individualFileDao.getAll("letter_id", databaseHelper.individualsDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()));
-                for (IndividualFile f : files_list) {
-                    FileUtils.copyFileToDirectory(new File(f.getAddress()), file);
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Fxml_Get_Report_Individual_List.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            FileChooser fileChooser = new FileChooser();
+//            File file = fileChooser.showSaveDialog(thisStage);
+//            if (file == null) {
+//                return;
+//            }
+//            try {
+//                file.mkdirs();
+//                List<IndividualFile> files_list = databaseHelper.individualFileDao.getAll("letter_id", databaseHelper.individualsDao.queryForId(tableView.getSelectionModel().getSelectedItem().getId()));
+//                for (IndividualFile f : files_list) {
+//                    FileUtils.copyFileToDirectory(new File(f.getAddress()), file);
+//                }
+//            } catch (IOException ex) {
+//                Logger.getLogger(Fxml_Get_Report_Individual_List.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         });
 
         export_to_excel.setOnAction((ActionEvent event) -> {

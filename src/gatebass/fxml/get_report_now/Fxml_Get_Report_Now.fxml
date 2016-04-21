@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="root" maxHeight="810.0" minHeight="810.0" minWidth="574.0" nodeOrientation="RIGHT_TO_LEFT" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.get_report_now.Fxml_Get_Report_Now">
+   <children>
+      <VBox maxWidth="550.0" minWidth="550.0">
+         <children>
+            <VBox maxWidth="400.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
+               <children>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 12.5;" text="مجوزهای صادر شده تا مورخ" />
+                  <HBox style="-fx-font-size: 11.6;">
+                     <children>
+                        <VBox style="-fx-border-color: #000000; -fx-border-width: 0 1 0 0;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label maxWidth="1.7976931348623157E308" minHeight="32.0" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 11.1; -fx-border-color: #000000; -fx-border-width: 1 0 1 0; -fx-background-color: #FFB74D;" text="مجوزهای تردد">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding></Label>
+                              <Label maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-border-color: #000000; -fx-border-width: 0 0 1 0;" text="صدور کارت تردد مدت دار">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-border-color: #000000; -fx-border-width: 0 0 1 0;" text="صدور کارت تردد خودرو مدت دار">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding></Label>
+                              <Label maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;;" text="صدور کارت تردد هفت روزه">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding></Label>
+                           </children>
+                        </VBox>
+                        <VBox maxWidth="100.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 0 0;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="32.0" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 11.1; -fx-border-color: #000000; -fx-border-width: 1 0 1 0; -fx-background-color: #FFB74D;" text="تعداد" />
+                              <Label fx:id="individual_total_sum_1" maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-border-color: #000000; -fx-border-width: 0 0 1 0;" />
+                              <Label fx:id="carf_total_sum_1" maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-border-color: #000000; -fx-border-width: 0 0 1 0;" />
+                              <Label maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;;" />
+                           </children>
+                        </VBox>
+                        <VBox maxWidth="55.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 0 0;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="32.0" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 11.1; -fx-border-color: #000000; -fx-border-width: 1 0 1 0; -fx-background-color: #FFB74D;" text="فعال" />
+                              <Label fx:id="individual_active_sum_1" maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-border-color: #000000; -fx-border-width: 0 0 1 0;" />
+                              <Label fx:id="car_active_sum_1" maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-border-color: #000000; -fx-border-width: 0 0 1 0;" />
+                              <Label maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;;" />
+                           </children>
+                        </VBox>
+                        <VBox maxWidth="55.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="32.0" style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 11.1; -fx-border-color: #000000; -fx-border-width: 1 0 1 0; -fx-background-color: #FFB74D;" text="ابطال" />
+                              <Label fx:id="individual_de_active_sum_1" maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-border-color: #000000; -fx-border-width: 0 0 1 0;" />
+                              <Label fx:id="car_de_active_sum_1" maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-border-color: #000000; -fx-border-width: 0 0 1 0;" />
+                              <Label maxWidth="1.7976931348623157E308" minHeight="30.0" style="-fx-font-family: &quot;B Yekan&quot;;" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="3.0" />
+               </VBox.margin>
+            </VBox>
+            <HBox style="-fx-font-family: &quot;B Titr&quot;; -fx-font-size: 9.4; -fx-border-color: #000000; -fx-border-width: 2 1 1 2;">
+               <children>
+                  <VBox HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label maxWidth="1.7976931348623157E308" minHeight="25.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" text="  شرکت" />
+                        <VBox fx:id="company_name" />
+                        <Label maxWidth="1.7976931348623157E308" minHeight="22.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" text="  جمع :" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxWidth="80.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="25.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" text="تعداد کارت نفرات" />
+                        <VBox fx:id="individual_total" />
+                        <Label fx:id="individual_total_sum" maxWidth="80.0" minHeight="22.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxWidth="62.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="25.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" text="فعال" />
+                        <VBox fx:id="individual_active" />
+                        <Label fx:id="individual_active_sum" maxWidth="62.0" minHeight="22.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxWidth="62.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 0 0;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="25.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" text="ابطال" />
+                        <VBox fx:id="individual_de_active" />
+                        <Label fx:id="individual_de_active_sum" maxWidth="62.0" minHeight="22.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxWidth="80.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="25.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" text="تعداد کارت خودرو" />
+                        <VBox fx:id="carf_total" />
+                        <Label fx:id="carf_total_sum" maxWidth="80.0" minHeight="22.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxWidth="62.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="25.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" text="فعال" />
+                        <VBox fx:id="car_active" />
+                        <Label fx:id="car_active_sum" maxWidth="62.0" minHeight="22.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxWidth="62.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="25.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" text="ابطال" />
+                        <VBox fx:id="car_de_active" />
+                        <Label fx:id="car_de_active_sum" maxWidth="62.0" minHeight="22.0" style="-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-background-color: #FFB74D;" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" top="10.0" />
+   </padding>
+</StackPane>

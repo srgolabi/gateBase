@@ -116,7 +116,7 @@
               </HBox>
             <VBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
                <children>
-                        <VBox maxWidth="555.0" minWidth="555.0" style="-fx-font-size: 13.1; -fx-border-color: #000000; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                        <VBox maxWidth="555.0" minWidth="555.0" rotate="180.0" style="-fx-font-size: 13.1; -fx-border-color: #000000; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
                             <children>
                                   <Label alignment="CENTER" maxHeight="70.0" maxWidth="1.7976931348623157E308" minHeight="70.0" style="-fx-font-size: 30.5; -fx-background-color: #71cc50; -fx-border-color: #000000; -fx-border-width: 0 0 2 0;" text="راننده محترم:" />
                                   <Label maxHeight="1.7976931348623157E308" text="رعایت مقررات راهنمایی ورانندگی وایمنی در محدوده سایت الزامی می باشد. " VBox.vgrow="ALWAYS">

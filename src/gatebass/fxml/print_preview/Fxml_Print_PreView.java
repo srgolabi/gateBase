@@ -9,6 +9,7 @@ import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.gate_bass.Fxml_Gate_Bass;
 import gatebass.fxml.gate_bass_temporary.Fxml_Gate_Bass_Temporary;
 import gatebass.fxml.gate_bass_car.Fxml_Gate_Bass_Car;
+import gatebass.fxml.get_report_now.Fxml_Get_Report_Now;
 import gatebass.myControl.MyButtonFont;
 import gatebass.utils.ParentControl;
 import gatebass.utils.TextFiledLimited;
@@ -190,6 +191,10 @@ public class Fxml_Print_PreView extends ParentControl {
         });
 
         print.setOnAction((ActionEvent event) -> {
+            if (work_list == null){
+                print_page();
+                return;
+            }
             if (print_all.isSelected() && !print_all.isDisable()) {
                 page_number.setText("0");
                 title_status.setText("از " + page_total.getText() + " صفحه");
@@ -383,6 +388,13 @@ public class Fxml_Print_PreView extends ParentControl {
 
     private int getINT(Label tf) {
         return Integer.parseInt(tf.getText());
+    }
+
+    public void set_now_report() {
+        UtilsStage<Fxml_Get_Report_Now> utilsStage = new UtilsStage(Fxml_Get_Report_Now.class);
+        utilsStage.t.set_value();
+        container.getChildren().clear();
+        container.getChildren().add(utilsStage.t.root);
     }
 
 }

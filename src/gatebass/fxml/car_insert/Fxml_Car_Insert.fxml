@@ -132,6 +132,7 @@
                                                     <children>
                                                         <gatebass.myControl.MyButtonFont fx:id="add_to_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <VBox HBox.hgrow="ALWAYS" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="work_remove" visible="false"  blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_view" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_edit" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />

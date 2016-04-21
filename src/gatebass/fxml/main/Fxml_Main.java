@@ -61,6 +61,8 @@ public class Fxml_Main extends ParentControl {
     @FXML
     private Button report;
     @FXML
+    private Button report_now;
+    @FXML
     private Button alarm_list;
     @FXML
     private Button exit;
@@ -191,6 +193,11 @@ public class Fxml_Main extends ParentControl {
                     fxml_Get_Report_Car_List.t.show_Front_Or_Wait();
                 }
             }
+        });
+
+        report_now.setOnAction((ActionEvent event) -> {
+            fxml_Print_PreView.t.set_now_report();
+            fxml_Print_PreView.t.show_Front_Or_Wait();
         });
 
         car_insert.setOnAction((ActionEvent event) -> {
