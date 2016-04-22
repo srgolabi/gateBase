@@ -37,23 +37,17 @@ public class TextFiledLimited {
 //            event.consume();
 //        });
         FilteredList<String> filtered = new FilteredList<>(items, p -> true);
-        filtered.setPredicate(s -> s.startsWith("م"));
-        filtered.setPredicate(s -> s.startsWith("مح"));
-        System.out.println("aaaaa === " + filtered.size());
 
         tf.setOnKeyReleased((KeyEvent event) -> {
             if ( tf.getText().isEmpty()) {
                 return;
             }
             filtered.setPredicate(s -> s.startsWith( tf.getText()));
-            System.out.println("ss = " + filtered.size());
             if (!filtered.isEmpty()) {
                 int se =  tf.getText().length();
                 tf.setText(filtered.get(0));
                 tf.positionCaret(se);
                 tf.selectEnd();
-                event.consume();
-
             } else {
 //                tf.setText(tf.getText().substring(0,tf.getCaretPosition()));
             }
