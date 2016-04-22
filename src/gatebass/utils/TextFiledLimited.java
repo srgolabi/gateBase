@@ -5,8 +5,12 @@
  */
 package gatebass.utils;
 
+import gatebass.dataBase.BaseRepo;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
@@ -19,6 +23,42 @@ import javafx.scene.input.KeyEvent;
  * @author SR.Golabi
  */
 public class TextFiledLimited {
+
+    public static void autoCompleteText(TextField tf, BaseRepo baseRepo, String query) {
+        final ObservableList<String> items = FXCollections.observableArrayList(
+                baseRepo.rawResultsString(query)
+        );
+
+//        tf.setOnKeyTyped((KeyEvent event) -> {
+//
+//            tf.setText(tf.getText() + event.getCharacter().trim());
+//            tf.positionCaret(tf.getText().length());
+//
+//            event.consume();
+//        });
+        FilteredList<String> filtered = new FilteredList<>(items, p -> true);
+        filtered.setPredicate(s -> s.startsWith("م"));
+        filtered.setPredicate(s -> s.startsWith("مح"));
+        System.out.println("aaaaa === " + filtered.size());
+
+        tf.setOnKeyReleased((KeyEvent event) -> {
+            if ( tf.getText().isEmpty()) {
+                return;
+            }
+            filtered.setPredicate(s -> s.startsWith( tf.getText()));
+            System.out.println("ss = " + filtered.size());
+            if (!filtered.isEmpty()) {
+                int se =  tf.getText().length();
+                tf.setText(filtered.get(0));
+                tf.positionCaret(se);
+                tf.selectEnd();
+                event.consume();
+
+            } else {
+//                tf.setText(tf.getText().substring(0,tf.getCaretPosition()));
+            }
+        });
+    }
 
     public static void setEnterFocuse(Control... c) {
         c[0].setUserData(new Control[]{c[0], c[1]});

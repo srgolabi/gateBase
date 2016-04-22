@@ -708,6 +708,8 @@ public class Fxml_Individual_Insert extends ParentControl {
             }
         });
 
+        TextFiledLimited.autoCompleteText(first_name, databaseHelper.individualsDao, "SELECT first_name FROM individuals GROUP BY first_name ORDER BY first_name deSC");
+        
         TextFiledLimited.setEnterFocuse(
                 national_id, first_name, last_name, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, birth_day, birth_month, birth_year,

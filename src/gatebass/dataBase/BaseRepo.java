@@ -2,6 +2,7 @@ package gatebass.dataBase;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
@@ -134,6 +135,21 @@ public class BaseRepo<T, ID> {
             Logger.getLogger(BaseRepo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public List<String> rawResultsString(String query) {
+        try {
+            return dao.queryRaw(query, new RawRowMapper<String>() {
+
+                @Override
+                public String mapRow(String[] columnNames, String[] resultColumns) throws SQLException {
+                    return resultColumns[0];
+                }
+            }).getResults();
+        } catch (SQLException ex) {
+            Logger.getLogger(BaseRepo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ArrayList<>();
     }
 
     public List<T> getAllNotNull(String field) {

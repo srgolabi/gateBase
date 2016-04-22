@@ -32,12 +32,19 @@ public class Fxml_Get_Report_Now extends ParentControl {
     private Label individual_de_active_sum_1;
 
     @FXML
-    private Label carf_total_sum_1;
+    private Label car_total_sum_1;
     @FXML
     private Label car_active_sum_1;
     @FXML
     private Label car_de_active_sum_1;
-    
+
+    @FXML
+    private Label temporary_total_sum;
+    @FXML
+    private Label temporary_active_sum;
+    @FXML
+    private Label temporary_de_active_sum;
+
     @FXML
     public StackPane root;
 
@@ -71,51 +78,29 @@ public class Fxml_Get_Report_Now extends ParentControl {
     @FXML
     private Label car_de_active_sum;
 
+    String query_individual;
+    String query_car;
+
     @Override
     public void setStage(Stage s) {
         super.setStage(s);
         individual_total_sum_1.textProperty().bind(individual_total_sum.textProperty());
         individual_active_sum_1.textProperty().bind(individual_active_sum.textProperty());
         individual_de_active_sum_1.textProperty().bind(individual_de_active_sum.textProperty());
-        carf_total_sum_1.textProperty().bind(carf_total_sum.textProperty());
+        car_total_sum_1.textProperty().bind(carf_total_sum.textProperty());
         car_active_sum_1.textProperty().bind(car_active_sum.textProperty());
         car_de_active_sum_1.textProperty().bind(car_de_active_sum.textProperty());
-    }
 
-    
-    
-    public void set_value() {
+        set_style(
+                "-fx-border-color: #000000; -fx-border-width: 0 0 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-min-height: 30; -fx-alignment: center;",
+                individual_total_sum_1, individual_active_sum_1, individual_de_active_sum_1,
+                car_total_sum_1, car_active_sum_1, car_de_active_sum_1);
 
-        List<Companies> companies = GateBass.databaseHelper.companiesDao.rawResults("SELECT * FROM companies WHERE active = 1 AND is_deleted = 0");
-        for (Companies c : companies) {
+        set_style(
+                " -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-min-height: 30; -fx-alignment: center;",
+                temporary_total_sum, temporary_active_sum, temporary_de_active_sum);
 
-            Label company_name = new Label(c.getCompany_fa());
-            company_name.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-font-size: 9.1; -fx-min-height: 22;");
-
-            this.company_name.getChildren().add(company_name);
-
-            String query_base = "workhistory_j.companies_id = " + c.getId();
-            create_individual(individual_total, query_base, "");
-            create_individual(individual_active, query_base, " AND card_delivery_date is null");
-            create_individual(individual_de_active, query_base, " AND card_delivery_date is not null");
-
-            query_base = "carhistory_j.companies_id = " + c.getId();
-            create_car(carf_total, query_base, "");
-            create_car(car_active, query_base, " AND card_delivery_date is null");
-            create_car(car_de_active, query_base, " AND card_delivery_date is not null");
-        }
-
-        sum(individual_total, individual_total_sum);
-        sum(individual_active, individual_active_sum);
-        sum(individual_de_active, individual_de_active_sum);
-        sum(carf_total, carf_total_sum);
-        sum(car_active, car_active_sum);
-        sum(car_de_active, car_de_active_sum);
-        
-    }
-
-    private void create_individual(VBox vb, String query_base, String query_temp) {
-        String query_individual
+        query_individual
                 = "SELECT individuals.id , individuals.card_id , individuals.first_name || ' ' || individuals.last_name full_name, workhistory_j.car_history_id,\n"
                 + "count(individualReplica_J.Individual_id)  replica_count , count(individualWarning_J.Individual_id) warning_count , individuals.father_first_name , individuals.national_id ,\n"
                 + "individuals.id_number , history_J1.date soldiery_start_info , history_J2.date soldiery_end_info , individuals.soldiery_id , individuals.soldiery_location , individuals.soldiery_unit , individuals.soldiery_exempt ,\n"
@@ -146,13 +131,8 @@ public class Fxml_Get_Report_Now extends ParentControl {
                 + "WHERE WHERE_SEARCH_QUERY\n"
                 + "GROUP BY workhistory_j.id\n"
                 + "ORDER BY card_id desc";
-        Label label = new Label(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", query_base + query_temp)).size() + "");
-        label.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-font-size: 9.1; -fx-min-height: 22; -fx-alignment: center;");
-        vb.getChildren().add(label);
-    }
 
-    private void create_car(VBox vb, String query_base, String query_temp) {
-        String query_car
+        query_car
                 = "SELECT cars.id , cars.card_id , cars.car_name , cars.shasi_number , cars.model , cars.comments , cars.logs , carhistory_j.driver_name ,\n"
                 + "count(individualReplica_J.car_id)  replica_count , GROUP_CONCAT('  ' || carhistory_j.company_fa || '  ') company_info ,\n"
                 + "carhistory_j.bimeh_date , carhistory_j.card_expiration_date , carhistory_j.card_issued_date , carhistory_j.card_delivery_date , carhistory_j.certificate_date ,\n"
@@ -178,11 +158,52 @@ public class Fxml_Get_Report_Now extends ParentControl {
                 + "WHERE WHERE_SEARCH_QUERY\n"
                 + "GROUP BY carhistory_j.id\n"
                 + "ORDER BY card_id desc";
+    }
 
+    public void set_value() {
+
+        List<Companies> companies = GateBass.databaseHelper.companiesDao.rawResults("SELECT * FROM companies WHERE active = 1 AND is_deleted = 0");
+        for (Companies c : companies) {
+
+            Label company_name = new Label(c.getCompany_fa());
+            company_name.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-font-size: 9.1; -fx-min-height: 22;");
+
+            this.company_name.getChildren().add(company_name);
+
+            String query_base = "workhistory_j.companies_id = " + c.getId() + " AND gate_type != 0";
+            create_individual(individual_total, query_base, "");
+            create_individual(individual_active, query_base, " AND card_delivery_date is null");
+            create_individual(individual_de_active, query_base, " AND card_delivery_date is not null");
+
+            query_base = "carhistory_j.companies_id = " + c.getId();
+            create_car(carf_total, query_base, "");
+            create_car(car_active, query_base, " AND card_delivery_date is null");
+            create_car(car_de_active, query_base, " AND card_delivery_date is not null");
+        }
+
+        sum(individual_total, individual_total_sum);
+        sum(individual_active, individual_active_sum);
+        sum(individual_de_active, individual_de_active_sum);
+        sum(carf_total, carf_total_sum);
+        sum(car_active, car_active_sum);
+        sum(car_de_active, car_de_active_sum);
+
+        temporary_total_sum.setText(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", "gate_type = 0")).size() + "");
+        temporary_active_sum.setText(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", "gate_type = 0  AND card_delivery_date is null")).size() + "");
+        temporary_de_active_sum.setText(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", "gate_type = 0  AND card_delivery_date is not null")).size() + "");
+
+    }
+
+    private void create_individual(VBox vb, String query_base, String query_temp) {
+        Label label = new Label(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", query_base + query_temp)).size() + "");
+        label.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-font-size: 9.1; -fx-min-height: 22; -fx-alignment: center;");
+        vb.getChildren().add(label);
+    }
+
+    private void create_car(VBox vb, String query_base, String query_temp) {
         Label label = new Label(databaseHelper.cars_jDao.rawResults(query_car.replace("WHERE_SEARCH_QUERY", query_base + query_temp)).size() + "");
         label.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-font-size: 9.1; -fx-min-height: 22; -fx-alignment: center;");
         vb.getChildren().add(label);
-
     }
 
     private void sum(VBox vBox, Label label) {
@@ -191,5 +212,12 @@ public class Fxml_Get_Report_Now extends ParentControl {
             sum = sum + Integer.parseInt(((Label) node).getText());
         }
         label.setText(sum + "");
+        label.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-background-color:  #FFB74D; -fx-min-height: 22; -fx-alignment: center;");
+    }
+
+    private void set_style(String style, Label... labels) {
+        for (Label l : labels) {
+            l.setStyle(style);
+        }
     }
 }

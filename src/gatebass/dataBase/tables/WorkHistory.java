@@ -15,7 +15,6 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "workhistory")
 public class WorkHistory {
 
-//    private String GATEBASS_TYPE = "";
     public static Short TEMPORARY = 0;
     public static Short CONTRACTOR = 1;
     public static Short EMPLOYER = 2;
