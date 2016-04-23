@@ -109,6 +109,15 @@ public class MyTime {
         }
         return letterHistory;
     }
+    
+    public static String get_Now(){
+        PersianCalendar calendar = new PersianCalendar();
+        String yaer = calendar.year2dig();
+        String month = calendar.month().length() == 2 ? calendar.month() : "0" + calendar.month();
+        String day = calendar.day().length() == 2 ? calendar.day() : "0" + calendar.day();
+        return yaer + "/" + month + "/" + day;
+
+    }
 
     public String getHourNow() {
         PersianCalendar calendar = new PersianCalendar();

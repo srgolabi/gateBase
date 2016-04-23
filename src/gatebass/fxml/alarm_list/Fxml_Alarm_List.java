@@ -12,8 +12,8 @@ import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Permission;
 import gatebass.myControl.MyButtonFont;
 import gatebass.utils.AGTPFont;
+import gatebass.utils.MyTime;
 import gatebass.utils.ParentControl;
-import gatebass.utils.PersianCalendar;
 import gatebass.utils.UtilsMsg;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -41,21 +40,6 @@ import javafx.util.Callback;
  * @author reza
  */
 public class Fxml_Alarm_List extends ParentControl {
-
-    public interface Get_Object {
-
-        void car(Cars car, boolean is_edit_mode);
-
-        void individual(Individuals individuals, boolean is_edit_mode);
-
-        void get_size(String txt);
-    }
-
-    private Get_Object get_Object;
-
-    public void set_On_Get_Car(Get_Object go) {
-        this.get_Object = go;
-    }
 
     @FXML
     private MyButtonFont refresh;
@@ -66,7 +50,7 @@ public class Fxml_Alarm_List extends ParentControl {
     @FXML
     private MyButtonFont export_to_excel;
     @FXML
-    private Label sum;
+    public Label sum;
 
     @FXML
     private CheckBox all_check;
@@ -85,7 +69,6 @@ public class Fxml_Alarm_List extends ParentControl {
     @Override
     public void setStage(Stage s) {
         super.setStage(s);
-
         refresh.init("ccw", 15);
         edit.init("pencil", 15);
         review.init("eye", 15);
@@ -94,84 +77,74 @@ public class Fxml_Alarm_List extends ParentControl {
         all_delete.init("trash", 15);
         all_keep.init("circle_thin", 15);
 
-        button_column.setCellFactory(new Callback<TableColumn<Gate_Alarm, Gate_Alarm>, TableCell<Gate_Alarm, Gate_Alarm>>() {
-
-            @Override
-            public TableCell<Gate_Alarm, Gate_Alarm> call(TableColumn<Gate_Alarm, Gate_Alarm> param) {
-
-                TableCell<Gate_Alarm, Gate_Alarm> cell = new TableCell<Gate_Alarm, Gate_Alarm>() {
-                    @Override
-                    protected void updateItem(Gate_Alarm item, boolean empty) {
-                        if (item == getItem()) {
-                            return;
-                        }
-                        super.updateItem(item, empty);
-                        if (item == null) {
-                            setStyle(null);
-                            setText(null);
-                            setGraphic(null);
-                            return;
-                        }
-                        final HBox hbox = new HBox(0);
-                        hbox.setAlignment(Pos.CENTER);
-                        CheckBox checkBox = new CheckBox();
-
-                        checkBox.selectedProperty().bindBidirectional(item.is_cheked);
-
-                        MyButtonFont alarm_keep = new MyButtonFont("circle_thin", 14, "table-button");
-
-                        alarm_keep.setOnAction((javafx.event.ActionEvent event) -> {
-                            set_alaem_state(item, item.getAlarm_state() == 0 ? Individuals.ALARM_STATE_KEEP : Individuals.ALARM_STATE_NORMAL);
-                            item.icon.set(item.icon.get().equals("\uE802") ? "\uE803" : "\uE802");
-                        });
-                        alarm_keep.textProperty().bindBidirectional(item.icon);
-
-                        MyButtonFont alarm_delete = new MyButtonFont("trash", 14, "table-button");
-                        alarm_delete.setOnAction((javafx.event.ActionEvent event) -> {
-                            set_alaem_state(item, Individuals.ALARM_STATE_CHEKED);
-                            this.getTableView().getItems().remove(getIndex());
-                        });
-
-                        hbox.getChildren().addAll(checkBox, alarm_delete, alarm_keep);
-
-                        setGraphic(hbox);
-
+        button_column.setCellFactory((TableColumn<Gate_Alarm, Gate_Alarm> param) -> {
+            TableCell<Gate_Alarm, Gate_Alarm> cell = new TableCell<Gate_Alarm, Gate_Alarm>() {
+                @Override
+                protected void updateItem(Gate_Alarm item, boolean empty) {
+                    if (item == getItem()) {
+                        return;
                     }
-                };
-                return cell;
-            }
+                    super.updateItem(item, empty);
+                    if (item == null) {
+                        setStyle(null);
+                        setText(null);
+                        setGraphic(null);
+                        return;
+                    }
+                    final HBox hbox = new HBox(0);
+                    hbox.setAlignment(Pos.CENTER);
+                    CheckBox checkBox = new CheckBox();
+
+                    checkBox.selectedProperty().bindBidirectional(item.is_cheked);
+
+                    MyButtonFont alarm_keep = new MyButtonFont("circle_thin", 14, "table-button");
+
+                    alarm_keep.setOnAction((javafx.event.ActionEvent event) -> {
+                        set_alaem_state(item, item.getAlarm_state() == 0 ? Individuals.ALARM_STATE_KEEP : Individuals.ALARM_STATE_NORMAL);
+                        item.icon.set(item.icon.get().equals("\uE802") ? "\uE803" : "\uE802");
+                    });
+                    alarm_keep.textProperty().bindBidirectional(item.icon);
+
+                    MyButtonFont alarm_delete = new MyButtonFont("trash", 14, "table-button");
+                    alarm_delete.setOnAction((javafx.event.ActionEvent event) -> {
+                        set_alaem_state(item, Individuals.ALARM_STATE_CHEKED);
+                        this.getTableView().getItems().remove(getIndex());
+                    });
+
+                    hbox.getChildren().addAll(checkBox, alarm_delete, alarm_keep);
+
+                    setGraphic(hbox);
+
+                }
+            };
+            return cell;
         });
 
-        type_column.setCellFactory(new Callback<TableColumn<Gate_Alarm, String>, TableCell<Gate_Alarm, String>>() {
-
-            @Override
-            public TableCell<Gate_Alarm, String> call(TableColumn<Gate_Alarm, String> param) {
-
-                TableCell<Gate_Alarm, String> cell = new TableCell<Gate_Alarm, String>() {
-                    @Override
-                    protected void updateItem(String item, boolean empty) {
+        type_column.setCellFactory((TableColumn<Gate_Alarm, String> param) -> {
+            TableCell<Gate_Alarm, String> cell = new TableCell<Gate_Alarm, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
 //                        if (item.equals(getItem())) {
 //                            return;
 //                        }
-                        super.updateItem(item, empty);
-                        if (item == null) {
-                            setStyle(null);
-                            setText(null);
-                            setGraphic(null);
-                            return;
-                        }
-                        Font font = Font.loadFont(GateBass.class.getResource("resourse/agtp_font.ttf").toExternalForm(), 14);
-                        this.setFont(font);
+                    super.updateItem(item, empty);
+                    if (item == null) {
+                        setStyle(null);
+                        setText(null);
+                        setGraphic(null);
+                        return;
+                    }
+                    Font font = Font.loadFont(GateBass.class.getResource("resourse/agtp_font.ttf").toExternalForm(), 14);
+                    this.setFont(font);
 
-                        this.setText(AGTPFont.Icons.valueOf(item.equals("car") ? "truck" : "user").getIcon());
+                    this.setText(AGTPFont.Icons.valueOf(item.equals("car") ? "truck" : "user").getIcon());
 //                        this.setText(item.equals("car") ? "\uE820" : "\uE81f");
 
-                        setTextAlignment(TextAlignment.CENTER);
-                        setAlignment(Pos.CENTER);
-                    }
-                };
-                return cell;
-            }
+                    setTextAlignment(TextAlignment.CENTER);
+                    setAlignment(Pos.CENTER);
+                }
+            };
+            return cell;
         });
 
         all_check.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -254,14 +227,12 @@ public class Fxml_Alarm_List extends ParentControl {
         Gate_Alarm ga = tableView.getSelectionModel().getSelectedItem();
         if (ga.getAlarm_type().equals("car")) {
             if (!editable || (editable && Permission.isAcces(Permission.CAR_INSERT))) {
-                get_Object.car(databaseHelper.carDao.queryForId(ga.getIds()), editable);
+                my_action.get(databaseHelper.carDao.queryForId(ga.getIds()), editable);
                 return;
             }
-        } else {
-            if (!editable || (editable && Permission.isAcces(Permission.INDIVIDUAL_INSERT))) {
-                get_Object.individual(databaseHelper.individualsDao.queryForId(ga.getIds()), editable);
-                return;
-            }
+        } else if (!editable || (editable && Permission.isAcces(Permission.INDIVIDUAL_INSERT))) {
+            my_action.get(databaseHelper.individualsDao.queryForId(ga.getIds()), editable);
+            return;
         }
         UtilsMsg.show("دسترسی شما محدود می باشد.", "هشدار", false, thisStage);
     }
@@ -296,14 +267,12 @@ public class Fxml_Alarm_List extends ParentControl {
                 + " LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id\n"
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
                 + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n"
-                + "WHERE ( individuals.alarm_state = 0 AND WHERE_SEARCH_QUERY ) OR individuals.alarm_state = 1\n"
-                + "GROUP BY individuals.id";
-        PersianCalendar pc = new PersianCalendar();
-        String sub_query = pc.year().substring(2) + "/" + pc.month() + "/" + pc.day();
+                + "WHERE ( individuals.alarm_state = 0 AND WHERE_SEARCH_QUERY ) OR individuals.alarm_state = 1\n";
+        String sub_query = MyTime.get_Now();
 
         add_car_alarm(
                 query_individual,
-                "workhistory_j.card_expiration_date = '" + sub_query + "'",
+                "card_expiration_date = '" + sub_query + "'",
                 "expiration");
 
         query_individual = "SELECT cars.id ids , cars.card_id , '>' || cars.car_name || '>' || ' ' || '< شماره شاسی : ' || cars.shasi_number || '<' datail , 'car' alarm_type , 'ALARM_INFO' alrm_info , cars.alarm_state alarm_stat\n"
@@ -325,8 +294,7 @@ public class Fxml_Alarm_List extends ParentControl {
                 + "  LEFT OUTER JOIN individuals individuals_j1 ON workhistory.individuals_id = individuals_j1.id \n"
                 + " ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
                 + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
-                + "WHERE ( cars.alarm_state = 0 AND WHERE_SEARCH_QUERY ) OR cars.alarm_state = 1\n"
-                + "GROUP BY cars.id";
+                + "WHERE ( cars.alarm_state = 0 AND WHERE_SEARCH_QUERY ) OR cars.alarm_state = 1\n";
 
         add_car_alarm(
                 query_individual,
@@ -344,8 +312,5 @@ public class Fxml_Alarm_List extends ParentControl {
                 "bimeh");
 
         sum.setText(tableView.getItems().size() + "");
-        if (get_Object != null) {
-            get_Object.get_size(tableView.getItems().size() == 0 ? "" : tableView.getItems().size() + " هشدار جدید");
-        }
     }
 }

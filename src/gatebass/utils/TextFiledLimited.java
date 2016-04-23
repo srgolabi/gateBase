@@ -28,28 +28,16 @@ public class TextFiledLimited {
         final ObservableList<String> items = FXCollections.observableArrayList(
                 baseRepo.rawResultsString(query)
         );
-
-//        tf.setOnKeyTyped((KeyEvent event) -> {
-//
-//            tf.setText(tf.getText() + event.getCharacter().trim());
-//            tf.positionCaret(tf.getText().length());
-//
-//            event.consume();
-//        });
         FilteredList<String> filtered = new FilteredList<>(items, p -> true);
-
         tf.setOnKeyReleased((KeyEvent event) -> {
-            if ( tf.getText().isEmpty()) {
-                return;
-            }
-            filtered.setPredicate(s -> s.startsWith( tf.getText()));
-            if (!filtered.isEmpty()) {
-                int se =  tf.getText().length();
-                tf.setText(filtered.get(0));
-                tf.positionCaret(se);
-                tf.selectEnd();
-            } else {
-//                tf.setText(tf.getText().substring(0,tf.getCaretPosition()));
+            if ((event.getCode().isDigitKey() || event.getCode().isLetterKey() || event.getCode().isWhitespaceKey()) && !tf.getText().isEmpty()) {
+                filtered.setPredicate(s -> s.startsWith(tf.getText()));
+                if (!filtered.isEmpty()) {
+                    int se = tf.getText().length();
+                    tf.setText(filtered.get(0));
+                    tf.positionCaret(se);
+                    tf.selectEnd();
+                }
             }
         });
     }

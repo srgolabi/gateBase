@@ -140,27 +140,17 @@ public class Fxml_Main extends ParentControl {
         });
 
         fxml_Alarm_List = new UtilsStage(Fxml_Alarm_List.class, "لیست هشدارها", Modality.APPLICATION_MODAL, thisStage);
-        fxml_Alarm_List.t.set_On_Get_Car(new Fxml_Alarm_List.Get_Object() {
-
-            @Override
-            public void car(Cars car, boolean is_edit_mode) {
-                fxml_Car_Insert.t.editable.set(is_edit_mode);
-                fxml_Car_Insert.t.car = car;
-                fxml_Car_Insert.t.loadCars();
-                fxml_Car_Insert.t.show_Front_Or_Wait();
-            }
-
-            @Override
-            public void individual(Individuals individuals, boolean is_edit_mode) {
-                fxml_Individual_Insert.t.editable.set(is_edit_mode);
-                fxml_Individual_Insert.t.individual = individuals;
+        fxml_Alarm_List.t.set_My_Action((Object t, boolean b) -> {
+            if (t instanceof Individuals) {
+                fxml_Individual_Insert.t.editable.set(b);
+                fxml_Individual_Insert.t.individual = (Individuals) t;
                 fxml_Individual_Insert.t.loadIndividual();
                 fxml_Individual_Insert.t.show_Front_Or_Wait();
-            }
-
-            @Override
-            public void get_size(String txt) {
-                alarm_list.setText(txt);
+            } else {
+                fxml_Car_Insert.t.editable.set(b);
+                fxml_Car_Insert.t.car =(Cars) t;
+                fxml_Car_Insert.t.loadCars();
+                fxml_Car_Insert.t.show_Front_Or_Wait();
             }
         });
 
@@ -207,7 +197,8 @@ public class Fxml_Main extends ParentControl {
             }
         });
 
-        alarm_list.visibleProperty().bind(alarm_list.textProperty().isEmpty());
+        alarm_list.visibleProperty().bind(fxml_Alarm_List.t.sum.textProperty().isEqualTo("0").not());
+        alarm_list.textProperty().bind(fxml_Alarm_List.t.sum.textProperty().concat(" هشدار جدید"));
 
         alarm_list.setOnAction((ActionEvent event) -> {
             fxml_Alarm_List.t.show_Front_Or_Wait();
