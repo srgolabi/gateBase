@@ -8,6 +8,7 @@ package gatebass.fxml.get_report_now;
 import gatebass.GateBass;
 import static gatebass.GateBass.databaseHelper;
 import gatebass.dataBase.tables.Companies;
+import gatebass.utils.MyTime;
 import gatebass.utils.ParentControl;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -24,6 +25,8 @@ import javafx.stage.Stage;
  */
 public class Fxml_Get_Report_Now extends ParentControl {
 
+    @FXML
+    private Label title;
     @FXML
     private Label individual_total_sum_1;
     @FXML
@@ -161,11 +164,11 @@ public class Fxml_Get_Report_Now extends ParentControl {
     }
 
     public void set_value() {
-
+        title.setText("مجوزهای صادر شده تا مورخ" + MyTime.get_Now());
         List<Companies> companies = GateBass.databaseHelper.companiesDao.rawResults("SELECT * FROM companies WHERE active = 1 AND is_deleted = 0");
         for (Companies c : companies) {
 
-            Label company_name = new Label(c.getCompany_fa());
+            Label company_name = new Label(" " + c.getCompany_fa());
             company_name.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-font-size: 9.1; -fx-min-height: 22;");
 
             this.company_name.getChildren().add(company_name);

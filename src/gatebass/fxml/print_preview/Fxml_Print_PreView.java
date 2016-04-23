@@ -5,6 +5,7 @@
  */
 package gatebass.fxml.print_preview;
 
+import com.sun.prism.j2d.print.J2DPrinterJob;
 import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.gate_bass.Fxml_Gate_Bass;
 import gatebass.fxml.gate_bass_temporary.Fxml_Gate_Bass_Temporary;
@@ -191,7 +192,7 @@ public class Fxml_Print_PreView extends ParentControl {
         });
 
         print.setOnAction((ActionEvent event) -> {
-            if (work_list == null){
+            if (work_list == null) {
                 print_page();
                 return;
             }
@@ -203,9 +204,8 @@ public class Fxml_Print_PreView extends ParentControl {
                     title_status_1.setText(i + 1 + "");
                     set_page_number(1);
                     print_page();
-                    print_status_page.setVisible(false);
-
                 }
+                print_status_page.setVisible(false);
 
             } else if (print_current.isSelected() && !print_current.isDisable()) {
                 title_status.setText("از 1 صفحه");
@@ -225,10 +225,16 @@ public class Fxml_Print_PreView extends ParentControl {
             }
         });
 
-//        print_properties.setOnMouseClicked((MouseEvent event) -> {
+        print_properties.setOnMouseClicked((MouseEvent event) -> {
+//            PrinterJob printerJob = PrinterJob.createPrinterJob(Printer.getDefaultPrinter());
 //            printerJob.setPrinter(active_printer);
-//            printerJob.showPrintDialog(s);
-//        });
+//            if (printerJob.showPrintDialog(s)) {
+//                Boolean succes = printerJob.printPage(container);
+//                if (succes) {
+//                    printerJob.endJob();
+//                }
+//            }
+        });
         delete_all.setOnAction((ActionEvent event) -> {
             work_list.clear();
             gatebass.fxml.main.Fxml_Main.work_list.clear();
