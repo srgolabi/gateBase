@@ -406,7 +406,6 @@ public class Fxml_Car_Insert extends ParentControl {
                 shasi_number, car_name, model, comments, pellak, color, comppany
         );
 
-        TextFiledLimited.set_Number_Limit(shasi_number);
         TextFiledLimited.set_Number_Length_Limit(model, 4);
 
         setUp_Work_Page();
@@ -646,19 +645,13 @@ public class Fxml_Car_Insert extends ParentControl {
 
         for (CarHistory wh : work_table.getItems()) {
             wh.setCar_id(car);
-            if (wh.getWorkHistory_id() != null && !driver_info_text_clear.isVisible()) {
+            if (wh.driver_is_edited) {
                 WorkHistory workHistory_temp = wh.getWorkHistory_id();
-                workHistory_temp.setCar_history_id(null);
-                wh.setWorkHistory_id(null);
-                databaseHelper.workHistoryDao.createOrUpdate(workHistory_temp);
-            }
-            databaseHelper.carsHistoryDao.createOrUpdate(wh);
-            if (wh.getWorkHistory_id() != null) {
-                WorkHistory workHistory_temp = wh.getWorkHistory_id();
-                workHistory_temp.setCar_history_id(wh);
+                workHistory_temp.setCar_history_id(wh.getWorkHistory_id() == null ? null : wh);
                 databaseHelper.workHistoryDao.createOrUpdate(workHistory_temp);
             }
         }
+        databaseHelper.carsHistoryDao.insertList(work_table.getItems());
 
         for (IndividualReplica ir : replica_Table.getItems()) {
             ir.setCar_id(car);
@@ -779,6 +772,7 @@ public class Fxml_Car_Insert extends ParentControl {
         });
 
         work_insert.setOnAction((ActionEvent event) -> {
+            clear_work();
             carsHistory_iw = new CarHistory();
             work_page.setVisible(true);
         });
@@ -790,6 +784,7 @@ public class Fxml_Car_Insert extends ParentControl {
         });
 
         work_edit.setOnAction((ActionEvent event) -> {
+            clear_work();
             work_page.setVisible(true);
             carsHistory_iw = work_table.getSelectionModel().getSelectedItem();
             pellak.setText(carsHistory_iw.getPellak());
@@ -876,6 +871,8 @@ public class Fxml_Car_Insert extends ParentControl {
     }
 
     private void clear_work() {
+        driver_info_text_clear.setVisible(false);
+        driver_info_button.changeText("search");
         MyTime.set_empty_myTime(bimeh_date, certificate_date, card_void_date, card_expiration_date, card_issued_date);
         TextFiledLimited.set_empty_textField(pellak, color, driver_info, comppany);
     }
@@ -991,6 +988,13 @@ public class Fxml_Car_Insert extends ParentControl {
                 driver_info_button.changeText("search");
                 carsHistory_iw.setWorkHistory_id(null);
                 driver_info_text_clear.setVisible(false);
+                if (carsHistory_iw.getWorkHistory_id() != null) {
+                    carsHistory_iw.driver_is_edited = true;
+                    carsHistory_iw.setWorkHistory_id(null);
+                } else {
+                    carsHistory_iw.driver_is_edited = false;
+                }
+
             }
         });
 
@@ -1016,6 +1020,13 @@ public class Fxml_Car_Insert extends ParentControl {
         });
 
         driver_submit.setOnAction((ActionEvent event) -> {
+            if (carsHistory_iw.getWorkHistory_id() == null) {
+                carsHistory_iw.driver_is_edited = true;
+            } else if (carsHistory_iw.getWorkHistory_id().getId() != driver_history_table.getSelectionModel().getSelectedItem().getId()) {
+                carsHistory_iw.driver_is_edited = true;
+            } else {
+                carsHistory_iw.driver_is_edited = false;
+            }
             carsHistory_iw.setWorkHistory_id(driver_history_table.getSelectionModel().getSelectedItem());
             prepare_driver_submit();
         });

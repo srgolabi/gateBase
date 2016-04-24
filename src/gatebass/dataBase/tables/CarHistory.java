@@ -15,6 +15,8 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "carHistory")
 public class CarHistory {
 
+    public boolean driver_is_edited = false;
+
     @DatabaseField(generatedId = true)
     private Integer id;
 

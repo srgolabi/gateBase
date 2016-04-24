@@ -22,9 +22,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.print_preview.Fxml_Print_PreView">
+<StackPane prefWidth="800.0" stylesheets="@../../resourse/css/Button.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.print_preview.Fxml_Print_PreView">
    <children>
-      <HBox style="-fx-background-color: #BBDEFB;" stylesheets="@../../resourse/css/Button.css">
+      <HBox style="-fx-background-color: #BBDEFB;">
           <children>
               <ScrollPane prefWidth="600.0" style="-fx-background: #78DDFF;" HBox.hgrow="ALWAYS">
                   <content>
@@ -89,11 +89,6 @@
                                                       <Insets right="1.0" />
                                                   </padding>
                                               </StackPane>
-                                    <Label fx:id="print_properties" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="تنضیمات پرینتر" textFill="#2e7a8c">
-                                       <cursor>
-                                          <Cursor fx:constant="CLOSED_HAND" />
-                                       </cursor>
-                                    </Label>
                                           </children>
                                       </VBox>
                                       <VBox nodeOrientation="RIGHT_TO_LEFT" spacing="20.0">
@@ -155,7 +150,7 @@
                                       </HBox>
                                   </children>
                               </VBox>
-                              <TableView fx:id="tableView_printers" maxHeight="125.0" prefWidth="200.0" styleClass="hide-column-header" visible="false" StackPane.alignment="TOP_CENTER">
+                              <TableView fx:id="tableView_printers" maxHeight="125.0" prefWidth="200.0" style="-fx-text-background-color: #2e7a8c;" visible="false" StackPane.alignment="TOP_CENTER">
                                   <columns>
                                       <TableColumn prefWidth="75.0" text="C1">
                                           <cellValueFactory>
@@ -172,6 +167,10 @@
                                   <effect>
                                       <DropShadow blurType="GAUSSIAN" color="#888888" height="15.0" offsetY="5.0" radius="8.5" />
                                   </effect>
+                           <styleClass>
+                              <String fx:value="hide-column-header" />
+                              <String fx:value="table-row-cell_1" />
+                           </styleClass>
                               </TableView>
                           </children>
                       </StackPane>

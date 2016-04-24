@@ -103,10 +103,10 @@
                     <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" />
                     </VBox.margin>
-               <styleClass>
-                  <String fx:value="table-view_1" />
-                  <String fx:value="table-row-cell_1" />
-               </styleClass>
+                    <styleClass>
+                        <String fx:value="table-view_1" />
+                        <String fx:value="table-row-cell_1" />
+                    </styleClass>
                 </TableView>
             </children>
         </VBox>

@@ -186,7 +186,7 @@ public class Fxml_Main extends ParentControl {
         });
 
         report_now.setOnAction((ActionEvent event) -> {
-            fxml_Print_PreView.t.set_now_report();
+            fxml_Print_PreView.t.set_now_report_value();
             fxml_Print_PreView.t.show_Front_Or_Wait();
         });
 

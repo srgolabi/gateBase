@@ -132,7 +132,8 @@ public class Fxml_Get_Report_Now extends ParentControl {
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
                 + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n"
                 + "WHERE WHERE_SEARCH_QUERY\n"
-                + "GROUP BY workhistory_j.id\n"
+//                + "GROUP BY workhistory_j.id\n"
+                + "GROUP BY card_id\n"
                 + "ORDER BY card_id desc";
 
         query_car
@@ -159,7 +160,8 @@ public class Fxml_Get_Report_Now extends ParentControl {
                 + "  ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
                 + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
                 + "WHERE WHERE_SEARCH_QUERY\n"
-                + "GROUP BY carhistory_j.id\n"
+//                + "GROUP BY carhistory_j.id\n"
+                + "GROUP BY card_id\n"
                 + "ORDER BY card_id desc";
     }
 

@@ -132,7 +132,7 @@
                                                     <children>
                                                         <gatebass.myControl.MyButtonFont fx:id="add_to_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <VBox HBox.hgrow="ALWAYS" />
-                                                        <gatebass.myControl.MyButtonFont fx:id="work_remove" visible="false"  blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="work_remove" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" visible="false" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_view" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_edit" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
@@ -310,7 +310,7 @@
                                 </Tab>
                             </tabs>
                         </TabPane>
-                        <HBox fx:id="searchPane" alignment="CENTER" spacing="50.0" style="-fx-background-color: #00E5FF;">
+                        <HBox fx:id="searchPane" alignment="CENTER" spacing="50.0" style="-fx-background-color: #00E5FF;" visible="false">
                             <children>
                                 <VBox prefWidth="220.0" spacing="1.0">
                                     <children>

@@ -8,8 +8,10 @@ package gatebass.fxml.alarm_list;
 import gatebass.GateBass;
 import static gatebass.GateBass.databaseHelper;
 import gatebass.dataBase.tables.Cars;
+import gatebass.dataBase.tables.History;
 import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Permission;
+import gatebass.dataBase.tables.WorkHistory;
 import gatebass.myControl.MyButtonFont;
 import gatebass.utils.AGTPFont;
 import gatebass.utils.MyTime;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,6 +79,7 @@ public class Fxml_Alarm_List extends ParentControl {
 
         all_delete.init("trash", 15);
         all_keep.init("circle_thin", 15);
+        sum.textProperty().bind(Bindings.size(tableView.itemsProperty().get()).asString());
 
         button_column.setCellFactory((TableColumn<Gate_Alarm, Gate_Alarm> param) -> {
             TableCell<Gate_Alarm, Gate_Alarm> cell = new TableCell<Gate_Alarm, Gate_Alarm>() {
@@ -124,9 +128,6 @@ public class Fxml_Alarm_List extends ParentControl {
             TableCell<Gate_Alarm, String> cell = new TableCell<Gate_Alarm, String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
-//                        if (item.equals(getItem())) {
-//                            return;
-//                        }
                     super.updateItem(item, empty);
                     if (item == null) {
                         setStyle(null);
@@ -138,8 +139,7 @@ public class Fxml_Alarm_List extends ParentControl {
                     this.setFont(font);
 
                     this.setText(AGTPFont.Icons.valueOf(item.equals("car") ? "truck" : "user").getIcon());
-//                        this.setText(item.equals("car") ? "\uE820" : "\uE81f");
-
+                    setStyle("-fx-text-fill : " + (item.equals("temporary") ? "#ff0000;" : "#000000;"));
                     setTextAlignment(TextAlignment.CENTER);
                     setAlignment(Pos.CENTER);
                 }
@@ -169,7 +169,7 @@ public class Fxml_Alarm_List extends ParentControl {
             tableView.getItems().clear();
         });
         all_keep.setOnAction((ActionEvent event) -> {
-            set_alarm_state_groups(all_keep.getText().equals("\uE802") ? Individuals.ALARM_STATE_NORMAL : Individuals.ALARM_STATE_KEEP);
+            set_alarm_state_groups(all_keep.getText().equals("\uE802") ? Individuals.ALARM_STATE_KEEP : Individuals.ALARM_STATE_NORMAL);
             all_keep.setText(all_keep.getText().equals("\uE802") ? "\uE803" : "\uE802");
         });
 
@@ -244,10 +244,12 @@ public class Fxml_Alarm_List extends ParentControl {
     }
 
     private void refresh_table() {
+        set_deliver_date_for_temporary();
+
         tableView.getItems().clear();
-        String query_individual
-                = "SELECT individuals.id ids, individuals.card_id , '>' || individuals.first_name || ' ' || individuals.last_name || '>' || ' ' || '< شماره ملی : ' || individuals.national_id || '<' datail , 'individual' alarm_type , 'ALARM_INFO' alrm_info , individuals.alarm_state alarm_stat\n"
-                + "FROM individuals \n"
+
+        String query_base
+                = "FROM individuals \n"
                 + "LEFT OUTER JOIN history history_J1 ON individuals.soldiery_start_date = history_J1.id\n"
                 + "LEFT OUTER JOIN history history_J2 ON individuals.soldiery_end_date = history_J2.id\n"
                 + "LEFT OUTER JOIN history history_J3 ON individuals.birth_day = history_J3.id\n"
@@ -266,16 +268,22 @@ public class Fxml_Alarm_List extends ParentControl {
                 + " LEFT OUTER JOIN history history_j3 ON history_j3.id = workhistory.card_expiration_date_id\n"
                 + " LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id\n"
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
-                + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n"
-                + "WHERE ( individuals.alarm_state = 0 AND WHERE_SEARCH_QUERY ) OR individuals.alarm_state = 1\n";
+                + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n";
+
         String sub_query = MyTime.get_Now();
+
+        String query_individual
+                = "SELECT individuals.id ids, individuals.card_id , '>' || individuals.first_name || ' ' || individuals.last_name || '>' || ' ' || '< شماره ملی : ' || individuals.national_id || '<' datail , 'individual' alarm_type , 'ALARM_INFO' alrm_info , individuals.alarm_state alarm_stat\n"
+                + query_base
+                + "WHERE (( individuals.alarm_state = 0 AND card_delivery_date IS NULL AND WHERE_SEARCH_QUERY ) OR individuals.alarm_state = 1) AND gate_type != 0\n";
 
         add_car_alarm(
                 query_individual,
                 "card_expiration_date = '" + sub_query + "'",
                 "expiration");
 
-        query_individual = "SELECT cars.id ids , cars.card_id , '>' || cars.car_name || '>' || ' ' || '< شماره شاسی : ' || cars.shasi_number || '<' datail , 'car' alarm_type , 'ALARM_INFO' alrm_info , cars.alarm_state alarm_stat\n"
+        query_individual
+                = "SELECT cars.id ids , cars.card_id , '>' || cars.car_name || '>' || ' ' || '< شماره شاسی : ' || cars.shasi_number || '<' datail , 'car' alarm_type , 'ALARM_INFO' alrm_info , cars.alarm_state alarm_stat\n"
                 + "FROM cars\n"
                 + "LEFT OUTER JOIN\n"
                 + "(SELECT individualReplica.* FROM individualReplica\n"
@@ -294,7 +302,7 @@ public class Fxml_Alarm_List extends ParentControl {
                 + "  LEFT OUTER JOIN individuals individuals_j1 ON workhistory.individuals_id = individuals_j1.id \n"
                 + " ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
                 + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
-                + "WHERE ( cars.alarm_state = 0 AND WHERE_SEARCH_QUERY ) OR cars.alarm_state = 1\n";
+                + "WHERE ( cars.alarm_state = 0 AND card_delivery_date IS NULL AND WHERE_SEARCH_QUERY ) OR cars.alarm_state = 1\n";
 
         add_car_alarm(
                 query_individual,
@@ -311,6 +319,28 @@ public class Fxml_Alarm_List extends ParentControl {
                 "carhistory_j.bimeh_date = '" + sub_query + "'",
                 "bimeh");
 
-        sum.setText(tableView.getItems().size() + "");
+    }
+
+    private void set_deliver_date_for_temporary() {
+        String query_base
+                = "SELECT workhistory.* FROM workhistory\n"
+                + "LEFT OUTER JOIN history history_j1 ON history_j1.id = workhistory.employment_date_id\n"
+                + "LEFT OUTER JOIN history history_j2 ON history_j2.id = workhistory.card_issued_date_id\n"
+                + "LEFT OUTER JOIN history history_j3 ON history_j3.id = workhistory.card_expiration_date_id\n"
+                + "LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id\n"
+                + "LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
+                + "WHERE SEARCH_QUERY AND history_j4.date is null AND gate_type = 0\n".replace("SEARCH_QUERY", "history_j3.date = '" + MyTime.get_Now() + "'");
+
+        List<WorkHistory> workHistorys = databaseHelper.workHistoryDao.rawResults(query_base);
+        History h_now = new MyTime().writeAndGetNow();
+        for (WorkHistory wh : workHistorys) {
+            wh.setCardDeliveryDate(h_now);
+        }
+        try {
+            databaseHelper.workHistoryDao.insertList(workHistorys);
+        } catch (SQLException ex) {
+            Logger.getLogger(Fxml_Alarm_List.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

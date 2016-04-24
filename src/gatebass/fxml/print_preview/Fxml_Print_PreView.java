@@ -5,7 +5,6 @@
  */
 package gatebass.fxml.print_preview;
 
-import com.sun.prism.j2d.print.J2DPrinterJob;
 import gatebass.dataBase.tables.WorkHistory;
 import gatebass.fxml.gate_bass.Fxml_Gate_Bass;
 import gatebass.fxml.gate_bass_temporary.Fxml_Gate_Bass_Temporary;
@@ -17,6 +16,7 @@ import gatebass.utils.TextFiledLimited;
 import gatebass.utils.UtilsStage;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -35,6 +35,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -67,8 +68,6 @@ public class Fxml_Print_PreView extends ParentControl {
     private TextField print_count;
     @FXML
     private Button printer_selecter;
-    @FXML
-    private Label print_properties;
 
     @FXML
     private MyButtonFont printer_selecter_down_icon;
@@ -109,6 +108,8 @@ public class Fxml_Print_PreView extends ParentControl {
     private PageLayout layout_temporary;
     private PageLayout layout_car;
 
+    private String old_page_number = "";
+
     @Override
     public void setStage(Stage s) {
         super.setStage(s);
@@ -123,9 +124,8 @@ public class Fxml_Print_PreView extends ParentControl {
         print_all.disableProperty().bind(print_selecttion_page.textProperty().isEmpty().not());
         print_current.disableProperty().bind(print_all.disableProperty());
 
-        TextFiledLimited.set_Number_Length_Limit(print_count, 3);
-        TextFiledLimited.set_Number_Limit(print_selecttion_page);
-        TextFiledLimited.set_Number_Limit(page_number);
+        TextFiledLimited.set_Number_Length_Limit_Stop(print_count, 3);
+        TextFiledLimited.set_Number_Limit(print_selecttion_page, page_number);
 
         print_count_increase.setOnAction((ActionEvent event) -> {
             set_print_count(1);
@@ -134,25 +134,19 @@ public class Fxml_Print_PreView extends ParentControl {
             set_print_count(-1);
         });
         print_count.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            set_print_count(0);
+            if (print_count.getText().isEmpty() || print_count.getText().equals("0")) {
+                print_count.setText("1");
+            }
         });
 
         printer_selecter_down_icon.setOnAction((ActionEvent event) -> {
             tableView_printers.setVisible(!tableView_printers.isVisible());
         });
+
         printer_selecter.setOnAction((ActionEvent event) -> {
             tableView_printers.setVisible(!tableView_printers.isVisible());
         });
-        TableColumn tableColumn = tableView_printers.getColumns().get(0);
-        tableColumn.setCellFactory((Object param) -> new TableCell<String, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setTextFill(Color.valueOf("#2e7a8c"));
-                setText(item);
-            }
 
-        });
         tableView_printers.setRowFactory((TableView<Printer> param) -> {
             TableRow<Printer> row = new TableRow<>();
             row.setOnMouseClicked((MouseEvent event) -> {
@@ -164,11 +158,27 @@ public class Fxml_Print_PreView extends ParentControl {
         });
 
         page_number.setOnKeyTyped((KeyEvent event) -> {
-            int page_num = getINT(page_number);
-            if (page_num < 1 || page_num > getINT(page_total)) {
-                event.consume();
+            try {
+                int page_num = Integer.parseInt(page_number.getText() + event.getCharacter());
+                if (page_num < 1 || page_num > getINT(page_total)) {
+                    event.consume();
+                }
+            } catch (Exception e) {
             }
         });
+
+        page_number.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                go_to();
+            }
+        });
+
+        page_number.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                page_number.setText(old_page_number);
+            }
+        });
+
         next_page.setOnAction((ActionEvent event) -> {
             set_page_number(1);
         });
@@ -225,16 +235,6 @@ public class Fxml_Print_PreView extends ParentControl {
             }
         });
 
-        print_properties.setOnMouseClicked((MouseEvent event) -> {
-//            PrinterJob printerJob = PrinterJob.createPrinterJob(Printer.getDefaultPrinter());
-//            printerJob.setPrinter(active_printer);
-//            if (printerJob.showPrintDialog(s)) {
-//                Boolean succes = printerJob.printPage(container);
-//                if (succes) {
-//                    printerJob.endJob();
-//                }
-//            }
-        });
         delete_all.setOnAction((ActionEvent event) -> {
             work_list.clear();
             gatebass.fxml.main.Fxml_Main.work_list.clear();
@@ -269,12 +269,9 @@ public class Fxml_Print_PreView extends ParentControl {
     }
 
     private void set_print_count(int n) {
-        if (print_count.getText().isEmpty()) {
-            print_count.setText("1");
-        }
-        int t = getINT(print_count);
-        if ((n == -1 && t > 1) || (n == 1 && t < 999)) {
-            print_count.setText((t + n) + "");
+        int t = getINT(print_count) + n;
+        if (t > 1 && t < 1000) {
+            print_count.setText(t + "");
         }
     }
 
@@ -283,9 +280,9 @@ public class Fxml_Print_PreView extends ParentControl {
             page_number.setText("1");
         }
         int total_page = getINT(page_total);
-        int page_num = getINT(page_number);
-        if ((n == -1 && page_num > 1) || (n == 1 && page_num < total_page)) {
-            page_number.setText((page_num + n) + "");
+        int page_num = getINT(page_number) + n;
+        if (page_num > 0 && page_num <= total_page) {
+            page_number.setText(page_num + "");
             go_to();
         }
     }
@@ -320,6 +317,7 @@ public class Fxml_Print_PreView extends ParentControl {
     }
 
     private void go_to() {
+        old_page_number = page_number.getText();
         if (getINT(page_number) <= gate_page_total) {
             set_gate_value();
         } else {
@@ -396,7 +394,11 @@ public class Fxml_Print_PreView extends ParentControl {
         return Integer.parseInt(tf.getText());
     }
 
-    public void set_now_report() {
+    public void set_now_report_value() {
+        page_number.setText("1");
+        page_total.setText("1");
+        delete_all.setDisable(true);
+
         UtilsStage<Fxml_Get_Report_Now> utilsStage = new UtilsStage(Fxml_Get_Report_Now.class);
         utilsStage.t.set_value();
         container.getChildren().clear();

@@ -16,7 +16,7 @@
 
 <VBox minHeight="600.0" minWidth="900.0" style="-fx-background-color: #BBDEFB;" stylesheets="@../../resourse/css/Button.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.get_report_individual_list.Fxml_Get_Report_Individual_List">
     <children>
-        <VBox nodeOrientation="LEFT_TO_RIGHT" prefWidth="900.0" VBox.vgrow="ALWAYS">
+        <VBox nodeOrientation="RIGHT_TO_LEFT" prefWidth="900.0" VBox.vgrow="ALWAYS">
             <children>
                 <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" spacing="15.0">
                     <children>

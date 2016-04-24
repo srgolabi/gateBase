@@ -708,8 +708,7 @@ public class Fxml_Individual_Insert extends ParentControl {
             }
         });
 
-        TextFiledLimited.autoCompleteText(first_name, databaseHelper.individualsDao, "SELECT first_name FROM individuals GROUP BY first_name ORDER BY first_name deSC");
-        
+//        TextFiledLimited.autoCompleteText(first_name, databaseHelper.individualsDao, "SELECT first_name FROM individuals GROUP BY first_name ORDER BY first_name deSC");
         TextFiledLimited.setEnterFocuse(
                 national_id, first_name, last_name, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, birth_day, birth_month, birth_year,
@@ -827,13 +826,9 @@ public class Fxml_Individual_Insert extends ParentControl {
         work_edit.init("pencil", 15);
         work_view.init("eye", 15);
         add_to_print.init("temporary_gate", "عبور موقت", 16);
-//        staff_print.init("staf_gate", "گیت باس ستادی", 16);
-//        contractor_print.init("contractor_gate", "گیت باس پیمانکاری", 17);
 
         TextFiledLimited.set_Number_Limit(car_info);
-//        temporary_gate.disableProperty().bind(editable.not());
-//        contractor_gate.disableProperty().bind(editable.not());
-//        employer_gate.disableProperty().bind(editable.not());
+
         car_info.editableProperty().bind(editable.and(car_info_text_clear.visibleProperty().not()));
 
         car_info_button.visibleProperty().bind(editable);
@@ -915,6 +910,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         });
 
         work_insert.setOnAction((ActionEvent event) -> {
+            clear_work();
             work_page.setVisible(true);
             workHistory_iw = new WorkHistory();
         });
@@ -923,10 +919,10 @@ public class Fxml_Individual_Insert extends ParentControl {
             work_view.setUserData(editable.get());
             editable.set(false);
             work_edit.getOnAction().handle(event);
-            job_title.requestFocus();
         });
 
         work_edit.setOnAction((ActionEvent event) -> {
+            clear_work();
             work_page.setVisible(true);
             workHistory_iw = work_table.getSelectionModel().getSelectedItem();
             comppany.setText(workHistory_iw.getCompanies().getCompany_fa());
@@ -940,13 +936,14 @@ public class Fxml_Individual_Insert extends ParentControl {
             card_issued_date.setText(workHistory_iw.getCardIssuedDateId());
             if (workHistory_iw.is_TEMPORARY_TYPE()) {
                 temporary_gate.setSelected(true);
+                temporary_gate.requestFocus();
             } else if (workHistory_iw.is_EMPLOYER_TYPE()) {
                 employer_gate.setSelected(true);
-
+                employer_gate.requestFocus();
             } else {
                 contractor_gate.setSelected(true);
+                contractor_gate.requestFocus();
             }
-
             if (workHistory_iw.getCar_history_id() != null) {
                 prepare_car_submit();
             }
@@ -1008,8 +1005,10 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         work_back.setOnAction((ActionEvent event) -> {
             work_page.setVisible(false);
-            MyTime.set_empty_myTime(employment_date, card_delivery_date, card_expiration_date, card_issued_date);
-            TextFiledLimited.set_empty_textField(job_title, comppany, job_title_ENG, job_phone_number, work_comments);
+            if (work_view.getUserData() != null) {
+                editable.setValue((boolean) work_view.getUserData());
+            }
+            clear_work();
         });
 
         add_to_print.setOnAction((ActionEvent event) -> {
@@ -1031,6 +1030,12 @@ public class Fxml_Individual_Insert extends ParentControl {
                 car_info.setText("");
                 car_info_button.changeText("search");
                 car_info_text_clear.setVisible(false);
+                if (workHistory_iw.getCar_history_id() != null) {
+                    workHistory_iw.car_is_edited = true;
+                    workHistory_iw.setCar_history_id(null);
+                } else {
+                    workHistory_iw.car_is_edited = false;
+                }
             }
         });
 
@@ -1056,6 +1061,13 @@ public class Fxml_Individual_Insert extends ParentControl {
         });
 
         car_submit.setOnAction((ActionEvent event) -> {
+            if (workHistory_iw.getCar_history_id() == null) {
+                workHistory_iw.car_is_edited = true;
+            } else if (workHistory_iw.getCar_history_id().getId() != car_history_table.getSelectionModel().getSelectedItem().getId()) {
+                workHistory_iw.car_is_edited = true;
+            } else {
+                workHistory_iw.car_is_edited = false;
+            }
             workHistory_iw.setCar_history_id(car_history_table.getSelectionModel().getSelectedItem());
             prepare_car_submit();
         });
@@ -1326,7 +1338,10 @@ public class Fxml_Individual_Insert extends ParentControl {
     }
 
     private void clear_work() {
-        TextFiledLimited.set_empty_textField(job_title, comppany, job_title_ENG, job_phone_number, work_comments);
+        temporary_gate.setSelected(true);
+        car_info_text_clear.setVisible(false);
+        car_info_button.changeText("search");
+        TextFiledLimited.set_empty_textField(comppany, job_phone_number, job_title, job_title_ENG, work_comments, car_info);
         MyTime.set_empty_myTime(employment_date, card_delivery_date, card_expiration_date, card_issued_date);
     }
 
@@ -1462,19 +1477,13 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         for (WorkHistory wh : work_table.getItems()) {
             wh.setIndividualsId(individual);
-            if (wh.getCar_history_id() != null && !car_info_text_clear.isVisible()) {
+            if (wh.car_is_edited) {
                 CarHistory carHistory_temp = wh.getCar_history_id();
-                carHistory_temp.setWorkHistory_id(null);
-                wh.setCar_history_id(null);
-                databaseHelper.carsHistoryDao.createOrUpdate(carHistory_temp);
-            }
-            databaseHelper.workHistoryDao.createOrUpdate(wh);
-            if (wh.getCar_history_id() != null) {
-                CarHistory carHistory_temp = wh.getCar_history_id();
-                carHistory_temp.setWorkHistory_id(wh);
+                carHistory_temp.setWorkHistory_id(wh.getCar_history_id() == null ? null : wh);
                 databaseHelper.carsHistoryDao.createOrUpdate(carHistory_temp);
             }
         }
+        databaseHelper.workHistoryDao.insertList(work_table.getItems());
 
         for (IndividualReplica ir : replica_Table.getItems()) {
             ir.setIndividual_id(individual);

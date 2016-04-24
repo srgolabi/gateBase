@@ -14,6 +14,8 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "workhistory")
 public class WorkHistory {
+    
+    public boolean car_is_edited = false;
 
     public static Short TEMPORARY = 0;
     public static Short CONTRACTOR = 1;
