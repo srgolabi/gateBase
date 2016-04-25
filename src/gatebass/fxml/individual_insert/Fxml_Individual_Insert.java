@@ -722,7 +722,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         TextFiledLimited.setEnterFocuse(
                 national_id, first_name, last_name, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, birth_day, birth_month, birth_year,
-                issued, birth_state, series_id_2, series_id_1, field_of_study,
+                issued, birth_state, series_id_1,series_id_2, field_of_study,
                 academic_degree, mobile, criminal_records, nationality, dependants,
                 din, religion, payan_khedmat, bedon_kart, moaf
         );
@@ -736,8 +736,9 @@ public class Fxml_Individual_Insert extends ParentControl {
         );
 
         TextFiledLimited.set_Number_Length_Limit_Stop(national_id, 10);
+        TextFiledLimited.set_Number_Length_Limit_Stop(series_id_1, 2);
         TextFiledLimited.set_Number_Limit(
-                serial_number, series_id_1, mobile, dependants
+                serial_number, mobile, dependants
         );
 
         set_editable_myTime(
