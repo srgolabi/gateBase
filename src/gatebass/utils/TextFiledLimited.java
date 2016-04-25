@@ -17,12 +17,27 @@ import javafx.scene.control.TextInputControl;
 import static javafx.scene.input.KeyCode.ENTER;
 import static javafx.scene.input.KeyCode.TAB;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  *
  * @author SR.Golabi
  */
 public class TextFiledLimited {
+
+    public static boolean clear_value(TextInputControl... textFields) {
+        boolean b = true;
+        for (TextInputControl tf : textFields) {
+            if (!tf.getText().isEmpty() && b) {
+                b = false;
+                if(!UtilsMsg.show("آیا می خواهید فرم پاک سازی شود؟", "هشدار", true, new Stage())){
+                    return false;
+                }
+            }
+            tf.setText("");
+        }
+        return true;
+    }
 
     public static void autoCompleteText(TextField tf, BaseRepo baseRepo, String query) {
         final ObservableList<String> items = FXCollections.observableArrayList(

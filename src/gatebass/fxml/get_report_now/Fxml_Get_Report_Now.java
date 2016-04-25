@@ -132,7 +132,6 @@ public class Fxml_Get_Report_Now extends ParentControl {
                 + " LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
                 + ") workhistory_j ON workhistory_j.individuals_id = individuals.id\n"
                 + "WHERE WHERE_SEARCH_QUERY\n"
-//                + "GROUP BY workhistory_j.id\n"
                 + "GROUP BY card_id\n"
                 + "ORDER BY card_id desc";
 
@@ -160,14 +159,13 @@ public class Fxml_Get_Report_Now extends ParentControl {
                 + "  ) driver_info ON driver_info.id = carHistory.workHistory_id\n"
                 + ") carhistory_j ON carhistory_j.car_id = cars.id\n"
                 + "WHERE WHERE_SEARCH_QUERY\n"
-//                + "GROUP BY carhistory_j.id\n"
                 + "GROUP BY card_id\n"
                 + "ORDER BY card_id desc";
     }
 
     public void set_value() {
         title.setText("مجوزهای صادر شده تا مورخ" + MyTime.get_Now());
-        List<Companies> companies = GateBass.databaseHelper.companiesDao.rawResults("SELECT * FROM companies WHERE active = 1 AND is_deleted = 0");
+        List<Companies> companies = GateBass.databaseHelper.companiesDao.rawResults("SELECT * FROM companies WHERE is_deleted = 0 ORDER BY company_fa");
         for (Companies c : companies) {
 
             Label company_name = new Label(" " + c.getCompany_fa());
@@ -175,15 +173,13 @@ public class Fxml_Get_Report_Now extends ParentControl {
 
             this.company_name.getChildren().add(company_name);
 
-            String query_base = "workhistory_j.companies_id = " + c.getId() + " AND gate_type != 0";
-            create_individual(individual_total, query_base, "");
-            create_individual(individual_active, query_base, " AND card_delivery_date is null");
-            create_individual(individual_de_active, query_base, " AND card_delivery_date is not null");
+            int i = create_individual(individual_total, "gate_type != 0 AND workhistory_j.companies_id = " + c.getId());
+            i = i - create_individual(individual_active, "gate_type != 0 AND card_delivery_date is null AND workhistory_j.companies_id = " + c.getId());
+            individual_de_active.getChildren().add(get_label(i));
 
-            query_base = "carhistory_j.companies_id = " + c.getId();
-            create_car(carf_total, query_base, "");
-            create_car(car_active, query_base, " AND card_delivery_date is null");
-            create_car(car_de_active, query_base, " AND card_delivery_date is not null");
+            i = create_car(carf_total, "carhistory_j.companies_id = " + c.getId());
+            i = i - create_car(car_active, "card_delivery_date is null AND carhistory_j.companies_id = " + c.getId());
+            car_de_active.getChildren().add(get_label(i));
         }
 
         sum(individual_total, individual_total_sum);
@@ -196,19 +192,20 @@ public class Fxml_Get_Report_Now extends ParentControl {
         temporary_total_sum.setText(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", "gate_type = 0")).size() + "");
         temporary_active_sum.setText(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", "gate_type = 0  AND card_delivery_date is null")).size() + "");
         temporary_de_active_sum.setText(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", "gate_type = 0  AND card_delivery_date is not null")).size() + "");
-
     }
 
-    private void create_individual(VBox vb, String query_base, String query_temp) {
-        Label label = new Label(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", query_base + query_temp)).size() + "");
+    private int create_individual(VBox vb, String query_base) {
+        Label label = new Label(databaseHelper.individuals_jDao.rawResults(query_individual.replace("WHERE_SEARCH_QUERY", query_base)).size() + "");
         label.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-font-size: 9.1; -fx-min-height: 22; -fx-alignment: center;");
         vb.getChildren().add(label);
+        return Integer.parseInt(label.getText());
     }
 
-    private void create_car(VBox vb, String query_base, String query_temp) {
-        Label label = new Label(databaseHelper.cars_jDao.rawResults(query_car.replace("WHERE_SEARCH_QUERY", query_base + query_temp)).size() + "");
+    private int create_car(VBox vb, String query_base) {
+        Label label = new Label(databaseHelper.cars_jDao.rawResults(query_car.replace("WHERE_SEARCH_QUERY", query_base)).size() + "");
         label.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-font-size: 9.1; -fx-min-height: 22; -fx-alignment: center;");
         vb.getChildren().add(label);
+        return Integer.parseInt(label.getText());
     }
 
     private void sum(VBox vBox, Label label) {
@@ -224,5 +221,11 @@ public class Fxml_Get_Report_Now extends ParentControl {
         for (Label l : labels) {
             l.setStyle(style);
         }
+    }
+
+    private Label get_label(int i) {
+        Label label = new Label(i + "");
+        label.setStyle("-fx-border-color: #000000; -fx-border-width: 0 1 1 0; -fx-max-width: infinity; -fx-font-family: 'B Yekan'; -fx-font-size: 9.1; -fx-min-height: 22; -fx-alignment: center;");
+        return label;
     }
 }

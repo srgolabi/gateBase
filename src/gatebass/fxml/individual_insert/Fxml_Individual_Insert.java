@@ -363,8 +363,8 @@ public class Fxml_Individual_Insert extends ParentControl {
     private File imageFile;
 
     public Individuals individual;
-    private PersianCalendar persianCalendar;
     public boolean editMode = false;
+    public boolean editMode_work = false;
 
     public BooleanProperty editable = new SimpleBooleanProperty(false);
 
@@ -468,6 +468,18 @@ public class Fxml_Individual_Insert extends ParentControl {
         super.setStage(s);
         thisStage.getScene().addEventFilter(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
             switch (event.getCode()) {
+                case P: {
+                    if (searchPane.isVisible() || work_page.isVisible()) {
+                        event.consume();
+                        break;
+                    }
+                    if (event.isShiftDown() && !add_to_print.isDisable()) {
+                        add_to_print.getOnAction().handle(null);
+                    } else if (event.isControlDown()) {
+                        print_view.getOnAction().handle(null);
+                    }
+                    break;
+                }
                 case TAB:
                     if (searchPane.isVisible() || work_page.isVisible()) {
                         event.consume();
@@ -623,8 +635,6 @@ public class Fxml_Individual_Insert extends ParentControl {
         setUp_Replica_Page();
         setUp_Warning_Page();
         setUp_Search_Page();
-
-        persianCalendar = new PersianCalendar();
 
         tabPane.getTabs().get(1).disableProperty().bind(bedon_kart.selectedProperty());
         tabPane.visibleProperty().bind(searchPane.visibleProperty().not().and(work_page.visibleProperty().not()));
@@ -923,6 +933,7 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         work_edit.setOnAction((ActionEvent event) -> {
             clear_work();
+            editMode_work = true;
             work_page.setVisible(true);
             workHistory_iw = work_table.getSelectionModel().getSelectedItem();
             comppany.setText(workHistory_iw.getCompanies().getCompany_fa());
@@ -967,12 +978,12 @@ public class Fxml_Individual_Insert extends ParentControl {
             }
             if (!card_issued_date.isFull()) {
                 UtilsMsg.show("تاریخ صدور کارت را باید پر کنید", "اخطار", false, thisStage);
-                card_issued_year.requestFocus();
+                card_expiration_day.requestFocus();
                 return;
             }
             if (!card_expiration_date.isFull()) {
                 UtilsMsg.show("تاریخ انقضاء کارت را باید پر کنید", "اخطار", false, thisStage);
-                card_expiration_year.requestFocus();
+                card_expiration_day.requestFocus();
                 return;
             }
             workHistory_iw.setGate_type(temporary_gate.isSelected() ? WorkHistory.TEMPORARY : contractor_gate.isSelected() ? WorkHistory.CONTRACTOR : WorkHistory.EMPLOYER);
@@ -995,10 +1006,10 @@ public class Fxml_Individual_Insert extends ParentControl {
             }
             workHistory_iw.setComments(work_comments.getText());
 
-            if (workHistory_iw.getId() == null) {
-                work_table.getItems().add(workHistory_iw);
-            } else {
+            if (editMode_work) {
                 work_table.refresh();
+            } else {
+                work_table.getItems().add(workHistory_iw);
             }
             work_back.getOnAction().handle(event);
         });
@@ -1240,7 +1251,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         id_number.setText(individual.getId_number());
         serial_number.setText(individual.getSerial_number());
         card_number.setText(individual.getCard_id());
-        PersianCalendar.load(individual.getBirth_day(), birth_year, birth_month, birth_day);
+        birth_date.setText(individual.getBirth_day());
         issued.setText(individual.getIssued());
         birth_state.setText(individual.getBirth_state());
 
@@ -1260,8 +1271,8 @@ public class Fxml_Individual_Insert extends ParentControl {
 
         payan_khedmat.getToggleGroup().selectToggle(individual.getVeteran_status() == 0 ? payan_khedmat : individual.getVeteran_status() == 1 ? bedon_kart : moaf);
 
-        PersianCalendar.load(individual.getSoldiery_start_date(), soldiery_start_year, soldiery_start_month, soldiery_start_day);
-        PersianCalendar.load(individual.getSoldiery_end_date(), soldiery_end_year, soldiery_end_month, soldiery_end_day);
+        soldiery_start_date.setText(individual.getSoldiery_start_date());
+        soldiery_end_date.setText(individual.getSoldiery_end_date());
         soldiery_id.setText(individual.getSoldiery_id());
         soldiery_unit.setText(individual.getSoldiery_unit());
         soldiery_location.setText(individual.getSoldiery_location());
@@ -1307,27 +1318,31 @@ public class Fxml_Individual_Insert extends ParentControl {
     }
 
     public void clear() {
-        individual = new Individuals();
-        editMode = false;
-        TextFiledLimited.set_empty_textField(
+
+        boolean b = TextFiledLimited.clear_value(
                 national_id, first_name, last_name, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, issued, birth_state, series_id_1,
                 series_id_2, field_of_study, academic_degree, mobile, criminal_records,
-                soldiery_id, soldiery_unit, soldiery_location, soldiery_exempt,
+                soldiery_id, soldiery_unit, soldiery_location, soldiery_exempt, individualComments,
                 state_address, city_address, street_address, postal_code, phone_number
         );
+        if (!b) {
+            return;
+        }
+
+        individual = new Individuals();
+        editMode = false;
+
         MyTime.set_empty_myTime(
-                warning_date, replica_date, employment_date, card_issued_date, card_expiration_date,
-                card_delivery_date, birth_date, soldiery_start_date, soldiery_end_date
+                warning_date, replica_date, birth_date, soldiery_start_date, soldiery_end_date
         );
+
         card_number.setText("----");
         nationality.setText("ایران");
         dependants.setText("0");
         din.setText("اسلام");
         religion.setText("شیعه");
         payan_khedmat.setSelected(true);
-        work_comments.setText("");
-        individualComments.setText("");
         indivisual_pic.setStyle("-fx-border-color:  #2e7a8c;");
         is_soe_pishine.setSelected(false);
         fileSelected.getItems().clear();
@@ -1338,6 +1353,7 @@ public class Fxml_Individual_Insert extends ParentControl {
     }
 
     private void clear_work() {
+        editMode_work = false;
         temporary_gate.setSelected(true);
         car_info_text_clear.setVisible(false);
         car_info_button.changeText("search");
@@ -1359,6 +1375,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         }
 
         if (individual.getFilesPatch() == null) {
+            PersianCalendar persianCalendar = new PersianCalendar();
             String split = FileSystems.getDefault().getSeparator();
             individual.setFilesPatch("data" + split + persianCalendar.year() + split + persianCalendar.get(Calendar.WEEK_OF_YEAR) + split + national_id.getText() + split);
         }

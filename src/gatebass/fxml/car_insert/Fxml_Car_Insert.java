@@ -258,6 +258,7 @@ public class Fxml_Car_Insert extends ParentControl {
 
     private List<IndividualFile> deleteFiles;
     public boolean editMode = false;
+    public boolean editMode_work = false;
 
     public BooleanProperty editable = new SimpleBooleanProperty(false);
 
@@ -268,6 +269,18 @@ public class Fxml_Car_Insert extends ParentControl {
         super.setStage(s);
         thisStage.getScene().addEventFilter(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
             switch (event.getCode()) {
+                case P: {
+                    if (searchPane.isVisible() || work_page.isVisible()) {
+                        event.consume();
+                        break;
+                    }
+                    if (event.isShiftDown() && !add_to_print.isDisable()) {
+                        add_to_print.getOnAction().handle(null);
+                    } else if (event.isControlDown()) {
+                        print_view.getOnAction().handle(null);
+                    }
+                    break;
+                }
                 case TAB:
                     if (searchPane.isVisible() || work_page.isVisible()) {
                         event.consume();
@@ -566,9 +579,12 @@ public class Fxml_Car_Insert extends ParentControl {
     }
 
     public void clear() {
+        boolean b = TextFiledLimited.clear_value(shasi_number, car_name, model, comments);
+        if (!b) {
+            return;
+        }
         car = new Cars();
         editMode = false;
-        TextFiledLimited.set_empty_textField(shasi_number, car_name, model, comments);
         card_number.setText("----");
         fileSelected.getItems().clear();
         work_table.getItems().clear();
@@ -785,6 +801,7 @@ public class Fxml_Car_Insert extends ParentControl {
 
         work_edit.setOnAction((ActionEvent event) -> {
             clear_work();
+            editMode_work = true;
             work_page.setVisible(true);
             carsHistory_iw = work_table.getSelectionModel().getSelectedItem();
             pellak.setText(carsHistory_iw.getPellak());
@@ -852,10 +869,10 @@ public class Fxml_Car_Insert extends ParentControl {
             carsHistory_iw.setPellak(pellak.getText());
             carsHistory_iw.setColor(color.getText());
 
-            if (carsHistory_iw.getId() == null) {
-                work_table.getItems().add(carsHistory_iw);
-            } else {
+            if (editMode_work) {
                 work_table.refresh();
+            } else {
+                work_table.getItems().add(carsHistory_iw);
             }
 
             work_back.getOnAction().handle(event);
@@ -871,6 +888,7 @@ public class Fxml_Car_Insert extends ParentControl {
     }
 
     private void clear_work() {
+        editMode_work = false;
         driver_info_text_clear.setVisible(false);
         driver_info_button.changeText("search");
         MyTime.set_empty_myTime(bimeh_date, certificate_date, card_void_date, card_expiration_date, card_issued_date);
