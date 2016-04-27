@@ -41,7 +41,7 @@
                                     <content>
                                         <HBox alignment="CENTER" spacing="15.0">
                                             <children>
-                                                <VBox>
+                                                <VBox maxWidth="202.0">
                                                     <children>
                                                         <Label text="کد ملی" textFill="#2e7a8c" />
                                                         <TextField fx:id="national_id" prefWidth="202.0" />
@@ -117,7 +117,7 @@
                                                                 <Insets top="14.0" />
                                                             </VBox.margin>
                                                         </Label>
-                                                        <TextField fx:id="criminal_records" prefHeight="87.0" />
+                                          <TextArea fx:id="criminal_records" prefHeight="87.0" wrapText="true" />
                                                     </children>
                                                 </VBox>
                                                 <VBox>
@@ -470,7 +470,7 @@
                                                                 <VBox HBox.hgrow="ALWAYS">
                                                                     <children>
                                                                         <Label text="خیابان" textFill="#2e7a8c" />
-                                                                        <TextField fx:id="street_address" alignment="TOP_LEFT" prefHeight="84.0" prefWidth="314.0" VBox.vgrow="ALWAYS" />
+                                                      <TextArea fx:id="street_address" prefHeight="84.0" prefWidth="314.0" wrapText="true" />
                                                                     </children>
                                                                 </VBox>
                                                             </children>
@@ -526,7 +526,7 @@
                                                         <VBox HBox.hgrow="ALWAYS">
                                                             <children>
                                                                 <Label text="توضیحات" textFill="#2e7a8c" />
-                                                                <TextArea fx:id="individualComments" prefWidth="50.0">
+                                                                <TextArea fx:id="individualComments" prefWidth="50.0" wrapText="true">
                                                                     <VBox.margin>
                                                                         <Insets />
                                                                     </VBox.margin>
@@ -583,7 +583,7 @@
                                                     <children>
                                                         <gatebass.myControl.MyButtonFont fx:id="add_to_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <VBox HBox.hgrow="ALWAYS" />
-                                                        <gatebass.myControl.MyButtonFont fx:id="work_remove" visible="false"  blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="work_remove" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" visible="false" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_view" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_edit" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
@@ -809,7 +809,7 @@
                                                                 <PropertyValueFactory property="Tarikh" />
                                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn editable="false" prefWidth="75.0" text="میبلغ واریزی">
+                                                        <TableColumn editable="false" prefWidth="75.0" text="مبلغ واریزی">
                                                             <cellValueFactory>
                                                                 <PropertyValueFactory property="mablagh" />
                                                             </cellValueFactory>
@@ -1174,7 +1174,7 @@
                                                         <Insets />
                                                     </VBox.margin>
                                                 </Label>
-                                                <TextArea fx:id="work_comments" maxHeight="187.0" prefHeight="187.0" prefWidth="10.0" VBox.vgrow="ALWAYS" />
+                                                <TextArea fx:id="work_comments" maxHeight="187.0" prefHeight="187.0" prefWidth="10.0" wrapText="true" VBox.vgrow="ALWAYS" />
                                             </children>
                                         </VBox>
                                         <VBox prefHeight="91.0" prefWidth="10.0" style="-fx-background-color: #39AFD0;">

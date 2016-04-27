@@ -167,7 +167,7 @@ public class Fxml_Individual_Insert extends ParentControl {
     @FXML
     private TextField mobile;
     @FXML
-    private TextField criminal_records;
+    private TextArea criminal_records;
     @FXML
     private TextField nationality;
     @FXML
@@ -213,7 +213,7 @@ public class Fxml_Individual_Insert extends ParentControl {
     @FXML
     private TextField phone_number;
     @FXML
-    private TextField street_address;
+    private TextArea street_address;
     @FXML
     private TableView<IndividualFile> fileSelected;
     @FXML

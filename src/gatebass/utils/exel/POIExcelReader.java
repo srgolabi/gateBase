@@ -1537,7 +1537,7 @@ public class POIExcelReader {
                         } catch (Exception e) {
                         }
                         try {
-                            individuals.setCard_id("شماره کارت قدیم : " + row.getCell(0).getRichStringCellValue().getString() + (individuals.getComments() != null ? "\n" + individuals.getComments() : ""));
+                            individuals.setComments("شماره کارت قدیم : " + row.getCell(0).getRichStringCellValue().getString() + (individuals.getComments() != null ? "\n" + individuals.getComments() : ""));
                         } catch (Exception e) {
                         }
 
