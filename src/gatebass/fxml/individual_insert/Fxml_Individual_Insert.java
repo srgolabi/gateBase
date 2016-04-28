@@ -722,7 +722,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         TextFiledLimited.setEnterFocuse(
                 national_id, first_name, last_name, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, birth_day, birth_month, birth_year,
-                issued, birth_state, series_id_1,series_id_2, field_of_study,
+                issued, birth_state, series_id_1, series_id_2, field_of_study,
                 academic_degree, mobile, criminal_records, nationality, dependants,
                 din, religion, payan_khedmat, bedon_kart, moaf
         );
@@ -1320,16 +1320,23 @@ public class Fxml_Individual_Insert extends ParentControl {
 
     public void clear() {
 
-        boolean b = TextFiledLimited.clear_value(
+//        boolean b = TextFiledLimited.clear_value(
+//                national_id, first_name, last_name, father_first_name, first_name_ENG,
+//                last_name_ENG, id_number, serial_number, issued, birth_state, series_id_1,
+//                series_id_2, field_of_study, academic_degree, mobile, criminal_records,
+//                soldiery_id, soldiery_unit, soldiery_location, soldiery_exempt, individualComments,
+//                state_address, city_address, street_address, postal_code, phone_number
+//        );
+//        if (!b) {
+//            return;
+//        }
+        TextFiledLimited.set_empty_textField(
                 national_id, first_name, last_name, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, issued, birth_state, series_id_1,
                 series_id_2, field_of_study, academic_degree, mobile, criminal_records,
                 soldiery_id, soldiery_unit, soldiery_location, soldiery_exempt, individualComments,
                 state_address, city_address, street_address, postal_code, phone_number
         );
-        if (!b) {
-            return;
-        }
 
         individual = new Individuals();
         editMode = false;

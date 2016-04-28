@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
@@ -16,7 +24,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox nodeOrientation="RIGHT_TO_LEFT" spacing="20.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-background-color: #BBDEFB; -fx-font-size: 14;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.get_report.Fxml_Get_Report">
+<HBox nodeOrientation="RIGHT_TO_LEFT" spacing="20.0" style="-fx-font-family: &quot;B Yekan&quot;; -fx-background-color: #BBDEFB; -fx-font-size: 14;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gatebass.fxml.get_report.Fxml_Get_Report">
     <children>
         <VBox nodeOrientation="RIGHT_TO_LEFT">
             <children>
@@ -177,18 +185,22 @@
                                                                     </toggleGroup>
                                                                 </RadioButton>
                                                                 <RadioButton fx:id="other_operator_second" mnemonicParsing="false" text="برابر" textFill="#2e7a8c" toggleGroup="$string_operator_group" />
-                                                                <RadioButton fx:id="other_operator_third" mnemonicParsing="false" textFill="#2e7a8c" toggleGroup="$string_operator_group" />
                                                             </children>
                                                         </HBox>
-                                                        <VBox fx:id="string_page" HBox.hgrow="ALWAYS">
-                                                            <children>
-                                                                <Label text="مقدار" textFill="#2e7a8c" />
-                                                                <TextField fx:id="string_text" maxWidth="1.7976931348623157E308" />
-                                                            </children>
-                                                            <HBox.margin>
-                                                                <Insets left="10.0" />
-                                                            </HBox.margin>
-                                                        </VBox>
+                                          <StackPane alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                             <children>
+                                                              <VBox fx:id="string_page">
+                                                                  <children>
+                                                                      <Label text="مقدار" textFill="#2e7a8c" />
+                                                                      <TextField fx:id="string_text" maxWidth="1.7976931348623157E308" />
+                                                                  </children>
+                                                              </VBox>
+                                                                <RadioButton fx:id="other_operator_third" mnemonicParsing="false" textFill="#2e7a8c" toggleGroup="$string_operator_group" />
+                                             </children>
+                                          </StackPane>
                                                     </children>
                                                 </HBox>
                                                 <HBox fx:id="veteran_status_page" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" visible="false">

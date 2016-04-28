@@ -33,9 +33,9 @@ public class GateBass extends Application {
     public static DatabaseHelper databaseHelper;
     public static Users users;
 //    public static InitActUser actUser;
-    public static String version = "1.0.0";
-//    public static String server = "\\\\DANESHJOO\\$GatePass$\\";
-    public static String server = "";
+    public static String version = "1.0.2";
+    public static String server = "\\\\DANESHJOO\\$GatePass$\\";
+//    public static String server = "";
 
     UtilsStage<Fxml_Splash_Screen> fxml_Splash_Screen;
 
@@ -92,16 +92,50 @@ public class GateBass extends Application {
 //                );
 //                int j = 1;
 //                int k = 1;
+//                List<Individuals> l1 = new ArrayList<>();
+//                List<Long> l2 = new ArrayList<>();
 //                for (int i = 0; i < individualses.size() - 1; i++) {
+////                    List<Individuals> ll = databaseHelper.individualsDao.rawResults("SELECT * FROM individuals WHERE card_id = 'VALUE1' AND national_id != 'VALUE2'".replace("VALUE2", individualses.get(i).getNational_id()).replace("VALUE1", individualses.get(i).getCard_id()));
+////                    if (!ll.isEmpty()) {
+////                        System.out.println(k++ + ",Duplicate," + individualses.get(i).getNational_id() + "," + individualses.get(i).getCard_id());
+////                        l1.add(individualses.get(i).getId() > individualses.get(i + 1).getId() ? individualses.get(i) : individualses.get(i + 1));
+////                    }
 //                    if (Long.parseLong(individualses.get(i).getCard_id()) == Long.parseLong(individualses.get(i + 1).getCard_id())) {
 //                        System.out.println(k++ + ",Duplicate," + individualses.get(i).getNational_id() + "," + individualses.get(i).getCard_id());
+//                        l1.add(individualses.get(i).getId() > individualses.get(i + 1).getId() ? individualses.get(i) : individualses.get(i + 1));
 //                        continue;
 //                    }
 //
 //                    if (Long.parseLong(individualses.get(i).getCard_id()) + 1 != Long.parseLong(individualses.get(i + 1).getCard_id())) {
 //                        System.out.println(j++ + ",Gap," + individualses.get(i).getNational_id() + "," + individualses.get(i).getCard_id());
+//                        l2.add(Long.parseLong(individualses.get(i).getCard_id()) + 1);
 //                    }
 //                }
+//
+////                for (int i = 0; i < l2.size(); i++) {
+////                    System.out.println(i + ",Change," + l1.get(i).getNational_id() + ",from," + l1.get(i).getCard_id() + ",to," + l2.get(i));
+////                    l1.get(i).setCard_id(l2.get(i) + "");
+////                }
+////
+////                try {
+////                    databaseHelper.individualsDao.insertList(l1);
+////                } catch (SQLException ex) {
+////                    Logger.getLogger(GateBass.class.getName()).log(Level.SEVERE, null, ex);
+////                }
+////                {
+////                    Long l = Long.parseLong(Manage.get_value("card_id_count"));
+////                    for (Individuals ind : l1) {
+////                        System.out.println(j++ + ",Change," + ind.getNational_id() + ",from," + ind.getCard_id() + ",to," + l);
+////                        ind.setCard_id(l + "");
+////                        l++;
+////                    }
+////                    databaseHelper.manageDao.createOrUpdate(new Manage("card_id_count", l + ""));
+////                    try {
+////                        databaseHelper.individualsDao.insertList(l1);
+////                    } catch (SQLException ex) {
+////                        Logger.getLogger(GateBass.class.getName()).log(Level.SEVERE, null, ex);
+////                    }
+////                }
 //                onCloseApp();
 //            }
 

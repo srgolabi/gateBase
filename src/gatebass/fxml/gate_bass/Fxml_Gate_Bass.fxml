@@ -89,7 +89,7 @@
                                     </VBox>
                                  </children>
                               </HBox>
-                              <HBox fx:id="down_card" alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
+                              <HBox fx:id="down_card" alignment="CENTER" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="date_issude_title" maxHeight="1.7976931348623157E308" text="تاریخ صدور : " />
                                     <Label fx:id="date_issude" maxHeight="1.7976931348623157E308" style="-fx-font-size: 12;" text="94/08/25" textFill="YELLOW">
@@ -103,9 +103,6 @@
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                                 <padding>
-                                    <Insets right="30.0" />
-                                 </padding>
                               </HBox>
                            </children>
                         </VBox>

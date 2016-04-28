@@ -415,7 +415,7 @@ public class Fxml_Get_Report extends ParentControl {
 
             query_for_search = (report_type_car.isSelected() || report_type_car_list.isSelected())
                     ? query_car.replace("GROUP_BY_QUERY", (valid_card.isSelected() || remove_repeat_item.isSelected()) ? "carhistory_j.id" : "cars.id")
-                    : query_individual.replace("GROUP_BY_QUERY", (valid_card.isSelected() || !remove_repeat_item.isSelected()) ? "workhistory_j.id" : "individuals.id");
+                    : query_individual.replace("GROUP_BY_QUERY", (valid_card.isSelected() || remove_repeat_item.isSelected()) ? "workhistory_j.id" : "individuals.id");
 
             if (main_page.isDisable()) {
                 query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", valid_card.isSelected()
