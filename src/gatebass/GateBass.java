@@ -86,24 +86,24 @@ public class GateBass extends Application {
                 }
             }
 
-            {
-                List<Individuals> individualses = databaseHelper.individualsDao.rawResults(
-                        "SELECT * FROM individuals ORDER BY card_id ASC"
-                );
-                int j = 1;
-                int k = 1;
-                for (int i = 0; i < individualses.size() - 1; i++) {
-                    if (Long.parseLong(individualses.get(i).getCard_id()) == Long.parseLong(individualses.get(i + 1).getCard_id())) {
-                        System.out.println(k++ + " = REPLICA MELI : " + individualses.get(i).getNational_id() + "CARD ID : " + individualses.get(i).getCard_id());
-                        continue;
-                    }
-
-                    if (Long.parseLong(individualses.get(i).getCard_id()) + 1 != Long.parseLong(individualses.get(i + 1).getCard_id())) {
-                        System.out.println(j++ + " = MELI : " + individualses.get(i).getNational_id() + "CARD ID : " + individualses.get(i).getCard_id());
-                    }
-                }
-                onCloseApp();
-            }
+//            {
+//                List<Individuals> individualses = databaseHelper.individualsDao.rawResults(
+//                        "SELECT * FROM individuals ORDER BY card_id ASC"
+//                );
+//                int j = 1;
+//                int k = 1;
+//                for (int i = 0; i < individualses.size() - 1; i++) {
+//                    if (Long.parseLong(individualses.get(i).getCard_id()) == Long.parseLong(individualses.get(i + 1).getCard_id())) {
+//                        System.out.println(k++ + ",Duplicate," + individualses.get(i).getNational_id() + "," + individualses.get(i).getCard_id());
+//                        continue;
+//                    }
+//
+//                    if (Long.parseLong(individualses.get(i).getCard_id()) + 1 != Long.parseLong(individualses.get(i + 1).getCard_id())) {
+//                        System.out.println(j++ + ",Gap," + individualses.get(i).getNational_id() + "," + individualses.get(i).getCard_id());
+//                    }
+//                }
+//                onCloseApp();
+//            }
 
             Register register = new Register();
 //            register.writeEncrype("piamoit", "2015111820160220111111110");

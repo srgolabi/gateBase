@@ -177,6 +177,7 @@
                                                                     </toggleGroup>
                                                                 </RadioButton>
                                                                 <RadioButton fx:id="other_operator_second" mnemonicParsing="false" text="برابر" textFill="#2e7a8c" toggleGroup="$string_operator_group" />
+                                                                <RadioButton fx:id="other_operator_third" mnemonicParsing="false" textFill="#2e7a8c" toggleGroup="$string_operator_group" />
                                                             </children>
                                                         </HBox>
                                                         <VBox fx:id="string_page" HBox.hgrow="ALWAYS">

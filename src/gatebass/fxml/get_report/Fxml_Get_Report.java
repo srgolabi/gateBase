@@ -124,6 +124,8 @@ public class Fxml_Get_Report extends ParentControl {
     @FXML
     private RadioButton other_operator_second;
     @FXML
+    private RadioButton other_operator_third;
+    @FXML
     private VBox string_page;
     @FXML
     private TextField string_text;
@@ -183,13 +185,13 @@ public class Fxml_Get_Report extends ParentControl {
 
         close_edit.visibleProperty().bind(selected_item_for_edit.greaterThan(-1));
         remove_repeat_item.disableProperty().bind(valid_card.selectedProperty());
-        
+
         valid_card.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (newValue){
+            if (newValue) {
                 remove_repeat_item.setSelected(false);
             }
         });
-        
+
         close_edit.setOnAction((ActionEvent event) -> {
             selected_item_for_edit.set(-1);
         });
@@ -284,8 +286,8 @@ public class Fxml_Get_Report extends ParentControl {
         report_type_individual_list.setDisable(report_type_individual.isDisable());
         report_type_car_list.setDisable(report_type_car.isDisable());
 
-        fields_page_individual.visibleProperty().bind(report_type_individual.selectedProperty());
-        fields_page_car.visibleProperty().bind(report_type_car.selectedProperty());
+        fields_page_individual.visibleProperty().bind(report_type_individual.selectedProperty().or(report_type_individual_list.selectedProperty()));
+        fields_page_car.visibleProperty().bind(report_type_car.selectedProperty().or(report_type_car_list.selectedProperty()));
 
         main_page.disableProperty().bind(report_type_individual_list.selectedProperty().or(report_type_car_list.selectedProperty()));
         add_query_to_table.disableProperty().bind(main_page.disableProperty());
@@ -296,16 +298,19 @@ public class Fxml_Get_Report extends ParentControl {
         fields_text_individual.setText("");
         fields_text_car.setText("");
         company_page.visibleProperty().bind(selected_field.field_type.isEqualTo("company"));
-        string_page_root.visibleProperty().bind(selected_field.field_type.isEqualTo("string").or(selected_field.field_type.isEqualTo("haveOrNot")));
+        string_page_root.visibleProperty().bind(selected_field.field_type.isEqualTo("string").or(selected_field.field_type.isEqualTo("haveOrNot").or(selected_field.field_type.isEqualTo("card_type"))));
         date_page.visibleProperty().bind(selected_field.field_type.isEqualTo("date"));
         number_page_root.visibleProperty().bind(selected_field.field_type.isEqualTo("date").or(selected_field.field_type.isEqualTo("int")));
         number_page.visibleProperty().bind(selected_field.field_type.isEqualTo("int"));
         string_page.visibleProperty().bind(selected_field.field_type.isEqualTo("string"));
-        other_operator_page.visibleProperty().bind(selected_field.field_type.isEqualTo("string").or(selected_field.field_type.isEqualTo("haveOrNot")));
-        veteran_status_page.visibleProperty().bind(selected_field.field_type.isEqualTo("veteran_status"));
+        other_operator_page.visibleProperty().bind(selected_field.field_type.isEqualTo("string").or(selected_field.field_type.isEqualTo("haveOrNot").or(selected_field.field_type.isEqualTo("card_type"))));
+        veteran_status_page.visibleProperty().bind(selected_field.field_type.isEqualTo("solidary"));
         other_operator_first.textProperty().bind(selected_field.other_operator_first);
         other_operator_second.textProperty().bind(selected_field.other_operator_second);
+        other_operator_third.textProperty().bind(selected_field.other_operator_third);
 
+        other_operator_third.visibleProperty().bind(selected_field.field_type.isEqualTo("solidary").or(selected_field.field_type.isEqualTo("card_type")));
+                
         report_type_car.setOnAction((ActionEvent event) -> {
             String temp = fields_text_car.getText();
             fields_text_car.setText("");
@@ -383,10 +388,15 @@ public class Fxml_Get_Report extends ParentControl {
                         VALUE = c.getCompany_fa();
                     }
                     break;
-                case "veteran_status":
+                case "solidary":
                     temp.value = veteran_payan_khedmat.isSelected() ? "0" : veteran_namalom.isSelected() ? "1" : "2";
                     temp.operator.set("= 'value'");
-                    OPERATOR = temp.value.equals("0") ? "دارای کارت پایان خدمت می باشند." : temp.value.equals("1") ? "از خدمت معاف شده اند." : "وضعیت خدمتی نامعلوم داردند.";
+                    OPERATOR = temp.value.equals("0") ? "دارای کارت پایان خدمت می باشند." : temp.value.equals("2") ? "از خدمت معاف شده اند." : "وضعیت خدمتی نامعلوم داردند.";
+                    break;
+                case "card_type":
+                    temp.value = other_operator_first.isSelected() ? "0" : other_operator_second.isSelected() ? "1" : "2";
+                    temp.operator.set("= 'value'");
+                    OPERATOR = temp.value.equals("0") ? "دارای کارت موقت می باشند." : temp.value.equals("1") ? "دارای کارت پیمانکاری می باشند." : "دارای کارت ستادی می باشند.";
                     break;
             }
             temp.operator.set(temp.culomn_query.get() + " " + temp.operator.get().replace("value", temp.value));
@@ -461,6 +471,7 @@ public class Fxml_Get_Report extends ParentControl {
         list_field_individual.add(new Query_Base("تابعیت", "string", "nationality"));
         list_field_individual.add(new Query_Base("مذهب", "string", "religion_info"));
         list_field_individual.add(new Query_Base("وضعیت خدمت", "solidary", "veteran_status"));
+        list_field_individual.add(new Query_Base("نوع کارت", "card_type", "workhistory_j.gate_type"));
         list_field_individual.add(new Query_Base("تاریخ اعزام به خدمت", "date", "soldiery_start_info"));
         list_field_individual.add(new Query_Base("تاریخ خاتمه خدمت", "date", "soldiery_end_info"));
         list_field_individual.add(new Query_Base("یگان خدمتی", "string", "soldiery_unit"));
@@ -475,7 +486,6 @@ public class Fxml_Get_Report extends ParentControl {
         list_field_individual.add(new Query_Base("تاریخ انقضاء کارت تردد", "date", "workhistory_j.card_expiration_date"));
 //        list_field.add(new Query_Base("راننده", "haveOrNot"));
         list_field_individual.add(new Query_Base("کارتهای صادره برای شرکت", "company", "workhistory_j.companies_id"));
-//        list_field.add(new Query_Base("وضعیت کارت", "haveOrNot"));
         list_field_individual.add(new Query_Base("اخطار", "haveOrNot", "warning_count"));
         list_field_individual.add(new Query_Base("تعداد اخطار", "int", "warning_count"));
         list_field_individual.add(new Query_Base("المثنی", "haveOrNot", "replica_count"));
@@ -598,7 +608,13 @@ public class Fxml_Get_Report extends ParentControl {
                 case "company":
                     company_text.setText(selected_field.value);
                     break;
-                case "veteran_status":
+
+                case "card_type":
+                    other_operator_first.getToggleGroup().selectToggle(
+                            selected_field.value.equals("0") ? other_operator_first
+                            : selected_field.value.equals("1") ? other_operator_second : other_operator_third);
+                    break;
+                case "solidary":
                     veteran_moaf.getToggleGroup().selectToggle(
                             selected_field.value.equals("0") ? veteran_payan_khedmat
                             : selected_field.value.equals("1") ? veteran_namalom : veteran_moaf);
@@ -633,6 +649,7 @@ public class Fxml_Get_Report extends ParentControl {
         public StringProperty table_title;
         public StringProperty other_operator_first;
         public StringProperty other_operator_second;
+        public StringProperty other_operator_third;
         public StringProperty and_or;
 
         public Query_Base() {
@@ -646,6 +663,7 @@ public class Fxml_Get_Report extends ParentControl {
             this.table_title_fix = new SimpleStringProperty("");
             this.other_operator_first = new SimpleStringProperty("");
             this.other_operator_second = new SimpleStringProperty("");
+            this.other_operator_third = new SimpleStringProperty("");
             this.and_or = new SimpleStringProperty("");
         }
 
@@ -661,6 +679,7 @@ public class Fxml_Get_Report extends ParentControl {
             this.table_title_fix.set(query_Base.table_title_fix.get());
             this.other_operator_first.set(query_Base.other_operator_first.get());
             this.other_operator_second.set(query_Base.other_operator_second.get());
+            this.other_operator_third.set(query_Base.other_operator_third.get());
             this.and_or.set(query_Base.and_or.get());
         }
 
@@ -684,7 +703,16 @@ public class Fxml_Get_Report extends ParentControl {
                 case "company":
                     this.table_title_fix.set("کارتهایی که برای شرکت VALUE صادر شده است.");
                     break;
-                case "veteran_status":
+                case "card_type":
+                    this.other_operator_first.set("موقت");
+                    this.other_operator_second.set("پیمانکاری");
+                    this.other_operator_third.set("ستادی");
+                    this.table_title_fix.set("آنهایی که " + "OPERATOR");
+                    break;
+                case "solidary":
+                    this.other_operator_first.set("پایان خدمت");
+                    this.other_operator_second.set("نامعلوم");
+                    this.other_operator_third.set("معاف");
                     this.table_title_fix.set("آنهایی که " + "OPERATOR");
                     break;
             }
