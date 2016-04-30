@@ -16,6 +16,7 @@ import gatebass.utils.TextFiledLimited;
 import gatebass.utils.UtilsStage;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -237,6 +238,20 @@ public class Fxml_Print_PreView extends ParentControl {
             thisStage.close();
         });
 
+    }
+
+    @Override
+    public void show_And_Wait() {
+        Platform.runLater(() -> {
+            thisStage.setMaximized(true);
+        });
+        super.show_And_Wait();
+    }
+
+    @Override
+    public void on_close() {
+        super.on_close();
+        thisStage.setMaximized(false);
     }
 
     private void print_page() {

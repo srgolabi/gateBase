@@ -236,14 +236,11 @@ public class Fxml_Get_Report extends ParentControl {
                 + "HAVING_SEARCH_QUERY\n"
                 + "ORDER BY card_id desc";
 
-        {
-
-        }
         String query_car
                 = "SELECT cars.id , cars.card_id , cars.car_name , cars.shasi_number , cars.model , cars.comments , cars.logs , carhistory_j.driver_name ,\n"
                 + "count(individualReplica_J.car_id)  replica_count , GROUP_CONCAT('  ' || carhistory_j.company_fa || '  ') company_info ,\n"
                 + "carhistory_j.bimeh_date , carhistory_j.card_expiration_date , carhistory_j.card_issued_date , carhistory_j.card_delivery_date , carhistory_j.certificate_date ,\n"
-                + "carhistory_j.workHistory_id\n"
+                + "carhistory_j.workHistory_id , carhistory_j.pellak\n"
                 + "FROM cars\n"
                 + "LEFT OUTER JOIN\n"
                 + "(SELECT individualReplica.* FROM individualReplica\n"
@@ -414,8 +411,8 @@ public class Fxml_Get_Report extends ParentControl {
         done.setOnAction((ActionEvent event) -> {
 
             query_for_search = (report_type_car.isSelected() || report_type_car_list.isSelected())
-                    ? query_car.replace("GROUP_BY_QUERY", (valid_card.isSelected() || remove_repeat_item.isSelected()) ? "carhistory_j.id" : "cars.id")
-                    : query_individual.replace("GROUP_BY_QUERY", (valid_card.isSelected() || remove_repeat_item.isSelected()) ? "workhistory_j.id" : "individuals.id");
+                    ? query_car.replace("GROUP_BY_QUERY", !remove_repeat_item.isSelected() ? "carhistory_j.id" : "cars.id")
+                    : query_individual.replace("GROUP_BY_QUERY", !remove_repeat_item.isSelected() ? "workhistory_j.id" : "individuals.id");
 
             if (main_page.isDisable()) {
                 query_for_search = query_for_search.replace("WHERE_SEARCH_QUERY", valid_card.isSelected()

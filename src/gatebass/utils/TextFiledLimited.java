@@ -25,11 +25,10 @@ import javafx.stage.Stage;
  */
 public class TextFiledLimited {
 
-    public static boolean clear_value(TextInputControl... textFields) {
-        boolean b = true;
+    public static boolean clear_value(boolean show_msg,TextInputControl... textFields) {
         for (TextInputControl tf : textFields) {
-            if (!tf.getText().isEmpty() && b) {
-                b = false;
+            if (!tf.getText().isEmpty() && show_msg) {
+                show_msg = false;
                 if(!UtilsMsg.show("آیا می خواهید فرم پاک سازی شود؟", "هشدار", true, new Stage())){
                     return false;
                 }

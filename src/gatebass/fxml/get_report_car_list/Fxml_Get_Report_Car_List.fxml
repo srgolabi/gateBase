@@ -82,6 +82,14 @@
                                 <gatebass.fxml.get_report.FormattedTableCellFactory />
                             </cellFactory>
                         </FilterableStringTableColumn>
+                        <FilterableStringTableColumn editable="false" maxWidth="1200" text="شماره پلاک">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="pellak" />
+                            </cellValueFactory>
+                            <cellFactory>
+                                <gatebass.fxml.get_report.FormattedTableCellFactory />
+                            </cellFactory>
+                        </FilterableStringTableColumn>
                         <FilterableIntegerTableColumn editable="false" maxWidth="800" text="مدل">
                             <cellValueFactory>
                                 <PropertyValueFactory property="model" />

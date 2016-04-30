@@ -538,9 +538,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                     } else if (searchPane.isVisible()) {
                         simpleSearchController.t.clear();
                     } else if (editable.get()) {
-                        clear();
-                        tabPane.getSelectionModel().select(0);
-                        national_id.requestFocus();
+                        new_individual.getOnAction().handle(null);
                     }
                     break;
                 case S:
@@ -568,7 +566,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                     } else if (editable.get()) {
                         insert_individual.getOnAction().handle(null);
                         if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.D) && !event.isShiftDown())) {
-                            clear();
+                            clear(false);
                         }
                     }
                     break;
@@ -775,7 +773,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                 Individuals temp = databaseHelper.individualsDao.getFirst("national_id", national_id.getText());
                 if (temp != null) {
                     if (UtilsMsg.show("فردی با این شماره ملی قبلا ثبت شده. اکنون اطلاعات آن بارگذاری شود؟", "هشدار", true, thisStage)) {
-                        clear();
+                        clear(false);
                         individual = temp;
                         loadIndividual();
                     } else {
@@ -799,7 +797,10 @@ public class Fxml_Individual_Insert extends ParentControl {
             thisStage.close();
         });
         new_individual.setOnAction((ActionEvent event) -> {
-            clear();
+            if (clear(true)) {
+                tabPane.getSelectionModel().select(0);
+                national_id.requestFocus();
+            }
         });
 
         editable.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -1227,7 +1228,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         searchPane.getChildren().add(simpleSearchController.t.root);
         simpleSearchController.t.setOnAction((Individuals l) -> {
             search_page_controls.setVisible(true);
-            clear();
+            clear(false);
             if (l != null) {
                 individual = l;
                 loadIndividual();
@@ -1318,25 +1319,25 @@ public class Fxml_Individual_Insert extends ParentControl {
         }
     }
 
-    public void clear() {
+    public boolean clear(boolean show_msg) {
 
-//        boolean b = TextFiledLimited.clear_value(
-//                national_id, first_name, last_name, father_first_name, first_name_ENG,
-//                last_name_ENG, id_number, serial_number, issued, birth_state, series_id_1,
-//                series_id_2, field_of_study, academic_degree, mobile, criminal_records,
-//                soldiery_id, soldiery_unit, soldiery_location, soldiery_exempt, individualComments,
-//                state_address, city_address, street_address, postal_code, phone_number
-//        );
-//        if (!b) {
-//            return;
-//        }
-        TextFiledLimited.set_empty_textField(
+        boolean b = TextFiledLimited.clear_value(show_msg,
                 national_id, first_name, last_name, father_first_name, first_name_ENG,
                 last_name_ENG, id_number, serial_number, issued, birth_state, series_id_1,
                 series_id_2, field_of_study, academic_degree, mobile, criminal_records,
                 soldiery_id, soldiery_unit, soldiery_location, soldiery_exempt, individualComments,
                 state_address, city_address, street_address, postal_code, phone_number
         );
+        if (!b) {
+            return false;
+        }
+//        TextFiledLimited.set_empty_textField(
+//                national_id, first_name, last_name, father_first_name, first_name_ENG,
+//                last_name_ENG, id_number, serial_number, issued, birth_state, series_id_1,
+//                series_id_2, field_of_study, academic_degree, mobile, criminal_records,
+//                soldiery_id, soldiery_unit, soldiery_location, soldiery_exempt, individualComments,
+//                state_address, city_address, street_address, postal_code, phone_number
+//        );
 
         individual = new Individuals();
         editMode = false;
@@ -1344,7 +1345,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         MyTime.set_empty_myTime(
                 warning_date, replica_date, birth_date, soldiery_start_date, soldiery_end_date
         );
-
+        imageFile = null;
         card_number.setText("----");
         nationality.setText("ایران");
         dependants.setText("0");
@@ -1358,6 +1359,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         warning_Table.getItems().clear();
         replica_Table.getItems().clear();
         clear_work();
+        return true;
     }
 
     private void clear_work() {

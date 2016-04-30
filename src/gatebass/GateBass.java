@@ -1,7 +1,6 @@
 package gatebass;
 
 import gatebass.dataBase.DatabaseHelper;
-import gatebass.dataBase.tables.Individuals;
 import gatebass.dataBase.tables.Manage;
 import gatebass.dataBase.tables.Permission;
 import gatebass.dataBase.tables.Users;
@@ -34,8 +33,8 @@ public class GateBass extends Application {
     public static Users users;
 //    public static InitActUser actUser;
     public static String version = "1.0.2";
-    public static String server = "\\\\DANESHJOO\\$GatePass$\\";
-//    public static String server = "";
+//    public static String server = "\\\\DANESHJOO\\$GatePass$\\";
+    public static String server = "";
 
     UtilsStage<Fxml_Splash_Screen> fxml_Splash_Screen;
 
@@ -159,27 +158,9 @@ public class GateBass extends Application {
     }
 
     private void init_first_run() {
-//        String query_base
-//                = "SELECT workhistory.* FROM workhistory\n"
-//                + "LEFT OUTER JOIN history history_j1 ON history_j1.id = workhistory.employment_date_id\n"
-//                + "LEFT OUTER JOIN history history_j2 ON history_j2.id = workhistory.card_issued_date_id\n"
-//                + "LEFT OUTER JOIN history history_j3 ON history_j3.id = workhistory.card_expiration_date_id\n"
-//                + "LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id\n"
-//                + "LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
-//                + "WHERE history_j3.date <= '95/02/04' AND history_j4.date is null AND gate_type = 0";
-//        List<WorkHistory> workHistorys = databaseHelper.workHistoryDao.rawResults(query_base);
-//        for (WorkHistory wh : workHistorys) {
-//            wh.setCardDeliveryDate(wh.getCardExpirationDateId());
-//        }
-//        try {
-//            databaseHelper.workHistoryDao.insertList(workHistorys);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(GateBass.class.getName()).log(Level.SEVERE, null, ex);
-//        }
 
         if (databaseHelper.usersDao.getAll().isEmpty()) {
             Users user_temp = new Users("adminGolabiRazavi", "@dm!ng00l@b!r@z@v!", "", "مدیر سیستم");
-//            Users user_temp = new Users("adminGolabi", "123", "", "مدیر سیستم");
             user_temp.setAdmin(true);
             databaseHelper.usersDao.createOrUpdate(user_temp);
             databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count", "932349"));

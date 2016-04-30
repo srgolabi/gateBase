@@ -329,7 +329,7 @@ public class Fxml_Alarm_List extends ParentControl {
                 + "LEFT OUTER JOIN history history_j3 ON history_j3.id = workhistory.card_expiration_date_id\n"
                 + "LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id\n"
                 + "LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id\n"
-                + "WHERE SEARCH_QUERY AND history_j4.date is null AND gate_type = 0\n".replace("SEARCH_QUERY", "history_j3.date = '" + MyTime.get_Now() + "'");
+                + "WHERE SEARCH_QUERY AND history_j4.date is null AND gate_type = 0\n".replace("SEARCH_QUERY", "history_j3.date <= '" + MyTime.get_Now() + "'");
 
         List<WorkHistory> workHistorys = databaseHelper.workHistoryDao.rawResults(query_base);
         History h_now = new MyTime().writeAndGetNow();

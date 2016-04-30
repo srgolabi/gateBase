@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * @author reza
  */
 @DatabaseTable(tableName = "cars_j")
-public class Cars_j {
+public class Cars_j extends Base_j{
 
     @DatabaseField(generatedId = true)
     private Integer id;
@@ -24,6 +24,9 @@ public class Cars_j {
 
     @DatabaseField(defaultValue = "")
     private String model;
+
+    @DatabaseField(defaultValue = "")
+    private String pellak;
 
     @DatabaseField(defaultValue = "")
     private String comments;
@@ -61,6 +64,8 @@ public class Cars_j {
 // ------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------
+    
+    @Override
     public Integer getId() {
         return id;
     }
@@ -129,4 +134,7 @@ public class Cars_j {
         return driver_name;
     }
 
+    public String getPellak() {
+        return pellak;
+    }
 }

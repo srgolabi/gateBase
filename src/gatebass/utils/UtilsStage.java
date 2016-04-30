@@ -63,5 +63,4 @@ public class UtilsStage<T extends ParentControl> {
     public UtilsStage(Class clazz, boolean resizable, String title, Modality modality, Window owner) {
         this(clazz.getSimpleName().toLowerCase().replaceFirst("fxml_", "") + "/" + clazz.getSimpleName() + ".fxml", resizable, title, modality, owner);
     }
-
 }

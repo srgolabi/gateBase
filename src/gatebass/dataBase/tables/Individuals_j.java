@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * @author reza
  */
 @DatabaseTable(tableName = "individuals_j")
-public class Individuals_j {
+public class Individuals_j extends Base_j{
 
     @DatabaseField(generatedId = true)
     private Integer id;
@@ -153,6 +153,12 @@ public class Individuals_j {
         }
     }
 
+    @Override
+    public String get_filter_text() {
+        return full_name + national_id + card_id;
+    }
+
+    
 // ------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------

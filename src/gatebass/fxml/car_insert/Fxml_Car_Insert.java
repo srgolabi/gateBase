@@ -324,9 +324,7 @@ public class Fxml_Car_Insert extends ParentControl {
                     } else if (searchPane.isVisible()) {
                         simple_Search.clear();
                     } else if (editable.get()) {
-                        clear();
-                        tabPane.getSelectionModel().select(0);
-                        shasi_number.requestFocus();
+                        new_individual.getOnAction().handle(null);
                     }
                     break;
                 case S:
@@ -354,7 +352,7 @@ public class Fxml_Car_Insert extends ParentControl {
                     } else if (editable.get()) {
                         insert_individual.getOnAction().handle(null);
                         if (event.getCode().equals(KeyCode.F9) || (event.getCode().equals(KeyCode.D) && event.isShiftDown())) {
-                            clear();
+                            clear(false);
                         }
                     }
                     break;
@@ -498,7 +496,10 @@ public class Fxml_Car_Insert extends ParentControl {
             thisStage.close();
         });
         new_individual.setOnAction((ActionEvent event) -> {
-            clear();
+            if (clear(true)) {
+                tabPane.getSelectionModel().select(0);
+                shasi_number.requestFocus();
+            }
         });
 
         editable.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -578,10 +579,10 @@ public class Fxml_Car_Insert extends ParentControl {
         }
     }
 
-    public void clear() {
-        boolean b = TextFiledLimited.clear_value(shasi_number, car_name, model, comments);
+    public boolean clear(boolean show_msg) {
+        boolean b = TextFiledLimited.clear_value(show_msg, shasi_number, car_name, model, comments);
         if (!b) {
-            return;
+            return false;
         }
         car = new Cars();
         editMode = false;
@@ -590,6 +591,7 @@ public class Fxml_Car_Insert extends ParentControl {
         work_table.getItems().clear();
         replica_Table.getItems().clear();
         clear_work();
+        return true;
     }
 
     private boolean insert() throws SQLException {
@@ -990,7 +992,7 @@ public class Fxml_Car_Insert extends ParentControl {
                 car = l;
                 loadCars();
             } else {
-                clear();
+                clear(false);
             }
         });
 

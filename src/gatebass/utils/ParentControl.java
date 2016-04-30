@@ -6,6 +6,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -24,6 +25,9 @@ public class ParentControl implements Initializable {
 
     public void setStage(Stage s) {
         this.thisStage = s;
+        thisStage.setOnCloseRequest((WindowEvent event) -> {
+            on_close();
+        });
     }
 
     public void show_Front_Or_Wait() {
@@ -43,7 +47,11 @@ public class ParentControl implements Initializable {
     public void show_And_Wait() {
         thisStage.showAndWait();
     }
-    
+
+    public void on_close() {
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
