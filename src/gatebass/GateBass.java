@@ -32,7 +32,7 @@ public class GateBass extends Application {
     public static DatabaseHelper databaseHelper;
     public static Users users;
 //    public static InitActUser actUser;
-    public static String version = "1.0.2";
+    public static String version = "1.0.4";
 //    public static String server = "\\\\DANESHJOO\\$GatePass$\\";
     public static String server = "";
 
@@ -74,7 +74,7 @@ public class GateBass extends Application {
         Platform.runLater(() -> {
             databaseHelper = new DatabaseHelper();
 
-            init_first_run();
+//            init_first_run();
 
             if (!Manage.get_value(Manage.VERSION_NUMBER).equals(version)) {
                 if (Manage.get_value(Manage.SHOULD_UPDATE).contains("true")) {
@@ -160,14 +160,6 @@ public class GateBass extends Application {
     private void init_first_run() {
 
         if (databaseHelper.usersDao.getAll().isEmpty()) {
-            Users user_temp = new Users("adminGolabiRazavi", "@dm!ng00l@b!r@z@v!", "", "مدیر سیستم");
-            user_temp.setAdmin(true);
-            databaseHelper.usersDao.createOrUpdate(user_temp);
-            databaseHelper.manageDao.createOrUpdate(new Manage(1, "card_id_count", "932349"));
-            databaseHelper.manageDao.createOrUpdate(new Manage(2, "card_id_count_car", "50"));
-            databaseHelper.manageDao.createOrUpdate(new Manage(3, "company_folder_count", "1"));
-            databaseHelper.manageDao.createOrUpdate(new Manage(Manage.VERSION_NUMBER, "1.0.0"));
-            databaseHelper.manageDao.createOrUpdate(new Manage(Manage.SHOULD_UPDATE, "false"));
 
             List<Permission> permissions = new ArrayList<>();
             Permission pLetter = new Permission(Permission.INDIVIDUAL, "INDIVIDUAL", "سیستم اطلاعات فردی", 50, null);

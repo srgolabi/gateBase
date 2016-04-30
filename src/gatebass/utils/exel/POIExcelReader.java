@@ -1552,7 +1552,6 @@ public class POIExcelReader {
                 }
 //                databaseHelper.individualsDao.createOrUpdate(individuals, dd);
             }
-            databaseHelper.individualsDao.insertList_FromExcel(individualses);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1763,7 +1762,7 @@ public class POIExcelReader {
                 }
                 Individuals individuals = databaseHelper.individualsDao.getFirst("card_id", meli);
                 if (individuals != null) {
-                    individualReplica.setIndividual_id(individuals);
+//                    individualReplica.setIndividual_id(individuals);
 
                     try {
                         if (!row.getCell(1).getRichStringCellValue().getString().isEmpty()) {

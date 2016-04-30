@@ -45,7 +45,17 @@ public class Fxml_Get_Report_Individual_List extends Get_Report_Parent<Individua
     @Override
     public void under_table_update(Integer id) {
         work_table.getItems().setAll(databaseHelper.workHistoryDao.getAll("individuals_id", id));
-        replica_Table.getItems().setAll(databaseHelper.individualReplicaDao.getAll("individual_id", id));
-        warning_Table.getItems().setAll(databaseHelper.individualWarningDao.getAll("individual_id", id));
+
+        replica_Table.getItems().setAll(databaseHelper.individualReplicaDao.rawResults(
+                "SELECT individualReplica.* from individualReplica\n"
+                + "LEFT OUTER JOIN workhistory workhistory_j1 ON workhistory_j1.id = individualReplica.workHistory_id\n"
+                + "where workhistory_j1.individuals_id = " + id
+        ));
+
+        warning_Table.getItems().setAll(databaseHelper.individualWarningDao.rawResults(
+                "SELECT individualWarning.* from individualWarning\n"
+                + "LEFT OUTER JOIN workhistory workhistory_j1 ON workhistory_j1.id = individualWarning.workHistory_id\n"
+                + "where workhistory_j1.individuals_id = " + id
+        ));
     }
 }

@@ -70,30 +70,6 @@ public class BaseRepo<T, ID> {
         return tList.size() == insertedCount;
     }
 
-    public boolean insertList_FromExcel(List<T> tList) throws SQLException {
-        int insertedCount = 0;
-        Manage manage = databaseHelper.manageDao.getFirst("key", "card_id_count");
-        long card_sequential_t = Long.parseLong(manage.getValue());
-
-        TransactionManager.callInTransaction(dao.getConnectionSource(), () -> {
-            int insertCount = 0;
-            long card_sequential = card_sequential_t;
-            for (T t : tList) {
-                ((Individuals) t).setCard_id(card_sequential + "");
-                try {
-                    insertCount += dao.createOrUpdate(t).getNumLinesChanged();
-                    card_sequential++;
-                } catch (SQLException e) {
-                    if (t instanceof Individuals) {
-                        System.out.println("national temp = " + ((Individuals) t).getNational_id() + "  -  name = " + ((Individuals) t).getLast_name() + " " + ((Individuals) t).getId_number());
-                    }
-                }
-            }
-            return insertCount;
-        });
-        return tList.size() == insertedCount;
-    }
-
     public int update(T t) {
         try {
             return dao.update(t);

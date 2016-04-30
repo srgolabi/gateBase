@@ -247,20 +247,22 @@ public class Fxml_Alarm_List extends ParentControl {
         set_deliver_date_for_temporary();
 
         tableView.getItems().clear();
-
+        
         String query_base
                 = "FROM individuals \n"
                 + "LEFT OUTER JOIN history history_J1 ON individuals.soldiery_start_date = history_J1.id\n"
                 + "LEFT OUTER JOIN history history_J2 ON individuals.soldiery_end_date = history_J2.id\n"
                 + "LEFT OUTER JOIN history history_J3 ON individuals.birth_day = history_J3.id\n"
                 + "LEFT OUTER JOIN \n"
-                + "(SELECT individualReplica.* , history_j1.date Replica_date FROM individualReplica\n"
+                + "(SELECT individualReplica.* , workhistory_j1.individuals_id , history_j1.date Replica_date FROM individualReplica\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id\n"
-                + ") individualReplica_J ON individualReplica_J.Individual_id =  individuals.id\n"
+                + " LEFT OUTER JOIN workhistory workhistory_j1 ON workhistory_j1.id = individualReplica.workHistory_id\n"
+                + ") individualReplica_J ON individualReplica_J.individuals_id =  individuals.id\n"
                 + "LEFT OUTER JOIN \n"
-                + "(SELECT individualWarning.* , history_j1.date warning_date FROM individualWarning\n"
+                + "(SELECT individualWarning.* , workhistory_j1.individuals_id , history_j1.date warning_date FROM individualWarning\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualWarning.history_id\n"
-                + ") individualWarning_J ON individualWarning_J.Individual_id =  individuals.id\n"
+                + " LEFT OUTER JOIN workhistory workhistory_j1 ON workhistory_j1.id = individualWarning.workHistory_id\n"
+                + ") individualWarning_J ON individualWarning_J.individuals_id =  individuals.id\n"
                 + "LEFT OUTER JOIN \n"
                 + "(SELECT workhistory.* , history_j1.date employment_date, history_j2.date card_issued_date , history_j3.date card_expiration_date , history_j4.date card_delivery_date , companies_j.company_fa  FROM workhistory \n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = workhistory.employment_date_id\n"
@@ -286,9 +288,10 @@ public class Fxml_Alarm_List extends ParentControl {
                 = "SELECT cars.id ids , cars.card_id , '>' || cars.car_name || '>' || ' ' || '< شماره شاسی : ' || cars.shasi_number || '<' datail , 'car' alarm_type , 'ALARM_INFO' alrm_info , cars.alarm_state alarm_stat\n"
                 + "FROM cars\n"
                 + "LEFT OUTER JOIN\n"
-                + "(SELECT individualReplica.* FROM individualReplica\n"
+                + "(SELECT individualReplica.* , carHistory_j1.car_id FROM individualReplica\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id\n"
-                + ") individualReplica_J ON individualReplica_J.Individual_id =  cars.id\n"
+                + " LEFT OUTER JOIN carHistory carHistory_j1 ON carHistory_j1.id = individualReplica.carHistory_id\n"
+                + ") individualReplica_J ON individualReplica_J.car_id =  cars.id\n"
                 + "LEFT OUTER JOIN\n"
                 + "(SELECT carHistory.* , history_j1.date bimeh_date, history_j2.date card_expiration_date , history_j3.date card_issued_date , history_j4.date card_delivery_date , history_j5.date certificate_date , companies_j.company_fa , driver_info.first_name || ' ' || driver_info.last_name driver_name FROM carHistory\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = carHistory.bimeh_date_id\n"

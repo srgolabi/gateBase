@@ -39,8 +39,10 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -242,6 +244,10 @@ public class Fxml_Individual_Insert extends ParentControl {
     @FXML
     private MyButtonFont work_remove;
     @FXML
+    private MyButtonFont replica_insert;
+    @FXML
+    private MyButtonFont warning_insert;
+    @FXML
     private MyButtonFont work_insert;
     @FXML
     private MyButtonFont work_view;
@@ -253,36 +259,39 @@ public class Fxml_Individual_Insert extends ParentControl {
     private TableView<WorkHistory> work_table;
 
     @FXML
-    private HBox warning_page;
+    private VBox warn_rep_page;
     @FXML
-    private TextField warning_day;
+    private Label warn_rep_title;
     @FXML
-    private TextField warning_month;
+    private Label warn_rep_company;
     @FXML
-    private TextField warning_year;
+    private TextField warn_rep_day;
     @FXML
-    private TextField warning_sharh;
+    private TextField warn_rep_month;
     @FXML
-    private MyButtonFont warning_insert;
+    private TextField warn_rep_year;
+    @FXML
+    private TextField warn_rep_sharh;
+    @FXML
+    private TextField warn_rep_mablegh;
+    @FXML
+    private VBox mablegh_page;
+    @FXML
+    private Button warn_rep_submit;
+    @FXML
+    private Button warn_rep_new;
+    @FXML
+    private Button warn_rep_back;
+
+    @FXML
+    private MyButtonFont warning_remove;
     @FXML
     private MyButtonFont warning_edit;
     @FXML
     private TableView<IndividualWarning> warning_Table;
 
     @FXML
-    private HBox replica_page;
-    @FXML
-    private TextField replica_day;
-    @FXML
-    private TextField replica_month;
-    @FXML
-    private TextField replica_year;
-    @FXML
-    private TextField replica_mablagh;
-    @FXML
-    private TextField replica_sharh;
-    @FXML
-    private MyButtonFont replica_insert;
+    private MyButtonFont replica_remove;
     @FXML
     private MyButtonFont replica_edit;
     @FXML
@@ -344,8 +353,7 @@ public class Fxml_Individual_Insert extends ParentControl {
     @FXML
     private Button car_submit;
 
-    private MyTime warning_date;
-    private MyTime replica_date;
+    private MyTime warn_rep_date;
     private MyTime employment_date;
     private MyTime card_issued_date;
     private MyTime card_expiration_date;
@@ -517,10 +525,8 @@ public class Fxml_Individual_Insert extends ParentControl {
                         searchPane.setVisible(false);
                     } else if (work_page.isVisible()) {
                         work_page.setVisible(false);
-                    } else if (replica_page.isVisible()) {
-                        replica_page.setVisible(false);
-                    } else if (warning_page.isVisible()) {
-                        warning_page.setVisible(false);
+                    } else if (warn_rep_page.isVisible()) {
+                        warn_rep_page.setVisible(false);
                     }
                     break;
                 case F:
@@ -628,6 +634,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         soldiery_start_date = new MyTime(soldiery_start_year, soldiery_start_month, soldiery_start_day);
         soldiery_end_date = new MyTime(soldiery_end_year, soldiery_end_month, soldiery_end_day);
 
+        setUp_Warn_Rep_Page();
         setUp_Work_Page();
         setUp_car_Page();
         setUp_Replica_Page();
@@ -740,7 +747,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         );
 
         set_editable_myTime(
-                warning_date, replica_date, employment_date, card_issued_date, card_expiration_date,
+                warn_rep_date, employment_date, card_issued_date, card_expiration_date,
                 card_delivery_date, birth_date, soldiery_start_date, soldiery_end_date
         );
 
@@ -1035,7 +1042,7 @@ public class Fxml_Individual_Insert extends ParentControl {
     }
 
     private void setUp_car_Page() {
-        dark_background.visibleProperty().bind(car_page.visibleProperty());
+        dark_background.visibleProperty().bind(car_page.visibleProperty().or(warn_rep_page.visibleProperty()));
         car_submit.disableProperty().bind(car_history_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
 
         car_info_text_clear.setOnAction((ActionEvent event) -> {
@@ -1095,116 +1102,153 @@ public class Fxml_Individual_Insert extends ParentControl {
     }
 
     private void setUp_Warning_Page() {
-        warning_insert.init("plus", 15);
-        warning_edit.init("pencil", 15);
 
-        warning_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not()));
-        warning_edit.disableProperty().bind(warning_insert.disableProperty().or(warning_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1).and(warning_page.visibleProperty().not())));
-        warning_date = new MyTime(warning_year, warning_month, warning_day);
-        TextFiledLimited.setEnterFocuse(
-                warning_day, warning_month, warning_year,
-                warning_sharh, warning_insert, warning_edit, warning_insert
-        );
+        warning_insert.init("attention", 15);
+        warning_edit.init("pencil", 15);
+        warning_remove.init("minus", 15);
+
+        warning_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not()).or(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
+        warning_edit.disableProperty().bind(warning_insert.disableProperty().or(warning_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
+
         warning_insert.setOnAction((ActionEvent event) -> {
-            if (warning_page.isVisible()) {
-                if (warning_date.isFull()) {
-                    History history = warning_date.writeAndGet();
-                    if (individualWarning_iw == null) {
-                        individualWarning_iw = new IndividualWarning(history, warning_sharh.getText());
-                        warning_Table.getItems().add(individualWarning_iw);
-                    } else {
-                        individualWarning_iw.setHistory_id(history);
-                        individualWarning_iw.setDescription(warning_sharh.getText());
-                        warning_Table.refresh();
+            warn_rep_page.setVisible(true);
+            warn_rep_title.setText("اخطار");
+            warn_rep_day.requestFocus();
+        });
+
+        warning_remove.setOnAction((ActionEvent event) -> {
+            warning_Table.getItems().remove(warning_Table.getSelectionModel().getSelectedIndex());
+        });
+
+        warning_edit.setOnAction((ActionEvent event) -> {
+            warning_insert.getOnAction().handle(null);
+            individualWarning_iw = warning_Table.getSelectionModel().getSelectedItem();
+            warn_rep_date.setText(individualWarning_iw.getHistory_id());
+            warn_rep_sharh.setText(individualWarning_iw.getDescription());
+            warn_rep_company.setText("شرکت : " + individualWarning_iw.getWorkHistory_id().getSherkat());
+        });
+
+        warning_Table.setRowFactory((TableView<IndividualWarning> tableView) -> {
+            final TableRow<IndividualWarning> row = new TableRow<>();
+            row.setOnMouseClicked((MouseEvent event) -> {
+                try {
+                    warning_remove.setVisible(row.getItem().getId() == null && editable.get() && !warning_remove.isDisable());
+                } catch (Exception e) {
+                    warning_remove.setVisible(false);
+                }
+                if (event.getClickCount() >= 2) {
+                    if (!warning_edit.isDisabled()) {
+                        warning_edit.getOnAction().handle(null);
                     }
-                    warning_page.setVisible(false);
+                }
+            });
+            return row;
+        });
+    }
+
+    private void setUp_Warn_Rep_Page() {
+
+        mablegh_page.visibleProperty().bind(Bindings.equal(warn_rep_title.textProperty(), "المثنی"));
+        
+        warn_rep_date = new MyTime(warn_rep_year, warn_rep_month, warn_rep_day);
+
+        TextFiledLimited.setEnterFocuse(
+                warn_rep_day, warn_rep_month, warn_rep_year, warn_rep_sharh, warn_rep_mablegh
+        );
+
+        warn_rep_submit.setOnAction((ActionEvent event) -> {
+
+            if (!warn_rep_date.isFull()) {
+                UtilsMsg.show("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
+                warn_rep_day.requestFocus();
+                return;
+            }
+            History history = warn_rep_date.writeAndGet();
+
+            if (warn_rep_title.getText().equals("المثنی")) {
+                if (individualReplica_iw == null) {
+                    individualReplica_iw = new IndividualReplica(history, warn_rep_mablegh.getText(), warn_rep_sharh.getText());
+                    individualReplica_iw.setWorkHistory_id(work_table.getSelectionModel().getSelectedItem());
+                    replica_Table.getItems().add(individualReplica_iw);
                 } else {
-                    UtilsMsg.show("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
+                    individualReplica_iw.setHistory_id(history);
+                    individualReplica_iw.setMablagh(warn_rep_mablegh.getText());
+                    individualReplica_iw.setDescription(warn_rep_sharh.getText());
+                    individualReplica_iw.setWorkHistory_id(work_table.getSelectionModel().getSelectedItem());
+                    replica_Table.refresh();
                 }
             } else {
-                warning_page.setVisible(true);
-                warning_year.requestFocus();
+                if (individualWarning_iw == null) {
+                    individualWarning_iw = new IndividualWarning(history, warn_rep_sharh.getText());
+                    individualWarning_iw.setWorkHistory_id(work_table.getSelectionModel().getSelectedItem());
+                    warning_Table.getItems().add(individualWarning_iw);
+                } else {
+                    individualWarning_iw.setHistory_id(history);
+                    individualWarning_iw.setDescription(warn_rep_sharh.getText());
+                    individualWarning_iw.setWorkHistory_id(work_table.getSelectionModel().getSelectedItem());
+                    warning_Table.refresh();
+                }
             }
+            warn_rep_back.getOnAction().handle(null);
         });
-        warning_edit.setOnAction((ActionEvent event) -> {
-            if (warning_page.isVisible()) {
-                warning_page.setVisible(false);
-            } else {
-                warning_page.setVisible(true);
-                individualWarning_iw = warning_Table.getSelectionModel().getSelectedItem();
-                warning_date.setText(individualWarning_iw.getHistory_id());
-                warning_sharh.setText(individualWarning_iw.getDescription());
-            }
+
+        warn_rep_new.setOnAction((ActionEvent event) -> {
+            individualReplica_iw = null;
+            individualWarning_iw = null;
+            TextFiledLimited.set_empty_textField(
+                    warn_rep_day, warn_rep_month, warn_rep_year, warn_rep_sharh, warn_rep_mablegh
+            );
+            warn_rep_day.requestFocus();
         });
-        warning_page.visibleProperty().addListener((ObservableValue<? extends Boolean> o, Boolean old, Boolean newValue) -> {
-            warning_insert.changeText(newValue ? "edit" : "plus");
-            warning_edit.changeText(newValue ? "reply" : "pencil");
-            warning_date.set_empty_textField();
-            warning_sharh.setText("");
-            if (newValue) {
-                warning_day.requestFocus();
-            } else {
-                individualWarning_iw = null;
-            }
+
+        warn_rep_back.setOnAction((ActionEvent event) -> {
+            warn_rep_new.getOnAction().handle(null);
+            warn_rep_page.setVisible(false);
         });
     }
 
     private void setUp_Replica_Page() {
-        replica_insert.init("plus", 15);
+        replica_insert.init("paste", 15);
         replica_edit.init("pencil", 15);
+        replica_remove.init("minus", 15);
 
-        replica_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not()));
-        replica_edit.disableProperty().bind(replica_insert.disableProperty().or(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1).and(replica_page.visibleProperty().not())));
+        replica_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not()).or(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
+        replica_edit.disableProperty().bind(replica_insert.disableProperty().or(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
 
-        replica_date = new MyTime(replica_year, replica_month, replica_day);
-        TextFiledLimited.setEnterFocuse(
-                replica_day, replica_month, replica_year, replica_mablagh,
-                replica_sharh, replica_insert, replica_edit, replica_insert
-        );
         replica_insert.setOnAction((ActionEvent event) -> {
-            if (replica_page.isVisible()) {
-                if (replica_date.isFull()) {
-                    History history = replica_date.writeAndGet();
-                    if (individualReplica_iw == null) {
-                        individualReplica_iw = new IndividualReplica(history, replica_mablagh.getText(), replica_sharh.getText());
-                        replica_Table.getItems().add(individualReplica_iw);
-                    } else {
-                        individualReplica_iw.setHistory_id(history);
-                        individualReplica_iw.setMablagh(replica_mablagh.getText());
-                        individualReplica_iw.setDescription(replica_sharh.getText());
-                        replica_Table.refresh();
-                    }
-                    replica_page.setVisible(false);
-                } else {
-                    UtilsMsg.show("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
-                }
-            } else {
-                replica_page.setVisible(true);
-                replica_day.requestFocus();
-            }
+            warn_rep_page.setVisible(true);
+            warn_rep_title.setText("المثنی");
+            warn_rep_day.requestFocus();
         });
+
+        replica_remove.setOnAction((ActionEvent event) -> {
+            replica_Table.getItems().remove(replica_Table.getSelectionModel().getSelectedIndex());
+        });
+
         replica_edit.setOnAction((ActionEvent event) -> {
-            if (replica_page.isVisible()) {
-                replica_page.setVisible(false);
-            } else {
-                replica_page.setVisible(true);
-                individualReplica_iw = replica_Table.getSelectionModel().getSelectedItem();
-                replica_date.setText(individualReplica_iw.getHistory_id());
-                replica_sharh.setText(individualReplica_iw.getDescription());
-                replica_mablagh.setText(individualReplica_iw.getDescription());
-            }
+            replica_insert.getOnAction().handle(null);
+            individualReplica_iw = replica_Table.getSelectionModel().getSelectedItem();
+            warn_rep_date.setText(individualReplica_iw.getHistory_id());
+            warn_rep_sharh.setText(individualReplica_iw.getDescription());
+            warn_rep_mablegh.setText(individualReplica_iw.getMablagh());
+            warn_rep_company.setText("شرکت : " + individualReplica_iw.getWorkHistory_id().getSherkat());
         });
-        replica_page.visibleProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            replica_insert.changeText(newValue ? "edit" : "plus");
-            replica_edit.changeText(newValue ? "reply" : "pencil");
-            replica_date.set_empty_textField();
-            replica_mablagh.setText("");
-            replica_sharh.setText("");
-            if (newValue) {
-                replica_day.requestFocus();
-            } else {
-                individualReplica_iw = null;
-            }
+
+        replica_Table.setRowFactory((TableView<IndividualReplica> tableView) -> {
+            final TableRow<IndividualReplica> row = new TableRow<>();
+            row.setOnMouseClicked((MouseEvent event) -> {
+                try {
+                    replica_remove.setVisible(row.getItem().getId() == null && editable.get() && !replica_remove.isDisable());
+                } catch (Exception e) {
+                    replica_remove.setVisible(false);
+                }
+                if (event.getClickCount() >= 2) {
+                    if (!replica_edit.isDisabled()) {
+                        replica_edit.getOnAction().handle(null);
+                    }
+                }
+            });
+            return row;
         });
     }
 
@@ -1242,8 +1286,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         editMode = true;
         work_page.setVisible(false);
         searchPane.setVisible(false);
-        replica_page.setVisible(false);
-        warning_page.setVisible(false);
+        warn_rep_page.setVisible(false);
         first_name.setText(individual.getFirst_name());
         last_name.setText(individual.getLast_name());
         national_id.setText(individual.getNational_id());
@@ -1306,17 +1349,17 @@ public class Fxml_Individual_Insert extends ParentControl {
             work_table.getItems().addAll(worksList);
         }
 
-        warning_Table.getItems().clear();
-        List<IndividualWarning> warningList = databaseHelper.individualWarningDao.getAll("individual_id", individual);
-        if (warningList != null) {
-            warning_Table.getItems().addAll(warningList);
-        }
+        warning_Table.getItems().setAll(databaseHelper.individualWarningDao.rawResults(
+                "SELECT individualWarning.* from individualWarning\n"
+                + "LEFT OUTER JOIN workhistory workhistory_j1 ON workhistory_j1.id = individualWarning.workHistory_id\n"
+                + "where workhistory_j1.individuals_id = " + individual.getId()
+        ));
 
-        replica_Table.getItems().clear();
-        List<IndividualReplica> replicaList = databaseHelper.individualReplicaDao.getAll("individual_id", individual);
-        if (replicaList != null) {
-            replica_Table.getItems().addAll(replicaList);
-        }
+        replica_Table.getItems().setAll(databaseHelper.individualReplicaDao.rawResults(
+                "SELECT individualReplica.* from individualReplica\n"
+                + "LEFT OUTER JOIN workhistory workhistory_j1 ON workhistory_j1.id = individualReplica.workHistory_id\n"
+                + "where workhistory_j1.individuals_id = " + individual.getId()
+        ));
     }
 
     public boolean clear(boolean show_msg) {
@@ -1331,19 +1374,12 @@ public class Fxml_Individual_Insert extends ParentControl {
         if (!b) {
             return false;
         }
-//        TextFiledLimited.set_empty_textField(
-//                national_id, first_name, last_name, father_first_name, first_name_ENG,
-//                last_name_ENG, id_number, serial_number, issued, birth_state, series_id_1,
-//                series_id_2, field_of_study, academic_degree, mobile, criminal_records,
-//                soldiery_id, soldiery_unit, soldiery_location, soldiery_exempt, individualComments,
-//                state_address, city_address, street_address, postal_code, phone_number
-//        );
 
         individual = new Individuals();
         editMode = false;
 
         MyTime.set_empty_myTime(
-                warning_date, replica_date, birth_date, soldiery_start_date, soldiery_end_date
+                birth_date, soldiery_start_date, soldiery_end_date
         );
         imageFile = null;
         card_number.setText("----");
@@ -1512,14 +1548,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         }
         databaseHelper.workHistoryDao.insertList(work_table.getItems());
 
-        for (IndividualReplica ir : replica_Table.getItems()) {
-            ir.setIndividual_id(individual);
-        }
         databaseHelper.individualReplicaDao.insertList(replica_Table.getItems());
-
-        for (IndividualWarning iw : warning_Table.getItems()) {
-            iw.setIndividual_id(individual);
-        }
         databaseHelper.individualWarningDao.insertList(warning_Table.getItems());
 
         editMode = true;

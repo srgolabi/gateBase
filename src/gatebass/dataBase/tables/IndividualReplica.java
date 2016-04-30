@@ -21,11 +21,11 @@ public class IndividualReplica extends Base {
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "history_id")
     private History history_id;
 
-    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "Individual_id")
-    private Individuals Individual_id;
-    
-    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "car_id")
-    private Cars car_id;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "workHistory_id")
+    private WorkHistory workHistory_id;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "carHistory_id")
+    private CarHistory carHistory_id;
 
     @DatabaseField(defaultValue = "0")
     private String mablagh;
@@ -41,10 +41,11 @@ public class IndividualReplica extends Base {
         this.mablagh = mablagh;
         this.description = description;
     }
+
     public String getTarikh() {
         return this.getHistory_id().getDate();
     }
-    
+
     /*
      ***************************************************************************
      ***************************************************************************
@@ -52,10 +53,6 @@ public class IndividualReplica extends Base {
      */
     public Integer getId() {
         return id;
-    }
-
-    public Individuals getIndividual_id() {
-        return Individual_id;
     }
 
     public String getMablagh() {
@@ -78,14 +75,21 @@ public class IndividualReplica extends Base {
         this.id = id;
     }
 
-    public void setIndividual_id(Individuals Individual_id) {
-        this.Individual_id = Individual_id;
+    public WorkHistory getWorkHistory_id() {
+        return workHistory_id;
     }
 
-    public void setCar_id(Cars car_id) {
-        this.car_id = car_id;
+    public CarHistory getCarHistory_id() {
+        return carHistory_id;
     }
-    
+
+    public void setWorkHistory_id(WorkHistory WorkHistory_id) {
+        this.workHistory_id = WorkHistory_id;
+    }
+
+    public void setCarHistory_id(CarHistory CarHistory_id) {
+        this.carHistory_id = CarHistory_id;
+    }
 
     public void setMablagh(String mablagh) {
         this.mablagh = mablagh;

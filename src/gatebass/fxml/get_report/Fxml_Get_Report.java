@@ -203,9 +203,43 @@ public class Fxml_Get_Report extends ParentControl {
             }
         });
 
+        {
+//SELECT individuals.id , individuals.card_id , individuals.first_name || ' ' || individuals.last_name full_name, workhistory_j.car_history_id,
+//count(individualReplica_J.Individual_id)  replica_count , count(individualWarning_J.Individual_id) warning_count , individuals.father_first_name , individuals.national_id ,
+//individuals.id_number , history_J1.date soldiery_start_info , history_J2.date soldiery_end_info , individuals.soldiery_id , individuals.soldiery_location , individuals.soldiery_unit , individuals.soldiery_exempt ,
+//history_J3.date birth_day_info , individuals.birth_state , individuals.issued , individuals.serial_number ,individuals.field_of_study || ' - ' || individuals.academic_degree study_info ,
+//individuals.mobile || ' - ' || individuals.phone_number phone_info, individuals.dependants , individuals.series_id , individuals.state_address || ' - ' || individuals.city_address || ' - ' || individuals.street_address address ,
+//individuals.postal_code , individuals.nationality , individuals.din || ' - ' || individuals.religion religion_info , workhistory_j.employment_date , workhistory_j.card_issued_date , workhistory_j.card_expiration_date , workhistory_j.card_delivery_date , GROUP_CONCAT('  ' || workhistory_j.company_fa || '  ') company_info ,
+//individuals.criminal_records , individuals.veteran_status , individuals.comments , individuals.picture_address , individuals.have_soe_pishine , individuals.filesPatch , individuals.logs 
+//FROM individuals 
+//LEFT OUTER JOIN history history_J1 ON individuals.soldiery_start_date = history_J1.id
+//LEFT OUTER JOIN history history_J2 ON individuals.soldiery_end_date = history_J2.id
+//LEFT OUTER JOIN history history_J3 ON individuals.birth_day = history_J3.id
+//LEFT OUTER JOIN 
+//(SELECT individualReplica.* FROM individualReplica
+// LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id
+//) individualReplica_J ON individualReplica_J.Individual_id =  individuals.id
+//LEFT OUTER JOIN 
+//(SELECT individualWarning.* FROM individualWarning
+// LEFT OUTER JOIN history history_j1 ON history_j1.id = individualWarning.history_id
+//) individualWarning_J ON individualWarning_J.Individual_id =  individuals.id
+//LEFT OUTER JOIN 
+//(SELECT workhistory.* , history_j1.date employment_date, history_j2.date card_issued_date , history_j3.date card_expiration_date , history_j4.date card_delivery_date , companies_j.company_fa  FROM workhistory 
+// LEFT OUTER JOIN history history_j1 ON history_j1.id = workhistory.employment_date_id
+// LEFT OUTER JOIN history history_j2 ON history_j2.id = workhistory.card_issued_date_id
+// LEFT OUTER JOIN history history_j3 ON history_j3.id = workhistory.card_expiration_date_id
+// LEFT OUTER JOIN history history_j4 ON history_j4.id = workhistory.card_delivery_date_id
+// LEFT OUTER JOIN companies companies_j ON companies_j.id = workhistory.companies_id
+//) workhistory_j ON workhistory_j.individuals_id = individuals.id
+//WHERE_SEARCH_QUERY
+//GROUP BY GROUP_BY_QUERY
+//HAVING_SEARCH_QUERY
+//ORDER BY card_id desc
+        }
+
         String query_individual
                 = "SELECT individuals.id , individuals.card_id , individuals.first_name || ' ' || individuals.last_name full_name, workhistory_j.car_history_id,\n"
-                + "count(individualReplica_J.Individual_id)  replica_count , count(individualWarning_J.Individual_id) warning_count , individuals.father_first_name , individuals.national_id ,\n"
+                + "count(individualReplica_J.id) replica_count , count(individualWarning_J.id) warning_count , individuals.father_first_name , individuals.national_id ,\n"
                 + "individuals.id_number , history_J1.date soldiery_start_info , history_J2.date soldiery_end_info , individuals.soldiery_id , individuals.soldiery_location , individuals.soldiery_unit , individuals.soldiery_exempt ,\n"
                 + "history_J3.date birth_day_info , individuals.birth_state , individuals.issued , individuals.serial_number ,individuals.field_of_study || ' - ' || individuals.academic_degree study_info ,\n"
                 + "individuals.mobile || ' - ' || individuals.phone_number phone_info, individuals.dependants , individuals.series_id , individuals.state_address || ' - ' || individuals.city_address || ' - ' || individuals.street_address address ,\n"
@@ -216,13 +250,15 @@ public class Fxml_Get_Report extends ParentControl {
                 + "LEFT OUTER JOIN history history_J2 ON individuals.soldiery_end_date = history_J2.id\n"
                 + "LEFT OUTER JOIN history history_J3 ON individuals.birth_day = history_J3.id\n"
                 + "LEFT OUTER JOIN \n"
-                + "(SELECT individualReplica.* FROM individualReplica\n"
+                + "(SELECT individualReplica.* , workhistory_j1.individuals_id FROM individualReplica\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id\n"
-                + ") individualReplica_J ON individualReplica_J.Individual_id =  individuals.id\n"
+                + " LEFT OUTER JOIN workhistory workhistory_j1 ON workhistory_j1.id = individualReplica.workHistory_id\n"
+                + ") individualReplica_J ON individualReplica_J.individuals_id =  individuals.id\n"
                 + "LEFT OUTER JOIN \n"
-                + "(SELECT individualWarning.* FROM individualWarning\n"
+                + "(SELECT individualWarning.* , workhistory_j1.individuals_id FROM individualWarning\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualWarning.history_id\n"
-                + ") individualWarning_J ON individualWarning_J.Individual_id =  individuals.id\n"
+                + " LEFT OUTER JOIN workhistory workhistory_j1 ON workhistory_j1.id = individualWarning.workHistory_id"
+                + ") individualWarning_J ON individualWarning_J.individuals_id =  individuals.id\n"
                 + "LEFT OUTER JOIN \n"
                 + "(SELECT workhistory.* , history_j1.date employment_date, history_j2.date card_issued_date , history_j3.date card_expiration_date , history_j4.date card_delivery_date , companies_j.company_fa  FROM workhistory \n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = workhistory.employment_date_id\n"
@@ -238,13 +274,14 @@ public class Fxml_Get_Report extends ParentControl {
 
         String query_car
                 = "SELECT cars.id , cars.card_id , cars.car_name , cars.shasi_number , cars.model , cars.comments , cars.logs , carhistory_j.driver_name ,\n"
-                + "count(individualReplica_J.car_id)  replica_count , GROUP_CONCAT('  ' || carhistory_j.company_fa || '  ') company_info ,\n"
+                + "count(individualReplica_J.id)  replica_count , GROUP_CONCAT('  ' || carhistory_j.company_fa || '  ') company_info ,\n"
                 + "carhistory_j.bimeh_date , carhistory_j.card_expiration_date , carhistory_j.card_issued_date , carhistory_j.card_delivery_date , carhistory_j.certificate_date ,\n"
                 + "carhistory_j.workHistory_id , carhistory_j.pellak\n"
                 + "FROM cars\n"
                 + "LEFT OUTER JOIN\n"
-                + "(SELECT individualReplica.* FROM individualReplica\n"
+                + "(SELECT individualReplica.* , carHistory_j1.car_id FROM individualReplica\n"
                 + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id\n"
+                + " LEFT OUTER JOIN carHistory carHistory_j1 ON carHistory_j1.id = individualReplica.carHistory_id\n"
                 + ") individualReplica_J ON individualReplica_J.car_id =  cars.id\n"
                 + "LEFT OUTER JOIN\n"
                 + "(SELECT carHistory.* , history_j1.date bimeh_date, history_j2.date card_expiration_date , history_j3.date card_issued_date , history_j4.date card_delivery_date , history_j5.date certificate_date , companies_j.company_fa , driver_info.first_name || ' ' || driver_info.last_name driver_name FROM carHistory\n"
@@ -307,7 +344,7 @@ public class Fxml_Get_Report extends ParentControl {
         other_operator_third.textProperty().bind(selected_field.other_operator_third);
 
         other_operator_third.visibleProperty().bind(selected_field.field_type.isEqualTo("solidary").or(selected_field.field_type.isEqualTo("card_type")));
-                
+
         report_type_car.setOnAction((ActionEvent event) -> {
             String temp = fields_text_car.getText();
             fields_text_car.setText("");
@@ -579,9 +616,9 @@ public class Fxml_Get_Report extends ParentControl {
                     date_day.setText(arr[2]);
                     math_number_equals.getToggleGroup().selectToggle(
                             selected_field.value.equals(">") ? math_number_greater_than
-                            : selected_field.value.equals(">=") ? math_number_greater_than_equals
-                            : selected_field.value.equals("<") ? math_number_less_than
-                            : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
+                                    : selected_field.value.equals(">=") ? math_number_greater_than_equals
+                                            : selected_field.value.equals("<") ? math_number_less_than
+                                                    : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
                     );
                     break;
                 case "haveOrNot":
@@ -597,9 +634,9 @@ public class Fxml_Get_Report extends ParentControl {
                     number_text.setText(selected_field.value);
                     math_number_equals.getToggleGroup().selectToggle(
                             selected_field.value.equals(">") ? math_number_greater_than
-                            : selected_field.value.equals(">=") ? math_number_greater_than_equals
-                            : selected_field.value.equals("<") ? math_number_less_than
-                            : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
+                                    : selected_field.value.equals(">=") ? math_number_greater_than_equals
+                                            : selected_field.value.equals("<") ? math_number_less_than
+                                                    : selected_field.value.equals("<=") ? math_number_less_than_equals : math_number_equals
                     );
                     break;
                 case "company":
@@ -609,12 +646,12 @@ public class Fxml_Get_Report extends ParentControl {
                 case "card_type":
                     other_operator_first.getToggleGroup().selectToggle(
                             selected_field.value.equals("0") ? other_operator_first
-                            : selected_field.value.equals("1") ? other_operator_second : other_operator_third);
+                                    : selected_field.value.equals("1") ? other_operator_second : other_operator_third);
                     break;
                 case "solidary":
                     veteran_moaf.getToggleGroup().selectToggle(
                             selected_field.value.equals("0") ? veteran_payan_khedmat
-                            : selected_field.value.equals("1") ? veteran_namalom : veteran_moaf);
+                                    : selected_field.value.equals("1") ? veteran_namalom : veteran_moaf);
                     break;
 
             }

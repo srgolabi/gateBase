@@ -13,7 +13,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -104,8 +103,9 @@ public class Simple_Search {
             String query
                     = "SELECT cars.* FROM cars\n"
                     + "LEFT OUTER JOIN\n"
-                    + "(SELECT individualReplica.* FROM individualReplica\n"
+                    + "(SELECT individualReplica.* , carHistory_j1.car_id FROM individualReplica\n"
                     + " LEFT OUTER JOIN history history_j1 ON history_j1.id = individualReplica.history_id\n"
+                    + " LEFT OUTER JOIN carHistory carHistory_j1 ON carHistory_j1.id = individualReplica.carHistory_id\n"
                     + ") individualReplica_J ON individualReplica_J.car_id = cars.id\n"
                     + "LEFT OUTER JOIN\n"
                     + "(SELECT carHistory.* , history_j1.date bimeh_date, history_j2.date card_expiration_date , history_j3.date card_issued_date , history_j4.date card_delivery_date , history_j5.date certificate_date , companies_j.company_fa , driver_info.first_name || ' ' || driver_info.last_name driver_name FROM carHistory\n"

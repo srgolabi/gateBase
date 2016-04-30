@@ -132,6 +132,8 @@
                                                     <children>
                                                         <gatebass.myControl.MyButtonFont fx:id="add_to_print" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <VBox HBox.hgrow="ALWAYS" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="replica_insert" mnemonicParsing="false" />
+                                                        <VBox HBox.hgrow="ALWAYS" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_remove" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" visible="false" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                         <gatebass.myControl.MyButtonFont fx:id="work_view" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
@@ -260,7 +262,7 @@
                                                                 </VBox>
                                                             </children>
                                                         </HBox>
-                                                        <gatebass.myControl.MyButtonFont fx:id="replica_insert" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
+                                                        <gatebass.myControl.MyButtonFont fx:id="replica_remove" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" visible="false" />
                                                         <gatebass.myControl.MyButtonFont fx:id="replica_edit" blendMode="MULTIPLY" mnemonicParsing="false" prefWidth="60.0" style="-fx-label-padding: -2;" />
                                                     </children>
                                                     <VBox.margin>
@@ -774,7 +776,7 @@
                         </HBox>
                         <StackPane HBox.hgrow="ALWAYS">
                             <children>
-                                <HBox fx:id="button_page" alignment="CENTER_RIGHT" spacing="25.0" style="-fx-font-size: 12.5;">
+                                <HBox fx:id="button_page" alignment="CENTER_RIGHT" spacing="12" style="-fx-font-size: 12.5;">
                                     <children>    
                                         <gatebass.myControl.MyButtonFont fx:id="search" blendMode="HARD_LIGHT" focusTraversable="false" mnemonicParsing="false" prefHeight="24.0" prefWidth="36.0" textFill="#2e7a8c">
                                             <padding>
@@ -795,10 +797,7 @@
                                         </Button>
                                         <StackPane>
                                             <children>
-                                                <Button fx:id="new_individual" alignment="CENTER" blendMode="HARD_LIGHT" cache="true" contentDisplay="RIGHT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" text="جدید" textFill="#2e7a8c">
-                                                    <font>
-                                                        <Font name="B Yekan" size="16.0" />
-                                                    </font>
+                                                <Button fx:id="new_individual" alignment="CENTER" blendMode="HARD_LIGHT" cache="true" contentDisplay="RIGHT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="80.0" text="جدید" textFill="#2e7a8c">
                                                     <effect>
                                                         <DropShadow />
                                                     </effect>
@@ -870,7 +869,7 @@
                                         </HBox>
                                     </children>
                                     <StackPane.margin>
-                                        <Insets bottom="17.0" right="215.0" />
+                                        <Insets bottom="17.0" right="235.0" />
                                     </StackPane.margin>
                                 </VBox>
                                 <HBox fx:id="search_page_buttons" alignment="CENTER_RIGHT" spacing="30.0" style="-fx-font-size: 12.5;" visible="false">
@@ -1020,6 +1019,122 @@
             </children>
             <padding>
                 <Insets bottom="75.0" left="65.0" right="65.0" top="75.0" />
+            </padding>
+        </VBox>
+        <VBox fx:id="warn_rep_page" alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" visible="false">
+            <children>
+                <Label fx:id="warn_rep_title" alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="40.0" style="-fx-background-color: #226699; -fx-font-family: &quot;B Titr&quot;; -fx-font-size: 17; -fx-border-color: #ffffff; -fx-border-width: 2 2 1 2;" text="المثنی" textFill="WHITE" />
+                <VBox spacing="15.0" style="-fx-background-color: #80DEEA; -fx-font-size: 15; -fx-border-color: #ffffff; -fx-border-width: 1 2 1 2;">
+                    <children>
+                        <Label fx:id="warn_rep_company" maxWidth="1.7976931348623157E308" minHeight="25.0" text="شرکت : " textFill="#2e7a8c" />
+                        <HBox fx:id="replica_page1" spacing="10.0">
+                            <children>
+                                <HBox nodeOrientation="LEFT_TO_RIGHT" spacing="2.0">
+                                    <children>
+                                        <Label alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" text="13" textFill="#2e7a8c">
+                                            <HBox.margin>
+                                                <Insets />
+                                            </HBox.margin>
+                                        </Label>
+                                        <VBox alignment="BOTTOM_CENTER" prefWidth="41.0">
+                                            <children>
+                                                <Label text="سال" textFill="#2e7a8c" />
+                                                <TextField fx:id="warn_rep_year" alignment="CENTER" maxWidth="41.0" prefWidth="41.0" />
+                                            </children>
+                                        </VBox>
+                                        <Label alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" text="/" textFill="#2e7a8c">
+                                            <HBox.margin>
+                                                <Insets />
+                                            </HBox.margin>
+                                        </Label>
+                                        <VBox alignment="BOTTOM_CENTER">
+                                            <children>
+                                                <Label text="ماه" textFill="#2e7a8c" />
+                                                <TextField fx:id="warn_rep_month" alignment="CENTER" maxWidth="41.0" prefWidth="41.0" />
+                                            </children>
+                                        </VBox>
+                                        <Label alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" text="/" textFill="#2e7a8c">
+                                            <HBox.margin>
+                                                <Insets />
+                                            </HBox.margin>
+                                        </Label>
+                                        <VBox alignment="BOTTOM_CENTER" prefWidth="41.0">
+                                            <children>
+                                                <Label text="روز" textFill="#2e7a8c" />
+                                                <TextField fx:id="warn_rep_day" alignment="CENTER" maxWidth="41.0" prefWidth="40.0" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="شرح" textFill="#2e7a8c" />
+                                        <TextField fx:id="warn_rep_sharh" prefWidth="180.0" />
+                                    </children>
+                                </VBox>
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <VBox fx:id="mablegh_page">
+                                            <children>
+                                                <Label text="مبلغ واریزی" textFill="#2e7a8c" />
+                                                <TextField fx:id="warn_rep_mablegh" prefWidth="100.0" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </VBox>
+                <HBox alignment="CENTER_RIGHT" spacing="25.0" style="-fx-font-size: 12.5; -fx-background-color: #226699; -fx-border-color: #ffffff; -fx-border-width: 1 2 2 2;">
+                    <children>
+                        <Button fx:id="warn_rep_submit" alignment="CENTER" blendMode="HARD_LIGHT" cache="true" contentDisplay="RIGHT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" text="ثبت" textFill="#2e7a8c">
+                            <effect>
+                                <DropShadow />
+                            </effect>
+                            <graphic>
+                                <Label text="(F8)" textFill="#607d8b">
+                                    <font>
+                                        <Font name="Arial Bold" size="10.0" />
+                                    </font>
+                                </Label>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="warn_rep_new" alignment="CENTER" blendMode="HARD_LIGHT" cache="true" contentDisplay="RIGHT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" text="جدید" textFill="#2e7a8c">
+                            <effect>
+                                <DropShadow />
+                            </effect>
+                            <graphic>
+                                <Label text="(F7)" textFill="#607d8b">
+                                    <font>
+                                        <Font name="Arial Bold" size="10.0" />
+                                    </font>
+                                </Label>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="warn_rep_back" alignment="CENTER" blendMode="HARD_LIGHT" cache="true" contentDisplay="RIGHT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="95.0" text="بازگشت" textFill="#2e7a8c">
+                            <effect>
+                                <DropShadow />
+                            </effect>
+                            <graphic>
+                                <Label text="(ESC)" textFill="#607d8b">
+                                    <font>
+                                        <Font name="Arial Bold" size="10.0" />
+                                    </font>
+                                </Label>
+                            </graphic>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets bottom="12.0" right="20.0" top="10.0" />
+                    </padding>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="75.0" left="25.0" right="25.0" top="75.0" />
             </padding>
         </VBox>
     </children>

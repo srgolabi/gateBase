@@ -21,8 +21,8 @@ public class IndividualWarning {
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "history_id")
     private History history_id;
 
-    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "individual_id")
-    private Individuals individual_id;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "workHistory_id")
+    private WorkHistory workHistory_id;
 
     @DatabaseField(defaultValue = "")
     private String description;
@@ -52,8 +52,8 @@ public class IndividualWarning {
         return history_id;
     }
 
-    public Individuals getIndividual_id() {
-        return individual_id;
+    public WorkHistory getWorkHistory_id() {
+        return workHistory_id;
     }
 
     public String getDescription() {
@@ -68,12 +68,12 @@ public class IndividualWarning {
         this.history_id = history_id;
     }
 
-    public void setIndividual_id(Individuals individual_id) {
-        this.individual_id = individual_id;
-    }
-
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setWorkHistory_id(WorkHistory workHistory_id) {
+        this.workHistory_id = workHistory_id;
     }
 
 }

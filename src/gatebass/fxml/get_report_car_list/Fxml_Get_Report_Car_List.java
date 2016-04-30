@@ -45,6 +45,11 @@ public class Fxml_Get_Report_Car_List extends Get_Report_Parent<Cars_j, CarHisto
     @Override
     public void under_table_update(Integer id) {
         work_table.getItems().setAll(databaseHelper.carsHistoryDao.getAll("car_id", id));
-        replica_Table.getItems().setAll(databaseHelper.individualReplicaDao.getAll("car_id", id));
+
+        replica_Table.getItems().setAll(databaseHelper.individualReplicaDao.rawResults(
+                "SELECT individualReplica.* from individualReplica\n"
+                + "LEFT OUTER JOIN carHistory workhistory_j1 ON workhistory_j1.id = individualReplica.carHistory_id\n"
+                + "where workhistory_j1.car_id = " + id
+        ));
     }
 }

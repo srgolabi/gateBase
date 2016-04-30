@@ -125,6 +125,8 @@ public class Fxml_Car_Insert extends ParentControl {
     @FXML
     private MyButtonFont work_insert;
     @FXML
+    private MyButtonFont replica_insert;
+    @FXML
     private MyButtonFont work_view;
     @FXML
     private MyButtonFont work_edit;
@@ -179,19 +181,32 @@ public class Fxml_Car_Insert extends ParentControl {
     private TableView<Companies> companiesMenu;
 
     @FXML
-    private HBox replica_page;
+    private VBox warn_rep_page;
     @FXML
-    private TextField replica_day;
+    private Label warn_rep_title;
     @FXML
-    private TextField replica_month;
+    private Label warn_rep_company;
     @FXML
-    private TextField replica_year;
+    private TextField warn_rep_day;
     @FXML
-    private TextField replica_mablagh;
+    private TextField warn_rep_month;
     @FXML
-    private TextField replica_sharh;
+    private TextField warn_rep_year;
     @FXML
-    private MyButtonFont replica_insert;
+    private TextField warn_rep_sharh;
+    @FXML
+    private TextField warn_rep_mablegh;
+    @FXML
+    private VBox mablegh_page;
+    @FXML
+    private Button warn_rep_submit;
+    @FXML
+    private Button warn_rep_new;
+    @FXML
+    private Button warn_rep_back;
+
+    @FXML
+    private MyButtonFont replica_remove;
     @FXML
     private MyButtonFont replica_edit;
     @FXML
@@ -245,7 +260,7 @@ public class Fxml_Car_Insert extends ParentControl {
     @FXML
     private Button driver_submit;
 
-    private MyTime replica_date;
+    private MyTime warn_rep_date;
     private MyTime certificate_date;
     private MyTime card_issued_date;
     private MyTime card_expiration_date;
@@ -303,8 +318,8 @@ public class Fxml_Car_Insert extends ParentControl {
                         searchPane.setVisible(false);
                     } else if (driver_page.isVisible()) {
                         driver_page.setVisible(false);
-                    } else if (replica_page.isVisible()) {
-                        replica_page.setVisible(false);
+                    } else if (warn_rep_page.isVisible()) {
+                        warn_rep_page.setVisible(false);
                     } else if (work_page.isVisible()) {
                         work_page.setVisible(false);
                     }
@@ -419,6 +434,7 @@ public class Fxml_Car_Insert extends ParentControl {
 
         TextFiledLimited.set_Number_Length_Limit(model, 4);
 
+        setUp_Warn_Rep_Page();
         setUp_Work_Page();
         setUp_Replica_Page();
         setUp_Search_Page();
@@ -572,11 +588,11 @@ public class Fxml_Car_Insert extends ParentControl {
             work_table.getItems().addAll(worksList);
         }
 
-        replica_Table.getItems().clear();
-        List<IndividualReplica> replicaList = databaseHelper.individualReplicaDao.getAll("car_id", car);
-        if (replicaList != null) {
-            replica_Table.getItems().addAll(replicaList);
-        }
+        replica_Table.getItems().setAll(databaseHelper.individualReplicaDao.rawResults(
+                "SELECT individualReplica.* from individualReplica\n"
+                + "LEFT OUTER JOIN carHistory workhistory_j1 ON workhistory_j1.id = individualReplica.carHistory_id\n"
+                + "where workhistory_j1.car_id = " + car.getId()
+        ));
     }
 
     public boolean clear(boolean show_msg) {
@@ -671,9 +687,6 @@ public class Fxml_Car_Insert extends ParentControl {
         }
         databaseHelper.carsHistoryDao.insertList(work_table.getItems());
 
-        for (IndividualReplica ir : replica_Table.getItems()) {
-            ir.setCar_id(car);
-        }
         databaseHelper.individualReplicaDao.insertList(replica_Table.getItems());
 
         editMode = true;
@@ -897,67 +910,95 @@ public class Fxml_Car_Insert extends ParentControl {
         TextFiledLimited.set_empty_textField(pellak, color, driver_info, comppany);
     }
 
-    private void setUp_Replica_Page() {
-        replica_insert.init("plus", 15);
-        replica_edit.init("pencil", 15);
+    private void setUp_Warn_Rep_Page() {
 
-        replica_insert.disableProperty().bind(work_insert.disableProperty());
-        if (replica_insert.isDisable()) {
-            replica_edit.setDisable(true);
-        } else {
-            replica_edit.disableProperty().bind(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1).and(replica_page.visibleProperty().not()));
-        }
+        mablegh_page.visibleProperty().bind(Bindings.equal(warn_rep_title.textProperty(), "المثنی"));
 
-        replica_date = new MyTime(replica_year, replica_month, replica_day);
+        warn_rep_date = new MyTime(warn_rep_year, warn_rep_month, warn_rep_day);
+
         TextFiledLimited.setEnterFocuse(
-                replica_day, replica_month, replica_year, replica_mablagh,
-                replica_sharh, replica_insert, replica_edit, replica_insert
+                warn_rep_day, warn_rep_month, warn_rep_year, warn_rep_sharh, warn_rep_mablegh
         );
+
+        warn_rep_submit.setOnAction((ActionEvent event) -> {
+
+            if (!warn_rep_date.isFull()) {
+                UtilsMsg.show("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
+                warn_rep_day.requestFocus();
+                return;
+            }
+            History history = warn_rep_date.writeAndGet();
+
+            if (individualReplica_iw == null) {
+                individualReplica_iw = new IndividualReplica(history, warn_rep_mablegh.getText(), warn_rep_sharh.getText());
+                individualReplica_iw.setCarHistory_id(work_table.getSelectionModel().getSelectedItem());
+                replica_Table.getItems().add(individualReplica_iw);
+            } else {
+                individualReplica_iw.setHistory_id(history);
+                individualReplica_iw.setMablagh(warn_rep_mablegh.getText());
+                individualReplica_iw.setDescription(warn_rep_sharh.getText());
+                individualReplica_iw.setCarHistory_id(work_table.getSelectionModel().getSelectedItem());
+                replica_Table.refresh();
+            }
+            warn_rep_back.getOnAction().handle(null);
+        });
+
+        warn_rep_new.setOnAction((ActionEvent event) -> {
+            individualReplica_iw = null;
+            TextFiledLimited.set_empty_textField(
+                    warn_rep_day, warn_rep_month, warn_rep_year, warn_rep_sharh, warn_rep_mablegh
+            );
+            warn_rep_day.requestFocus();
+        });
+
+        warn_rep_back.setOnAction((ActionEvent event) -> {
+            warn_rep_new.getOnAction().handle(null);
+            warn_rep_page.setVisible(false);
+        });
+    }
+
+    private void setUp_Replica_Page() {
+        replica_insert.init("paste", 15);
+        replica_edit.init("pencil", 15);
+        replica_remove.init("minus", 15);
+
+        replica_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not()).or(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
+        replica_edit.disableProperty().bind(replica_insert.disableProperty().or(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
+
         replica_insert.setOnAction((ActionEvent event) -> {
-            if (replica_page.isVisible()) {
-                if (replica_date.isFull()) {
-                    History history = replica_date.writeAndGet();
-                    if (individualReplica_iw == null) {
-                        individualReplica_iw = new IndividualReplica(history, replica_mablagh.getText(), replica_sharh.getText());
-                        replica_Table.getItems().add(individualReplica_iw);
-                    } else {
-                        individualReplica_iw.setHistory_id(history);
-                        individualReplica_iw.setMablagh(replica_mablagh.getText());
-                        individualReplica_iw.setDescription(replica_sharh.getText());
-                        replica_Table.refresh();
-                    }
-                    replica_page.setVisible(false);
-                } else {
-                    UtilsMsg.show("فیلد تاریخ به درستی پر نگردیده است.", "اخطار", false, thisStage);
-                }
-            } else {
-                individualReplica_iw = null;
-                replica_page.setVisible(true);
-                replica_year.requestFocus();
-            }
+            warn_rep_page.setVisible(true);
+            warn_rep_title.setText("المثنی");
+            warn_rep_day.requestFocus();
         });
+
+        replica_remove.setOnAction((ActionEvent event) -> {
+            replica_Table.getItems().remove(replica_Table.getSelectionModel().getSelectedIndex());
+        });
+
         replica_edit.setOnAction((ActionEvent event) -> {
-            if (replica_page.isVisible()) {
-                replica_page.setVisible(false);
-            } else {
-                replica_page.setVisible(true);
-                individualReplica_iw = replica_Table.getSelectionModel().getSelectedItem();
-                replica_date.setText(individualReplica_iw.getHistory_id());
-                replica_sharh.setText(individualReplica_iw.getDescription());
-                replica_mablagh.setText(individualReplica_iw.getDescription());
-            }
+            replica_insert.getOnAction().handle(null);
+            individualReplica_iw = replica_Table.getSelectionModel().getSelectedItem();
+            warn_rep_date.setText(individualReplica_iw.getHistory_id());
+            warn_rep_sharh.setText(individualReplica_iw.getDescription());
+            warn_rep_mablegh.setText(individualReplica_iw.getMablagh());
+            warn_rep_company.setText("شرکت : " + individualReplica_iw.getWorkHistory_id().getSherkat());
         });
-        replica_page.visibleProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            replica_insert.changeText(newValue ? "edit" : "plus");
-            replica_edit.changeText(newValue ? "reply" : "pencil");
-            replica_date.set_empty_textField();
-            replica_mablagh.setText("");
-            replica_sharh.setText("");
-            if (newValue) {
-                replica_day.requestFocus();
-            } else {
-                individualReplica_iw = null;
-            }
+
+        replica_Table.setRowFactory((TableView<IndividualReplica> tableView) -> {
+            final TableRow<IndividualReplica> row = new TableRow<>();
+            row.setOnMouseClicked((MouseEvent event) -> {
+                try {
+                    replica_remove.setVisible(row.getItem().getId() == null && editable.get() && !replica_remove.isDisable());
+                } catch (Exception e) {
+                    replica_remove.setVisible(false);
+                }
+                if (event.getClickCount() >= 2) {
+                    if (!replica_edit.isDisabled()) {
+                        replica_edit.getOnAction().handle(null);
+                    }
+                }
+            });
+            return row;
         });
     }
 
@@ -998,7 +1039,7 @@ public class Fxml_Car_Insert extends ParentControl {
     }
 
     private void setUp_driver_Page() {
-        dark_background.visibleProperty().bind(driver_page.visibleProperty());
+        dark_background.visibleProperty().bind(driver_page.visibleProperty().or(warn_rep_page.visibleProperty()));
         driver_submit.disableProperty().bind(driver_history_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1));
 
         driver_info_text_clear.setOnAction((ActionEvent event) -> {

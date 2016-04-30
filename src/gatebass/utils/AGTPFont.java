@@ -68,7 +68,9 @@ public class AGTPFont {
         temporary_gate("\uE805"),
         contractor_gate("\uE806"),
         staf_gate("\uE807"),
-        minus("\uE808");
+        minus("\uE808"),
+        attention("\uE809"),
+        paste("\uE80A");
 
         String icon;
 
