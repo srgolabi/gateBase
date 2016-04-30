@@ -314,8 +314,8 @@
                             <children>
                                 <VBox prefWidth="220.0" spacing="1.0">
                                     <children>
-                              <Label text="شماره کارت" textFill="#2e7a8c" />
-                              <TextField fx:id="card_id_search" maxHeight="1.7976931348623157E308" />
+                                        <Label text="شماره کارت" textFill="#2e7a8c" />
+                                        <TextField fx:id="card_id_search" maxHeight="1.7976931348623157E308" />
                                         <Label text="نام خودرو" textFill="#2e7a8c">
                                             <VBox.margin>
                                                 <Insets top="15.0" />

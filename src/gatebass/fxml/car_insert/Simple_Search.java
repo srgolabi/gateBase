@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -35,7 +36,7 @@ public class Simple_Search {
 
     public Stage thisStage;
 
-    private TextField card_id_search;
+    public TextField card_id_search;
     private TextField shasi_number_search;
     private TextField car_name_search;
     private TextField color_search;
