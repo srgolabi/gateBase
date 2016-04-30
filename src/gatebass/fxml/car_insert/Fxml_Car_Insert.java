@@ -297,7 +297,7 @@ public class Fxml_Car_Insert extends ParentControl {
                     break;
                 }
                 case TAB:
-                    if (searchPane.isVisible() || work_page.isVisible()) {
+                    if (searchPane.isVisible() || work_page.isVisible() || dark_background.isVisible()) {
                         event.consume();
                         break;
                     }
@@ -690,6 +690,7 @@ public class Fxml_Car_Insert extends ParentControl {
         databaseHelper.individualReplicaDao.insertList(replica_Table.getItems());
 
         editMode = true;
+        card_number.setText(car.getCard_id());
         return true;
     }
 
@@ -962,10 +963,11 @@ public class Fxml_Car_Insert extends ParentControl {
         replica_edit.init("pencil", 15);
         replica_remove.init("minus", 15);
 
-        replica_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not()).or(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
-        replica_edit.disableProperty().bind(replica_insert.disableProperty().or(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
+        replica_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.CAR_INSERT).not()).or(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
+        replica_edit.disableProperty().bind(Permission.isAccesProperty(Permission.CAR_INSERT).not().or(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
 
         replica_insert.setOnAction((ActionEvent event) -> {
+            warn_rep_company.setText("شرکت : " + work_table.getSelectionModel().getSelectedItem().getSherkat());
             warn_rep_page.setVisible(true);
             warn_rep_title.setText("المثنی");
             warn_rep_day.requestFocus();
@@ -981,7 +983,6 @@ public class Fxml_Car_Insert extends ParentControl {
             warn_rep_date.setText(individualReplica_iw.getHistory_id());
             warn_rep_sharh.setText(individualReplica_iw.getDescription());
             warn_rep_mablegh.setText(individualReplica_iw.getMablagh());
-            warn_rep_company.setText("شرکت : " + individualReplica_iw.getWorkHistory_id().getSherkat());
         });
 
         replica_Table.setRowFactory((TableView<IndividualReplica> tableView) -> {

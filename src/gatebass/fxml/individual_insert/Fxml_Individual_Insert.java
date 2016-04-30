@@ -39,10 +39,8 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -489,7 +487,7 @@ public class Fxml_Individual_Insert extends ParentControl {
                     break;
                 }
                 case TAB:
-                    if (searchPane.isVisible() || work_page.isVisible()) {
+                    if (searchPane.isVisible() || work_page.isVisible() || dark_background.isVisible()) {
                         event.consume();
                         break;
                     }
@@ -1111,6 +1109,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         warning_edit.disableProperty().bind(warning_insert.disableProperty().or(warning_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
 
         warning_insert.setOnAction((ActionEvent event) -> {
+            warn_rep_company.setText("شرکت : " + work_table.getSelectionModel().getSelectedItem().getSherkat());
             warn_rep_page.setVisible(true);
             warn_rep_title.setText("اخطار");
             warn_rep_day.requestFocus();
@@ -1125,7 +1124,6 @@ public class Fxml_Individual_Insert extends ParentControl {
             individualWarning_iw = warning_Table.getSelectionModel().getSelectedItem();
             warn_rep_date.setText(individualWarning_iw.getHistory_id());
             warn_rep_sharh.setText(individualWarning_iw.getDescription());
-            warn_rep_company.setText("شرکت : " + individualWarning_iw.getWorkHistory_id().getSherkat());
         });
 
         warning_Table.setRowFactory((TableView<IndividualWarning> tableView) -> {
@@ -1149,7 +1147,7 @@ public class Fxml_Individual_Insert extends ParentControl {
     private void setUp_Warn_Rep_Page() {
 
         mablegh_page.visibleProperty().bind(Bindings.equal(warn_rep_title.textProperty(), "المثنی"));
-        
+
         warn_rep_date = new MyTime(warn_rep_year, warn_rep_month, warn_rep_day);
 
         TextFiledLimited.setEnterFocuse(
@@ -1213,9 +1211,10 @@ public class Fxml_Individual_Insert extends ParentControl {
         replica_remove.init("minus", 15);
 
         replica_insert.disableProperty().bind(editable.not().or(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not()).or(work_table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
-        replica_edit.disableProperty().bind(replica_insert.disableProperty().or(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
+        replica_edit.disableProperty().bind(Permission.isAccesProperty(Permission.INDIVIDUAL_INSERT).not().or(replica_Table.getSelectionModel().selectedIndexProperty().isEqualTo(-1)));
 
         replica_insert.setOnAction((ActionEvent event) -> {
+            warn_rep_company.setText("شرکت : " + work_table.getSelectionModel().getSelectedItem().getSherkat());
             warn_rep_page.setVisible(true);
             warn_rep_title.setText("المثنی");
             warn_rep_day.requestFocus();
@@ -1231,7 +1230,6 @@ public class Fxml_Individual_Insert extends ParentControl {
             warn_rep_date.setText(individualReplica_iw.getHistory_id());
             warn_rep_sharh.setText(individualReplica_iw.getDescription());
             warn_rep_mablegh.setText(individualReplica_iw.getMablagh());
-            warn_rep_company.setText("شرکت : " + individualReplica_iw.getWorkHistory_id().getSherkat());
         });
 
         replica_Table.setRowFactory((TableView<IndividualReplica> tableView) -> {

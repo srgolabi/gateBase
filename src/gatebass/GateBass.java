@@ -33,8 +33,8 @@ public class GateBass extends Application {
     public static Users users;
 //    public static InitActUser actUser;
     public static String version = "1.0.4";
-//    public static String server = "\\\\DANESHJOO\\$GatePass$\\";
-    public static String server = "";
+    public static String server = "\\\\DANESHJOO\\$GatePass$\\";
+//    public static String server = "";
 
     UtilsStage<Fxml_Splash_Screen> fxml_Splash_Screen;
 

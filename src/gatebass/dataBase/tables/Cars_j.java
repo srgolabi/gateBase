@@ -61,6 +61,10 @@ public class Cars_j extends Base_j{
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "workHistory_id")
     private WorkHistory workHistory_id;
 
+        @Override
+    public String get_filter_text() {
+        return car_name + driver_name + card_id + pellak + shasi_number;
+    }
 // ------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------
