@@ -83,9 +83,9 @@
                                 <gatebass.fxml.get_report.FormattedTableCellFactory />
                             </cellFactory>
                         </TableColumn>
-                        <TableColumn editable="false" maxWidth="1800.0" text="شرح هشدار">
+                        <TableColumn editable="false" maxWidth="1800.0" text="شرکت">
                             <cellValueFactory>
-                                <PropertyValueFactory property="alrm_info" />
+                                <PropertyValueFactory property="company_fa" />
                             </cellValueFactory>
                             <cellFactory>
                                 <gatebass.fxml.get_report.FormattedTableCellFactory />

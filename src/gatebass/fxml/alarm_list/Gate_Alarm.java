@@ -38,7 +38,7 @@ public class Gate_Alarm {
     private String datail;
 
     @DatabaseField
-    private String alrm_info;
+    private String company_fa;
 
     @DatabaseField(defaultValue = "0")
     private Short alarm_stat;
@@ -72,19 +72,12 @@ public class Gate_Alarm {
         return alarm_stat;
     }
 
-    public String getAlrm_info() {
-        if (alrm_info.equals("expiration")) {
-            return "تاریخ انقضاء";
-        } else if (alrm_info.equals("certificate")) {
-            return "تاریخ سلامت";
-        } else if (alrm_info.equals("bimeh")) {
-            return "تاریخ بیمه";
-        }
-        return "";
-    }
-
     public void setAlarm_stat(Short alarm_stat) {
         this.alarm_stat = alarm_stat;
+    }
+
+    public String getCompany_fa() {
+        return company_fa;
     }
 
 }

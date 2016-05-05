@@ -31,7 +31,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -122,6 +124,20 @@ public class Fxml_Alarm_List extends ParentControl {
                 }
             };
             return cell;
+        });
+
+        tableView.setRowFactory((TableView<Gate_Alarm> param) -> {
+            TableRow<Gate_Alarm> row = new TableRow<>();
+            row.setOnMouseClicked((MouseEvent event) -> {
+                if (row.getIndex() == tableView.getSelectionModel().getSelectedIndex() && event.getClickCount() >= 2) {
+                    if (edit.isDisable()) {
+                        review.getOnAction().handle(null);
+                    } else {
+                        edit.getOnAction().handle(null);
+                    }
+                }
+            });
+            return row;
         });
 
         type_column.setCellFactory((TableColumn<Gate_Alarm, String> param) -> {
@@ -247,7 +263,7 @@ public class Fxml_Alarm_List extends ParentControl {
         set_deliver_date_for_temporary();
 
         tableView.getItems().clear();
-        
+
         String query_base
                 = "FROM individuals \n"
                 + "LEFT OUTER JOIN history history_J1 ON individuals.soldiery_start_date = history_J1.id\n"
@@ -275,7 +291,7 @@ public class Fxml_Alarm_List extends ParentControl {
         String sub_query = MyTime.get_Now();
 
         String query_individual
-                = "SELECT individuals.id ids, individuals.card_id , '>' || individuals.first_name || ' ' || individuals.last_name || '>' || ' ' || '< شماره ملی : ' || individuals.national_id || '<' datail , 'individual' alarm_type , 'ALARM_INFO' alrm_info , individuals.alarm_state alarm_stat\n"
+                = "SELECT individuals.id ids, individuals.card_id , '>' || individuals.first_name || ' ' || individuals.last_name || '>' || ' ' || '< شماره ملی : ' || individuals.national_id || '<' datail , 'individual' alarm_type , individuals.alarm_state alarm_stat , workhistory_j.company_fa\n"
                 + query_base
                 + "WHERE (( individuals.alarm_state = 0 AND card_delivery_date IS NULL AND WHERE_SEARCH_QUERY ) OR individuals.alarm_state = 1) AND gate_type != 0\n";
 
@@ -285,7 +301,8 @@ public class Fxml_Alarm_List extends ParentControl {
                 "expiration");
 
         query_individual
-                = "SELECT cars.id ids , cars.card_id , '>' || cars.car_name || '>' || ' ' || '< شماره شاسی : ' || cars.shasi_number || '<' datail , 'car' alarm_type , 'ALARM_INFO' alrm_info , cars.alarm_state alarm_stat\n"
+                = "SELECT cars.id ids , cars.card_id , '>' || cars.car_name || '>' || ' ' || '< شماره شاسی : ' || cars.shasi_number || '<' datail\n"
+                + ", 'car' alarm_type , cars.alarm_state alarm_stat , carhistory_j.company_fa\n"
                 + "FROM cars\n"
                 + "LEFT OUTER JOIN\n"
                 + "(SELECT individualReplica.* , carHistory_j1.car_id FROM individualReplica\n"

@@ -1111,6 +1111,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         warning_insert.setOnAction((ActionEvent event) -> {
             warn_rep_company.setText("شرکت : " + work_table.getSelectionModel().getSelectedItem().getSherkat());
             warn_rep_page.setVisible(true);
+            warn_rep_title.setStyle(warn_rep_title.getStyle().replace("#004D40", "#D50000"));
             warn_rep_title.setText("اخطار");
             warn_rep_day.requestFocus();
         });
@@ -1175,17 +1176,15 @@ public class Fxml_Individual_Insert extends ParentControl {
                     individualReplica_iw.setWorkHistory_id(work_table.getSelectionModel().getSelectedItem());
                     replica_Table.refresh();
                 }
+            } else if (individualWarning_iw == null) {
+                individualWarning_iw = new IndividualWarning(history, warn_rep_sharh.getText());
+                individualWarning_iw.setWorkHistory_id(work_table.getSelectionModel().getSelectedItem());
+                warning_Table.getItems().add(individualWarning_iw);
             } else {
-                if (individualWarning_iw == null) {
-                    individualWarning_iw = new IndividualWarning(history, warn_rep_sharh.getText());
-                    individualWarning_iw.setWorkHistory_id(work_table.getSelectionModel().getSelectedItem());
-                    warning_Table.getItems().add(individualWarning_iw);
-                } else {
-                    individualWarning_iw.setHistory_id(history);
-                    individualWarning_iw.setDescription(warn_rep_sharh.getText());
-                    individualWarning_iw.setWorkHistory_id(work_table.getSelectionModel().getSelectedItem());
-                    warning_Table.refresh();
-                }
+                individualWarning_iw.setHistory_id(history);
+                individualWarning_iw.setDescription(warn_rep_sharh.getText());
+                individualWarning_iw.setWorkHistory_id(work_table.getSelectionModel().getSelectedItem());
+                warning_Table.refresh();
             }
             warn_rep_back.getOnAction().handle(null);
         });
@@ -1216,6 +1215,7 @@ public class Fxml_Individual_Insert extends ParentControl {
         replica_insert.setOnAction((ActionEvent event) -> {
             warn_rep_company.setText("شرکت : " + work_table.getSelectionModel().getSelectedItem().getSherkat());
             warn_rep_page.setVisible(true);
+            warn_rep_title.setStyle(warn_rep_title.getStyle().replace("#D50000", "#004D40"));
             warn_rep_title.setText("المثنی");
             warn_rep_day.requestFocus();
         });
