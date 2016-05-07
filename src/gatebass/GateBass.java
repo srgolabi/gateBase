@@ -104,7 +104,6 @@ public class GateBass extends Application {
     }
 
     private void init_first_run() {
-
         if (databaseHelper.usersDao.getAll().isEmpty()) {
 
             List<Permission> permissions = new ArrayList<>();
